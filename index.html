@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; 
-    --accent: #f59e0b; --accent2: #ef4444; --border: #334155;
+    --bg: #000000; --card: #111111; --text: #ffffff; --muted: #888888; 
+    --accent: #ffcc00; --accent2: #ff0000; --border: #333333;
     --font-main: 'Segoe UI', system-ui, sans-serif;
-    --bubble-bg: #1e293b;
+    --bubble-bg: #111111;
     --zoom-level: 1;
     --verity-color: #991b1b;
   }
@@ -110,7 +110,7 @@
     flex-shrink: 0;
   }
   .nav-btn {
-    background: var(--accent); color: #fff; border: none; padding: 8px 15px;
+    background: var(--accent); color: #000; border: none; padding: 8px 15px;
     border-radius: 8px; font-size: 0.9em; cursor: pointer; font-weight: bold;
     transition: background 0.3s; font-family: inherit;
   }
@@ -124,11 +124,10 @@
     border: 3px solid var(--accent); box-shadow: 0 0 15px rgba(0,0,0,0.3);
   }
   
-  /* Подпись на 34-й странице */
   .creator-signature {
     font-family: 'Marck Script', cursive;
     font-size: 2em;
-    color: #1a1a1a; /* Тёмный цвет */
+    color: #1a1a1a;
     text-align: center;
     margin-top: 15px;
     text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
@@ -393,7 +392,7 @@
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Масштаб:</label>
     <input type="range" id="zoomInput" min="0.8" max="1.5" step="0.1" value="1" onchange="changeZoom(this.value)">
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет текста:</label>
-    <input type="color" id="textColorInput" value="#f8fafc" onchange="changeTextColor(this.value)">
+    <input type="color" id="textColorInput" value="#ffffff" onchange="changeTextColor(this.value)">
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет Верити:</label>
     <input type="color" id="verityColorInput" value="#991b1b" onchange="changeVerityColor(this.value)">
     <button id="devTabBtn" class="nav-btn" style="margin-top: 10px; display: none; background: var(--accent2);" onclick="openDevPanel()">Разработчик</button>
@@ -413,7 +412,20 @@
   </div>
 
 <script>
-  // === ГЕНЕРАЦИЯ 165 УНИКАЛЬНЫХ ЦВЕТОВ ===
+  // === БАЗОВЫЕ ТЕМЫ (включая все запрошенные) ===
+  const baseThemes = [
+    { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } },
+    { name: "Светлая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
+    { name: "Голубая", vars: { bg: "#e0f2fe", card: "#bae6fd", text: "#0c4a6e", muted: "#0369a1", border: "#7dd3fc", accent: "#0ea5e9", accent2: "#0284c7" } },
+    { name: "Лазурная", vars: { bg: "#0c4a6e", card: "#075985", text: "#e0f2fe", muted: "#bae6fd", border: "#0369a1", accent: "#38bdf8", accent2: "#0ea5e9" } },
+    { name: "Розовая", vars: { bg: "#fdf2f8", card: "#fce7f3", text: "#831843", muted: "#9d174d", border: "#f9a8d4", accent: "#ec4899", accent2: "#db2777" } },
+    { name: "Красная", vars: { bg: "#450a0a", card: "#7f1d1d", text: "#fee2e2", muted: "#fca5a5", border: "#991b1b", accent: "#ef4444", accent2: "#dc2626" } },
+    { name: "Бирюзовая", vars: { bg: "#042f2e", card: "#134e4a", text: "#ccfbf1", muted: "#5eead4", border: "#115e59", accent: "#2dd4bf", accent2: "#14b8a6" } },
+    { name: "Оранжевая", vars: { bg: "#431407", card: "#7c2d12", text: "#ffedd5", muted: "#fdba74", border: "#9a3412", accent: "#f97316", accent2: "#ea580c" } },
+    { name: "Фиолетовая", vars: { bg: "#2e1065", card: "#4c1d95", text: "#ede9fe", muted: "#c4b5fd", border: "#5b21b6", accent: "#8b5cf6", accent2: "#7c3aed" } },
+    { name: "Тёмная", vars: { bg: "#0f172a", card: "#1e293b", text: "#f8fafc", muted: "#94a3b8", border: "#334155", accent: "#f59e0b", accent2: "#ef4444" } }
+  ];
+
   function generateUniqueThemes() {
     const themes = [];
     for (let i = 0; i < 165; i++) {
@@ -437,7 +449,7 @@
     return themes;
   }
 
-  const allThemes = generateUniqueThemes();
+  const allThemes = [...baseThemes, ...generateUniqueThemes()];
 
   function applyTheme(index) {
     const theme = allThemes[index];
@@ -454,11 +466,7 @@
     
     document.getElementById('themeSelect').selectedIndex = index;
     document.getElementById('themeSelectWidget').selectedIndex = index;
-    document.getElementById('textColorInput').value = rgbToHex(theme.vars.text);
-  }
-
-  function rgbToHex(color) {
-    return '#f8fafc';
+    document.getElementById('textColorInput').value = theme.vars.text;
   }
 
   function initSelects() {
@@ -474,6 +482,7 @@
       select2.appendChild(opt2);
     });
     
+    // Чёрная тема по умолчанию (индекс 0)
     applyTheme(0);
     select1.selectedIndex = 0;
     select2.selectedIndex = 0;
@@ -519,7 +528,6 @@
     { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div></div></div>" },
     { t: "Создатель", b: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" },
     { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" },
-    // 34 страница — тут будет картинка с кабаном на мотоцикле
     { t: "Финал", b: "<div class='image-container'><img src='pig_bike.jpg' alt='Кабан на мотоцикле'></div>" }
   ];
 
@@ -547,7 +555,6 @@
       
       div.innerHTML = `<h1 ${titleAttr}>${slide.ru.title}</h1><div>${slide.ru.body}</div>`;
       
-      // Если это последняя страница (34), добавляем подпись снизу
       if (index === 33) {
         const sign = document.createElement('div');
         sign.className = 'creator-signature';
@@ -641,14 +648,14 @@
   function placeFood() { food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) }; }
 
   function drawSnake() {
-    snakeCtx.fillStyle = '#0f172a';
+    snakeCtx.fillStyle = '#000000';
     snakeCtx.fillRect(0, 0, 400, 400);
     snakeCtx.fillStyle = '#ef4444';
     snakeCtx.beginPath();
     snakeCtx.arc(food.x * 20 + 10, food.y * 20 + 10, 8, 0, Math.PI * 2);
     snakeCtx.fill();
     snake.forEach((seg, i) => {
-      snakeCtx.fillStyle = i === 0 ? '#f59e0b' : '#fcd34d';
+      snakeCtx.fillStyle = i === 0 ? '#ffcc00' : '#fcd34d';
       snakeCtx.fillRect(seg.x * 20 + 1, seg.y * 20 + 1, 18, 18);
     });
   }
@@ -729,4 +736,4 @@
   };
 </script>
 </body>
-  </html>
+          </html>

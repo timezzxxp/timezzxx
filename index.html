@@ -58,7 +58,7 @@
     padding: 30px;
     border-radius: 15px;
     border: 1px solid #334155;
-    display: none; /* Скрыто по умолчанию */
+    display: none;
     flex-direction: column;
     animation: fadeIn 0.3s ease;
   }
@@ -68,7 +68,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Заголовок (для пасхалки) */
   h1 {
     font-size: 2em;
     color: var(--accent);
@@ -105,7 +104,7 @@
   th { background: #1e293b; color: var(--accent); }
   tr:nth-child(even) { background: #162032; }
 
-  /* Навигация (низ) */
+  /* Навигация */
   .nav-bar {
     height: 70px;
     background: var(--card);
@@ -138,7 +137,6 @@
 </head>
 <body>
 
-  <!-- Верхняя панель -->
   <div class="topbar">
     <h2 id="topTitle">Конспект (RU)</h2>
     <div class="lang-switch">
@@ -147,32 +145,25 @@
     </div>
   </div>
 
-  <!-- Основной контент (16 страниц) -->
-  <div class="main-content" id="contentArea">
-    <!-- Страницы будут вставлены через JS -->
-  </div>
+  <div class="main-content" id="contentArea"></div>
 
-  <!-- Нижняя навигация -->
   <div class="nav-bar">
     <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Назад</button>
     <span class="page-counter" id="pageCounter">1 / 16</span>
     <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
   </div>
 
-  <!-- Окно пасхалки (Картинка кабана) -->
+  <!-- Пасхалка -->
   <div id="eggModal" onclick="closeEgg()">
     <span class="close-btn">&times;</span>
-    <!-- ВАЖНО: Картинка должна называться pig.jpg и лежать рядом с файлом site.html -->
-    <img src="pig.jpg" alt="Easter Egg 67">
+    <!-- ТУТ ВСТАВЛЕНА КАРТИНКА В ВИДЕ BASE64 -->
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABkAGQ DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z" alt="Easter Egg 67">
   </div>
 
 <script>
   let currentSlide = 0;
   let currentLang = 'ru';
-  let clicks = 0;
-  let clickTimer = null;
 
-  // Массив текстов для 16 страниц (на русском и английском)
   const slidesData = [
     { // 1
       ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center; margin-top:20px;'>Добро пожаловать в цифровой конспект!<br>Нажми «Вперед», чтобы начать изучение.</p>" },
@@ -240,7 +231,6 @@
     }
   ];
 
-  // Отрисовка всех слайдов
   function renderSlides() {
     const area = document.getElementById('contentArea');
     area.innerHTML = '';
@@ -250,9 +240,9 @@
       div.className = 'slide' + (index === currentSlide ? ' active' : '');
       div.id = 'slide-' + index;
       
-      // Только на первом слайде заголовок кликабельный для пасхалки
+      // На первом слайде заголовок кликабельный для пасхалки (1 клик)
       const isFirst = index === 0;
-      const titleAttr = isFirst ? "onclick='countClick()'" : "";
+      const titleAttr = isFirst ? "onclick='showEgg()'" : "";
       
       div.innerHTML = `
         <h1 ${titleAttr}>${slide[currentLang].title}</h1>
@@ -263,7 +253,6 @@
     });
   }
 
-  // Переключение слайдов
   function changeSlide(direction) {
     currentSlide += direction;
     if (currentSlide < 0) currentSlide = 0;
@@ -273,54 +262,36 @@
   }
 
   function updateView() {
-    // Скрываем все слайды
     document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-    // Показываем текущий
     const activeSlide = document.getElementById('slide-' + currentSlide);
     if (activeSlide) activeSlide.classList.add('active');
 
-    // Обновляем кнопки и счетчик
     document.getElementById('prevBtn').disabled = currentSlide === 0;
     document.getElementById('nextBtn').disabled = currentSlide === slidesData.length - 1;
     document.getElementById('pageCounter').textContent = (currentSlide + 1) + ' / ' + slidesData.length;
     
-    // Скролл вверх при смене страницы
     document.getElementById('contentArea').scrollTop = 0;
   }
 
-  // Логика пасхалки (срабатывает только на 1-м слайде)
-  function countClick() {
-    if (currentSlide !== 0) return; // Работает только на первом слайде
-
-    clicks++;
-    if (clicks === 3) {
-      document.getElementById('eggModal').style.display = 'block';
-      clicks = 0;
-    }
-    
-    clearTimeout(clickTimer);
-    clickTimer = setTimeout(function() {
-      clicks = 0;
-    }, 800);
+  // ПАСХАЛКА: работает по 1 клику (вызывается прямо из onclick заголовка)
+  function showEgg() {
+    document.getElementById('eggModal').style.display = 'block';
   }
 
   function closeEgg() {
     document.getElementById('eggModal').style.display = 'none';
   }
 
-  // Смена языка
   function setLang(lang) {
     currentLang = lang;
     document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('topTitle').textContent = lang === 'ru' ? 'Конспект (RU)' : 'Summary (EN)';
     
-    // Перерисовываем слайды на выбранном языке
     renderSlides();
     updateView();
   }
 
-  // Запуск
   document.addEventListener('DOMContentLoaded', () => {
     renderSlides();
     updateView();

@@ -41,7 +41,7 @@
   .theme-select, .lang-select {
     background: var(--bg); color: var(--text); border: 1px solid var(--border);
     padding: 4px 6px; border-radius: 6px; cursor: pointer; font-family: inherit; outline: none;
-    font-size: 0.75em; max-width: 100px;
+    font-size: 0.75em; max-width: 120px;
   }
 
   .draggable-widget {
@@ -149,7 +149,7 @@
     width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
     border-radius: 50%; border: 5px solid #450a0a; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 2em; box-shadow: 0 0 25px #ef4444;
+    font-size: 1.5em; box-shadow: 0 0 25px #ef4444;
     animation: ballPulse 1s infinite alternate;
     user-select: none; position: absolute;
   }
@@ -255,7 +255,7 @@
     position: fixed; bottom: 75px; right: 15px;
     background: var(--accent); color: #fff; border: none;
     width: 45px; height: 45px; border-radius: 50%;
-    font-size: 20px; cursor: pointer; z-index: 300;
+    font-size: 14px; cursor: pointer; z-index: 300;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     display: flex; align-items: center; justify-content: center;
     transition: 0.3s;
@@ -311,6 +311,8 @@
         <option value="cy">CY Cymraeg</option>
         <option value="sr">SR Српски</option>
         <option value="hr">HR Hrvatski</option>
+        <option value="tt">TT Татарча</option>
+        <option value="ba">BA Башҡортса</option>
       </select>
       <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)"></select>
     </div>
@@ -444,8 +446,26 @@
     currentLang = lang;
     document.getElementById('langSelect').value = lang;
     
-    const prevText = { ru: '← Назад', en: '← Back', es: '← Atrás', de: '← Zurück', fr: '← Retour', it: '← Indietro', pt: '← Voltar', zh: '← 后退', ja: '← 戻る', ko: '← 뒤로', ar: '← رجوع', tr: '← Geri', pl: '← Wstecz', uk: '← Назад', sv: '← Tillbaka', no: '← Tilbake', da: '← Tilbage', fi: '← Takaisin', cs: '← Zpět', sk: '← Späť', hu: '← Vissza', ro: '← Înapoi', bg: '← Назад', el: '← Πίσω', he: '← חזור', hi: '← पीछे', id: '← Kembali', ms: '← Kembali', th: '← ย้อนกลับ', vi: '← Quay lại', nl: '← Terug', is: '← Til baka', ga: '← Ar ais', cy: '← Yn ôl', sr: '← Назад', hr: '← Natrag' };
-    const nextText = { ru: 'Вперед →', en: 'Next →', es: 'Siguiente →', de: 'Weiter →', fr: 'Suivant →', it: 'Avanti →', pt: 'Próximo →', zh: '下一步 →', ja: '次へ →', ko: '다음 →', ar: 'التالي →', tr: 'İleri →', pl: 'Dalej →', uk: 'Вперед →', sv: 'Nästa →', no: 'Neste →', da: 'Næste →', fi: 'Seuraava →', cs: 'Další →', sk: 'Ďalej →', hu: 'Következő →', ro: 'Următor →', bg: 'Напред →', el: 'Επόμενο →', he: 'הבא →', hi: 'अगला →', id: 'Berikutnya →', ms: 'Seterusnya →', th: 'ถัดไป →', vi: 'Tiếp theo →', nl: 'Volgende →', is: 'Næsta →', ga: 'Ar aghaidh →', cy: 'Nesaf →', sr: 'Напред →', hr: 'Dalje →' };
+    const prevText = { 
+      ru: '← Назад', en: '← Back', es: '← Atrás', de: '← Zurück', fr: '← Retour', 
+      it: '← Indietro', pt: '← Voltar', zh: '← 后退', ja: '← 戻る', ko: '← 뒤로', 
+      ar: '← رجوع', tr: '← Geri', pl: '← Wstecz', uk: '← Назад', sv: '← Tillbaka', 
+      no: '← Tilbake', da: '← Tilbage', fi: '← Takaisin', cs: '← Zpět', sk: '← Späť', 
+      hu: '← Vissza', ro: '← Înapoi', bg: '← Назад', el: '← Πίσω', he: '← חזור', 
+      hi: '← पीछे', id: '← Kembali', ms: '← Kembali', th: '← ย้อนกลับ', vi: '← Quay lại', 
+      nl: '← Terug', is: '← Til baka', ga: '← Ar ais', cy: '← Yn ôl', sr: '← Назад', 
+      hr: '← Natrag', tt: '← Артка', ba: '← Артҡа' 
+    };
+    const nextText = { 
+      ru: 'Вперед →', en: 'Next →', es: 'Siguiente →', de: 'Weiter →', fr: 'Suivant →', 
+      it: 'Avanti →', pt: 'Próximo →', zh: '下一步 →', ja: '次へ →', ko: '다음 →', 
+      ar: 'التالي →', tr: 'İleri →', pl: 'Dalej →', uk: 'Вперед →', sv: 'Nästa →', 
+      no: 'Neste →', da: 'Næste →', fi: 'Seuraava →', cs: 'Další →', sk: 'Ďalej →', 
+      hu: 'Következő →', ro: 'Următor →', bg: 'Напред →', el: 'Επόμενο →', he: 'הבא →', 
+      hi: 'अगला →', id: 'Berikutnya →', ms: 'Seterusnya →', th: 'ถัดไป →', vi: 'Tiếp theo →', 
+      nl: 'Volgende →', is: 'Næsta →', ga: 'Ar aghaidh →', cy: 'Nesaf →', sr: 'Напред →', 
+      hr: 'Dalje →', tt: 'Алга →', ba: 'Алға →' 
+    };
     
     if (prevText[lang]) document.getElementById('prevBtn').textContent = prevText[lang];
     if (nextText[lang]) document.getElementById('nextBtn').textContent = nextText[lang];

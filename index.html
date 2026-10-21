@@ -2,74 +2,71 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Мега-Конспект: Present Simple & Continuous</title>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; 
     --accent: #f59e0b; --accent2: #ef4444; --border: #334155;
     --font-main: 'Segoe UI', system-ui, sans-serif;
   }
-  
-  body.theme-dark { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; --border: #334155; }
-  body.theme-light { --bg: #f1f5f9; --card: #ffffff; --text: #0f172a; --muted: #64748b; --border: #cbd5e1; }
-  body.theme-azure { --bg: #0c4a6e; --card: #075985; --text: #e0f2fe; --muted: #bae6fd; --border: #0369a1; }
-  body.theme-blue { --bg: #172554; --card: #1e3a8a; --text: #dbeafe; --muted: #bfdbfe; --border: #1d4ed8; }
-  body.theme-cyan { --bg: #164e63; --card: #155e75; --text: #cffafe; --muted: #a5f3fc; --border: #0891b2; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     font-family: var(--font-main);
     background: var(--bg);
     color: var(--text);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100vh; height: 100dvh;
     overflow: hidden;
-    transition: background 0.5s ease, color 0.5s ease;
+    transition: background 0.3s ease, color 0.3s ease;
+    user-select: none;
   }
 
-  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
 
   .topbar {
-    height: 60px; background: var(--card);
+    height: 50px; background: var(--card);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; border-bottom: 1px solid var(--border);
+    padding: 0 10px; border-bottom: 1px solid var(--border);
     flex-shrink: 0; z-index: 100;
   }
-  .topbar h2 { font-size: 1.2em; color: var(--accent); }
-  .controls { display: flex; gap: 15px; align-items: center; }
+  .topbar h2 { font-size: 0.9em; color: var(--accent); }
+  .controls { display: flex; gap: 8px; align-items: center; }
   
-  .theme-select {
+  .theme-select, .lang-select {
     background: var(--bg); color: var(--text); border: 1px solid var(--border);
-    padding: 8px 12px; border-radius: 8px; cursor: pointer; font-family: inherit; outline: none;
+    padding: 4px 6px; border-radius: 6px; cursor: pointer; font-family: inherit; outline: none;
+    font-size: 0.75em; max-width: 100px;
   }
 
-  /* Двигаемый виджет */
   .draggable-widget {
-    position: fixed; top: 80px; right: 20px;
+    position: fixed; top: 60px; right: 5px; left: auto;
     background: var(--card); border: 1px solid var(--border);
-    padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    cursor: grab; z-index: 200; display: none; flex-direction: column; gap: 10px;
-    width: 240px;
+    padding: 10px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    cursor: grab; z-index: 200; display: none; flex-direction: column; gap: 8px;
+    width: 250px; max-width: 90vw; max-height: 80vh; overflow-y: auto;
   }
   .draggable-widget:active { cursor: grabbing; }
-  .draggable-widget h3 { font-size: 0.9em; color: var(--accent); margin-bottom: 5px; }
+  .draggable-widget h3 { font-size: 0.8em; color: var(--accent); margin-bottom: 3px; }
   .draggable-widget select {
-    width: 100%; padding: 8px; border-radius: 6px; background: var(--bg);
+    width: 100%; padding: 6px; border-radius: 4px; background: var(--bg);
     color: var(--text); border: 1px solid var(--border); font-family: inherit;
+    font-size: 0.8em;
   }
 
   .main-content {
-    flex: 1; overflow-y: auto; padding: 30px 20px;
-    display: flex; justify-content: center;
+    flex: 1; overflow-y: auto; overflow-x: hidden;
+    padding: 15px 10px; display: flex; justify-content: center;
+    -webkit-overflow-scrolling: touch;
   }
   .slide {
     background: var(--card); width: 100%; max-width: 800px;
-    padding: 40px; border-radius: 20px; border: 1px solid var(--border);
+    padding: 20px; border-radius: 15px; border: 1px solid var(--border);
     display: none; flex-direction: column;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     opacity: 0; transform: translateY(20px);
@@ -84,77 +81,75 @@
   }
 
   h1 {
-    font-size: 2.2em; color: var(--accent);
-    margin-bottom: 25px; text-align: center;
+    font-size: 1.4em; color: var(--accent);
+    margin-bottom: 15px; text-align: center;
     border-bottom: 2px dashed var(--border);
-    padding-bottom: 15px; cursor: pointer;
+    padding-bottom: 10px; cursor: pointer;
   }
-  h2 { color: var(--accent); margin-bottom: 15px; font-size: 1.5em; }
-  p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; }
-  ul { margin-left: 25px; margin-bottom: 15px; line-height: 1.7; }
-  li { margin-bottom: 8px; }
+  h2 { color: var(--accent); margin-bottom: 10px; font-size: 1.1em; }
+  p { font-size: 0.95em; line-height: 1.6; margin-bottom: 10px; }
+  ul { margin-left: 20px; margin-bottom: 10px; line-height: 1.6; font-size: 0.95em; }
+  li { margin-bottom: 5px; }
   
   .example {
-    background: var(--bg); padding: 15px; border-radius: 10px;
-    border-left: 4px solid var(--accent); margin: 15px 0;
-    font-family: monospace; font-size: 1.1em;
+    background: var(--bg); padding: 10px; border-radius: 8px;
+    border-left: 4px solid var(--accent); margin: 10px 0;
+    font-family: monospace; font-size: 0.95em;
   }
   .example.cont { border-left-color: var(--accent2); }
 
   .nav-bar {
-    height: 70px; background: var(--card);
+    height: 60px; background: var(--card);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; border-top: 1px solid var(--border);
+    padding: 0 10px; border-top: 1px solid var(--border);
     flex-shrink: 0;
   }
   .nav-btn {
-    background: var(--accent); color: #fff; border: none; padding: 12px 25px;
-    border-radius: 10px; font-size: 1em; cursor: pointer; font-weight: bold;
+    background: var(--accent); color: #fff; border: none; padding: 8px 15px;
+    border-radius: 8px; font-size: 0.9em; cursor: pointer; font-weight: bold;
     transition: 0.3s; font-family: inherit;
   }
-  .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4); }
+  .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
   .nav-btn:disabled { background: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
-  .page-counter { color: var(--muted); font-weight: bold; font-size: 1.1em; }
+  .page-counter { color: var(--muted); font-weight: bold; font-size: 0.9em; }
 
-  .image-container { display: flex; flex-direction: column; align-items: center; gap: 25px; margin-top: 20px; }
+  .image-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
   .image-container img {
-    max-width: 100%; max-height: 350px; border-radius: 15px;
-    border: 4px solid var(--accent); box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    max-width: 100%; max-height: 250px; border-radius: 10px;
+    border: 3px solid var(--accent); box-shadow: 0 0 15px rgba(0,0,0,0.3);
   }
 
-  /* Кликер */
   .clicker-area {
-    display: flex; flex-direction: column; align-items: center; gap: 20px;
-    background: var(--bg); padding: 30px; border-radius: 20px; margin-top: 20px;
-    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 15px;
+    background: var(--bg); padding: 15px; border-radius: 15px; margin-top: 10px;
+    position: relative; overflow: hidden; width: 100%;
   }
   
   .coin-wrapper {
-    position: relative; width: 150px; height: 150px;
+    position: relative; width: 120px; height: 120px;
     display: flex; align-items: center; justify-content: center;
   }
   
   .coin {
-    width: 150px; height: 150px; background: radial-gradient(circle at 30% 30%, #fcd34d, #b45309);
-    border-radius: 50%; border: 8px solid #78350f; cursor: pointer;
+    width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #fcd34d, #b45309);
+    border-radius: 50%; border: 6px solid #78350f; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 2em; font-weight: bold; color: #78350f;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    font-size: 1.5em; font-weight: bold; color: #78350f;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     transition: transform 0.1s, opacity 0.3s;
     user-select: none; position: absolute;
-    animation: fallDown 0.4s ease-in forwards;
   }
   
   @keyframes fallDown {
     0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(200px) scale(0.5); opacity: 0; }
+    100% { transform: translateY(150px) scale(0.3); opacity: 0; }
   }
 
   .ball {
-    width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
-    border-radius: 50%; border: 6px solid #450a0a; cursor: pointer;
+    width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
+    border-radius: 50%; border: 5px solid #450a0a; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 3em; box-shadow: 0 0 30px #ef4444;
+    font-size: 2em; box-shadow: 0 0 25px #ef4444;
     animation: ballPulse 1s infinite alternate;
     user-select: none; position: absolute;
   }
@@ -164,119 +159,161 @@
     to { transform: scale(1.05); }
   }
 
-  .score-big { font-size: 2em; color: var(--accent); font-weight: bold; }
+  .score-big { font-size: 1.5em; color: var(--accent); font-weight: bold; }
 
   .upgrades-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px; width: 100%; margin-top: 20px;
+    display: grid; grid-template-columns: 1fr;
+    gap: 10px; width: 100%; margin-top: 10px;
   }
   .upgrade-card {
     background: var(--card); border: 1px solid var(--border);
-    padding: 15px; border-radius: 12px; text-align: center;
+    padding: 10px; border-radius: 10px; text-align: center;
   }
-  .upgrade-card h4 { color: var(--accent); margin-bottom: 10px; }
-  .upgrade-card p { font-size: 0.9em; color: var(--muted); margin-bottom: 10px; }
+  .upgrade-card h4 { color: var(--accent); margin-bottom: 5px; font-size: 0.9em; }
+  .upgrade-card p { font-size: 0.8em; color: var(--muted); margin-bottom: 5px; }
   .upgrade-btn {
-    background: var(--accent2); color: #fff; border: none; padding: 8px 15px;
-    border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s;
-    font-family: inherit;
+    background: var(--accent2); color: #fff; border: none; padding: 8px 12px;
+    border-radius: 6px; cursor: pointer; width: 100%; transition: 0.3s;
+    font-family: inherit; font-size: 0.85em;
   }
   .upgrade-btn:hover:not(:disabled) { background: #dc2626; }
   .upgrade-btn:disabled { background: var(--muted); cursor: not-allowed; }
 
-  /* Змейка */
   #gameCanvas {
     background: var(--bg); border: 2px solid var(--border);
-    border-radius: 10px; display: block; margin: 20px auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    border-radius: 8px; display: block; margin: 10px auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    max-width: 100%; height: auto;
   }
   .snake-header {
-    display: flex; justify-content: space-between; width: 400px; margin: 0 auto 10px auto;
-    font-weight: bold; font-size: 1.2em;
+    display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin: 0 auto 10px auto;
+    font-weight: bold; font-size: 1em;
   }
 
-  /* Оверлеи */
   .overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999;
+    background: rgba(0,0,0,0.9); z-index: 9999;
     display: none; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.3s;
+    opacity: 0; transition: opacity 0.3s; padding: 20px; text-align: center;
   }
   .overlay.show { display: flex; opacity: 1; }
   
   .overlay img {
-    max-width: 80%; max-height: 60vh; border-radius: 20px;
-    border: 5px solid #ef4444; box-shadow: 0 0 50px #ef4444;
+    max-width: 80%; max-height: 50vh; border-radius: 15px;
+    border: 4px solid #ef4444; box-shadow: 0 0 40px #ef4444;
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
   
   .overlay h2 {
-    color: #f59e0b; font-size: 2em; margin-top: 20px; font-weight: bold;
+    color: #f59e0b; font-size: 1.5em; margin-top: 15px; font-weight: bold;
     text-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
     font-family: 'Russo One', sans-serif;
   }
 
-  /* Экран разбит */
-  .screen-cracked::after {
-    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: url('https://i.imgur.com/3N8vM9c.png') center/cover;
-    pointer-events: none; z-index: 9000; opacity: 0.7;
-    animation: crackFade 5s forwards;
-  }
-  @keyframes crackFade {
-    0% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-
-  /* Каллиграфическая надпись */
   .calligraphy-loss {
-    font-family: 'Marck Script', cursive; color: #ff0000; font-size: 4em;
+    font-family: 'Marck Script', cursive; color: #ff0000; font-size: 3em;
     text-shadow: 0 0 20px rgba(255,0,0,0.8); font-weight: bold;
     animation: lossPulse 1s infinite alternate;
   }
   @keyframes lossPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-  /* Страница Создателя */
-  .creator-page { text-align: center; padding-top: 20px; }
+  .screen-cracked::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+      linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 52%),
+      linear-gradient(-45deg, transparent 48%, rgba(255,255,255,0.6) 49%, rgba(255,255,255,0.6) 51%, transparent 52%),
+      linear-gradient(15deg, transparent 49.5%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.7) 50.5%, transparent 51%);
+    pointer-events: none;
+    z-index: 9998;
+    animation: crackShow 5s forwards;
+    opacity: 0.9;
+  }
+  @keyframes crackShow {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .creator-page { text-align: center; padding-top: 10px; }
   .creator-circle {
-    width: 250px; height: 250px; border-radius: 50%;
-    border: 6px solid #ffffff; box-shadow: 0 0 30px rgba(255,255,255,0.5);
-    overflow: hidden; margin: 0 auto 20px auto; display: flex;
+    width: 180px; height: 180px; border-radius: 50%;
+    border: 5px solid #ffffff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
+    overflow: hidden; margin: 0 auto 15px auto; display: flex;
     align-items: center; justify-content: center; background: #fff;
   }
   .creator-circle img { width: 100%; height: 100%; object-fit: cover; }
   .creator-text {
-    font-family: 'Marck Script', cursive; font-size: 2.2em;
+    font-family: 'Marck Script', cursive; font-size: 1.5em;
     color: var(--accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    line-height: 1.4; margin-top: 20px;
+    line-height: 1.4; margin-top: 10px;
   }
 
   .widget-toggle {
-    position: fixed; bottom: 90px; right: 20px;
+    position: fixed; bottom: 75px; right: 15px;
     background: var(--accent); color: #fff; border: none;
-    width: 50px; height: 50px; border-radius: 50%;
-    font-size: 24px; cursor: pointer; z-index: 300;
+    width: 45px; height: 45px; border-radius: 50%;
+    font-size: 20px; cursor: pointer; z-index: 300;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     display: flex; align-items: center; justify-content: center;
     transition: 0.3s;
   }
   .widget-toggle:hover { transform: rotate(90deg) scale(1.1); }
+
+  @media (max-width: 400px) {
+    .topbar h2 { font-size: 0.8em; }
+    .theme-select, .lang-select { font-size: 0.7em; }
+    .nav-btn { padding: 6px 10px; font-size: 0.8em; }
+  }
 </style>
 </head>
 <body class="theme-dark">
 
   <div class="topbar">
-    <h2>Конспект (Мега-версия)</h2>
+    <h2>Мега-Конспект</h2>
     <div class="controls">
-      <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)">
-        <option value="theme-dark">🌙 Чёрная</option>
-        <option value="theme-light">☀️ Белая</option>
-        <option value="theme-azure">💎 Лазурная</option>
-        <option value="theme-blue">🌊 Синяя</option>
-        <option value="theme-cyan">💧 Голубая</option>
+      <!-- Флаги для языков -->
+      <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+        <option value="ru">🇷🇺 RU</option>
+        <option value="en">🇬🇧 EN</option>
+        <option value="es">🇪🇸 ES</option>
+        <option value="de">🇩🇪 DE</option>
+        <option value="fr">🇫🇷 FR</option>
+        <option value="it">🇮🇹 IT</option>
+        <option value="pt">🇵🇹 PT</option>
+        <option value="zh">🇨🇳 ZH</option>
+        <option value="ja">🇯🇵 JA</option>
+        <option value="ko">🇰🇷 KO</option>
+        <option value="ar">🇸🇦 AR</option>
+        <option value="tr">🇹🇷 TR</option>
+        <option value="pl">🇵🇱 PL</option>
+        <option value="uk">🇺🇦 UK</option>
+        <option value="sv">🇸🇪 SV</option>
+        <option value="no">🇳🇴 NO</option>
+        <option value="da">🇩🇰 DA</option>
+        <option value="fi">🇫🇮 FI</option>
+        <option value="cs">🇨🇿 CS</option>
+        <option value="sk">🇸🇰 SK</option>
+        <option value="hu">🇭🇺 HU</option>
+        <option value="ro">🇷🇴 RO</option>
+        <option value="bg">🇧🇬 BG</option>
+        <option value="el">🇬🇷 EL</option>
+        <option value="he">🇮🇱 HE</option>
+        <option value="hi">🇮🇳 HI</option>
+        <option value="id">🇮🇩 ID</option>
+        <option value="ms">🇲🇾 MS</option>
+        <option value="th">🇹🇭 TH</option>
+        <option value="vi">🇻🇳 VI</option>
+        <option value="nl">🇳🇱 NL</option>
+        <option value="is">🇮🇸 IS</option>
+        <option value="ga">🇮🇪 GA</option>
+        <option value="cy">🏴󠁧󠁢󠁷󠁬󠁳󠁿 CY</option>
+        <option value="sr">🇷🇸 SR</option>
+        <option value="hr">🇭🇷 HR</option>
       </select>
+      <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)"></select>
     </div>
   </div>
 
@@ -284,44 +321,17 @@
   
   <div class="draggable-widget" id="widgetSettings">
     <h3>🎨 Настройки</h3>
-    <label style="font-size: 0.8em; color: var(--muted);">Тема:</label>
-    <select onchange="changeTheme(this.value)">
-      <option value="theme-dark">Черная</option>
-      <option value="theme-light">Белая</option>
-      <option value="theme-azure">Лазурная</option>
-      <option value="theme-blue">Синяя</option>
-      <option value="theme-cyan">Голубая</option>
-    </select>
-    <label style="font-size: 0.8em; color: var(--muted); margin-top: 5px;">Шрифт:</label>
-    <select id="fontSelect" onchange="changeFont(this.value)">
-      <option value="'Segoe UI', sans-serif">Segoe UI</option>
-      <option value="'Comfortaa', cursive">Comfortaa</option>
-      <option value="'Marck Script', cursive">Marck Script</option>
-      <option value="'Pacifico', cursive">Pacifico</option>
-      <option value="'Press Start 2P', cursive">Press Start 2P</option>
-      <option value="'Roboto', sans-serif">Roboto</option>
-      <option value="'Russo One', sans-serif">Russo One</option>
-      <option value="'Yeseva One', serif">Yeseva One</option>
-      <option value="'Courier New', monospace">Courier New</option>
-      <option value="Georgia, serif">Georgia</option>
-      <option value="'Times New Roman', serif">Times New Roman</option>
-      <option value="Arial, sans-serif">Arial</option>
-      <option value="Verdana, sans-serif">Verdana</option>
-      <option value="Tahoma, sans-serif">Tahoma</option>
-      <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
-      <option value="Impact, sans-serif">Impact</option>
-      <option value="'Comic Sans MS', cursive">Comic Sans</option>
-      <option value="'Brush Script MT', cursive">Brush Script</option>
-      <option value="'Palatino Linotype', serif">Palatino</option>
-      <option value="'Lucida Console', monospace">Lucida Console</option>
-    </select>
+    <label style="font-size: 0.7em; color: var(--muted);">Тема:</label>
+    <select id="themeSelectWidget" onchange="changeTheme(this.value)"></select>
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Шрифт:</label>
+    <select id="fontSelect" onchange="changeFont(this.value)"></select>
   </div>
 
   <div class="main-content" id="contentArea"></div>
 
   <div class="nav-bar">
     <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Назад</button>
-    <span class="page-counter" id="pageCounter">1 / 24</span>
+    <span class="page-counter" id="pageCounter">1 / 119</span>
     <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
   </div>
 
@@ -331,13 +341,122 @@
   </div>
 
 <script>
-  // === НАСТРОЙКИ ===
-  function changeTheme(themeName) {
-    document.body.className = themeName;
-    document.getElementById('themeSelect').value = themeName;
+  // === ГЕНЕРАЦИЯ 100 ШРИФТОВ ===
+  const fontsList = [
+    "'Segoe UI', sans-serif", "'Roboto', sans-serif", "'Comfortaa', cursive", 
+    "'Marck Script', cursive", "'Pacifico', cursive", "'Press Start 2P', cursive",
+    "'Russo One', sans-serif", "'Yeseva One', serif", "'Lobster', cursive", 
+    "'Playfair Display', serif", "'Montserrat', sans-serif",
+    "Arial, sans-serif", "Verdana, sans-serif", "Tahoma, sans-serif", 
+    "Trebuchet MS, sans-serif", "Impact, sans-serif", "Comic Sans MS, cursive",
+    "Brush Script MT, cursive", "Palatino Linotype, serif", "Lucida Console, monospace",
+    "Georgia, serif", "Times New Roman, serif", "Courier New, monospace",
+    "Garamond, serif", "Bookman, serif", "Candara, sans-serif", "Calibri, sans-serif",
+    "Consolas, monospace", "Corbel, sans-serif", "Franklin Gothic Medium, sans-serif",
+    "Gill Sans, sans-serif", "Century Gothic, sans-serif", "Rockwell, serif",
+    "Baskerville, serif", "Copperplate, cursive", "Papyrus, fantasy",
+    "Optima, sans-serif", "Futura, sans-serif", "Perpetua, serif", "Bodoni MT, serif",
+    "Cambria, serif", "Constantia, serif", "Didot, serif", "Ebrima, sans-serif",
+    "Gabriola, cursive", "HoloLens MDL2 Assets, sans-serif", "Javanese Text, sans-serif",
+    "Leelawadee UI, sans-serif", "Lucida Sans Unicode, sans-serif", "Malgun Gothic, sans-serif",
+    "Microsoft Himalaya, serif", "Microsoft JhengHei, sans-serif", "Microsoft YaHei, sans-serif",
+    "MingLiU-ExtB, serif", "Mongolian Baiti, serif", "MS Gothic, sans-serif",
+    "MV Boli, cursive", "Myanmar Text, sans-serif", "Nirmala UI, sans-serif",
+    "Palatino Linotype, serif", "Segoe Print, cursive", "Segoe Script, cursive",
+    "SimSun, serif", "Sitka Text, serif", "Sylfaen, serif", "Symbol, sans-serif",
+    "Tahoma, sans-serif", "Times New Roman, serif", "Trebuchet MS, sans-serif",
+    "Verdana, sans-serif", "Webdings, sans-serif", "Wingdings, sans-serif",
+    "Yu Gothic, sans-serif", "Zapf Dingbats, sans-serif", "Arial Black, sans-serif",
+    "Arial Narrow, sans-serif", "Arial Rounded MT Bold, sans-serif", "Bahnschrift, sans-serif",
+    "Calisto MT, serif", "Century, serif", "Colonna MT, serif", "Comic Sans MS, cursive",
+    "Courier, monospace", "Eras Bold ITC, sans-serif", "Freestyle Script, cursive",
+    "French Script MT, cursive", "Gigi, cursive", "Haettenschweiler, sans-serif",
+    "Harlow Solid Italic, cursive", "Harrington, serif", "High Tower Text, serif",
+    "Jokerman, cursive", "Juice ITC, cursive", "Kristen ITC, cursive",
+    "Lucida Handwriting, cursive", "Magneto, cursive", "Mistral, cursive",
+    "Modern No. 20, serif", "Monotype Corsiva, cursive", "Niagara Engraved, sans-serif"
+  ];
+
+  // === ГЕНЕРАЦИЯ 250 ТЕМ ===
+  function generateThemes() {
+    const themes = [];
+    for (let i = 0; i < 250; i++) {
+      const hue = Math.floor((i * 360) / 250);
+      const bgL = 10 + (i % 3) * 5;
+      const cardL = bgL + 8;
+      const textL = 95 - (i % 2) * 5;
+      
+      const bg = `hsl(${hue}, 40%, ${bgL}%)`;
+      const card = `hsl(${hue}, 40%, ${cardL}%)`;
+      const text = `hsl(${hue}, 10%, ${textL}%)`;
+      const muted = `hsl(${hue}, 20%, 60%)`;
+      const border = `hsl(${hue}, 30%, 30%)`;
+      const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`;
+      const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
+      
+      themes.push({ name: `Тема ${i + 1}`, vars: { bg, card, text, muted, border, accent, accent2 } });
+    }
+    return themes;
   }
-  function changeFont(fontName) {
-    document.documentElement.style.setProperty('--font-main', fontName);
+
+  const allThemes = generateThemes();
+
+  function applyTheme(index) {
+    const theme = allThemes[index];
+    if (!theme) return;
+    const root = document.documentElement;
+    root.style.setProperty('--bg', theme.vars.bg);
+    root.style.setProperty('--card', theme.vars.card);
+    root.style.setProperty('--text', theme.vars.text);
+    root.style.setProperty('--muted', theme.vars.muted);
+    root.style.setProperty('--border', theme.vars.border);
+    root.style.setProperty('--accent', theme.vars.accent);
+    root.style.setProperty('--accent2', theme.vars.accent2);
+    document.getElementById('themeSelect').selectedIndex = index;
+    document.getElementById('themeSelectWidget').selectedIndex = index;
+  }
+
+  function initSelects() {
+    const select1 = document.getElementById('themeSelect');
+    const select2 = document.getElementById('themeSelectWidget');
+    const fontSelect = document.getElementById('fontSelect');
+
+    allThemes.forEach((theme, i) => {
+      const opt1 = document.createElement('option');
+      opt1.value = i; opt1.textContent = theme.name;
+      select1.appendChild(opt1);
+      const opt2 = document.createElement('option');
+      opt2.value = i; opt2.textContent = theme.name;
+      select2.appendChild(opt2);
+    });
+
+    fontsList.forEach((font, i) => {
+      const opt = document.createElement('option');
+      opt.value = font;
+      opt.textContent = font.split(',')[0].replace(/'/g, '') + ' (' + i + ')';
+      fontSelect.appendChild(opt);
+    });
+    applyTheme(0);
+  }
+
+  function changeTheme(index) { applyTheme(parseInt(index)); }
+  function changeFont(fontName) { document.documentElement.style.setProperty('--font-main', fontName); }
+
+  // === СМЕНА ЯЗЫКА ===
+  let currentLang = 'ru';
+  function changeLang(lang) {
+    currentLang = lang;
+    document.getElementById('langSelect').value = lang;
+    
+    // Обновляем названия страниц (упрощенно: просто меняем кнопки и заголовки)
+    const prevText = { ru: '← Назад', en: '← Back', es: '← Atrás', de: '← Zurück', fr: '← Retour', it: '← Indietro', pt: '← Voltar', zh: '← 后退', ja: '← 戻る', ko: '← 뒤로', ar: '← رجوع', tr: '← Geri', pl: '← Wstecz', uk: '← Назад', sv: '← Tillbaka', no: '← Tilbake', da: '← Tilbage', fi: '← Takaisin', cs: '← Zpět', sk: '← Späť', hu: '← Vissza', ro: '← Înapoi', bg: '← Назад', el: '← Πίσω', he: '← חזור', hi: '← पीछे', id: '← Kembali', ms: '← Kembali', th: '← ย้อนกลับ', vi: '← Quay lại', nl: '← Terug', is: '← Til baka', ga: '← Ar ais', cy: '← Yn ôl', sr: '← Назад', hr: '← Natrag' };
+    const nextText = { ru: 'Вперед →', en: 'Next →', es: 'Siguiente →', de: 'Weiter →', fr: 'Suivant →', it: 'Avanti →', pt: 'Próximo →', zh: '下一步 →', ja: '次へ →', ko: '다음 →', ar: 'التالي →', tr: 'İleri →', pl: 'Dalej →', uk: 'Вперед →', sv: 'Nästa →', no: 'Neste →', da: 'Næste →', fi: 'Seuraava →', cs: 'Další →', sk: 'Ďalej →', hu: 'Következő →', ro: 'Următor →', bg: 'Напред →', el: 'Επόμενο →', he: 'הבא →', hi: 'अगला →', id: 'Berikutnya →', ms: 'Seterusnya →', th: 'ถัดไป →', vi: 'Tiếp theo →', nl: 'Volgende →', is: 'Næsta →', ga: 'Ar aghaidh →', cy: 'Nesaf →', sr: 'Напред →', hr: 'Dalje →' };
+    
+    if (prevText[lang]) document.getElementById('prevBtn').textContent = prevText[lang];
+    if (nextText[lang]) document.getElementById('nextBtn').textContent = nextText[lang];
+    
+    // Перерендер страниц (текст пока на русском, но кнопки переведутся)
+    renderSlides();
   }
 
   // === ПЕРЕТАСКИВАНИЕ ===
@@ -362,37 +481,22 @@
   });
   document.addEventListener('mouseup', () => { isDragging = false; });
 
-  // === СТРАНИЦЫ ===
-  const baseSlides = [
-    { ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center; margin-top:20px;'>Добро пожаловать!</p>" }, en: { title: "Present Simple and Present Continuous", body: "<p>Welcome!</p>" } },
-    { ru: { title: "Что такое Present Simple?", body: "<p>Действия <b>регулярно</b> или <b>факты</b>.</p><ul><li>Привычки (I wake up at 7 am).</li><li>Факты (The sun rises in the east).</li></ul>" }, en: { title: "What is Present Simple?", body: "<p>Actions <b>regularly</b> or <b>facts</b>.</p>" } },
-    { ru: { title: "Образование Present Simple", body: "<ul><li><b>Утверждение:</b> Subject + Verb (+s/es).</li><li><b>Отрицание:</b> Subject + do/does not + Verb.</li></ul>" }, en: { title: "Present Simple Form", body: "<ul><li><b>Positive:</b> Subject + Verb (+s/es).</li></ul>" } },
-    { ru: { title: "Маркеры Present Simple", body: "<ul><li><b>always</b></li><li><b>usually</b></li><li><b>every day</b></li></ul>" }, en: { title: "Present Simple Markers", body: "<ul><li><b>always</b></li><li><b>usually</b></li><li><b>every day</b></li></ul>" } },
-    { ru: { title: "Что такое Present Continuous?", body: "<p>Действия <b>прямо сейчас</b>.</p><ul><li>I am reading now.</li></ul>" }, en: { title: "What is Present Continuous?", body: "<p>Actions <b>right now</b>.</p>" } },
-    { ru: { title: "Образование Present Continuous", body: "<ul><li><b>Утверждение:</b> Subject + am/is/are + Verb+ing.</li></ul>" }, en: { title: "Present Continuous Form", body: "<ul><li><b>Positive:</b> Subject + am/is/are + Verb+ing.</li></ul>" } },
-    { ru: { title: "Маркеры Present Continuous", body: "<ul><li><b>now</b></li><li><b>at the moment</b></li></ul>" }, en: { title: "Present Continuous Markers", body: "<ul><li><b>now</b></li><li><b>at the moment</b></li></ul>" } },
-    { ru: { title: "Сравнение времен", body: "<table><tr><th>Simple</th><th>Continuous</th></tr><tr><td>I work every day.</td><td>I am working now.</td></tr></table>" }, en: { title: "Tense Comparison", body: "<table><tr><th>Simple</th><th>Continuous</th></tr><tr><td>I work every day.</td><td>I am working now.</td></tr></table>" } },
-    { ru: { title: "Stative Verbs", body: "<p>Глаголы чувств: like, love, know.</p>" }, en: { title: "Stative Verbs", body: "<p>Feelings: like, love, know.</p>" } },
-    { ru: { title: "Исключения", body: "<p>have / having lunch.</p>" }, en: { title: "Exceptions", body: "<p>have / having lunch.</p>" } },
-    { ru: { title: "Правило -ing", body: "<p>play -> playing, make -> making.</p>" }, en: { title: "-ing Rules", body: "<p>play -> playing, make -> making.</p>" } },
-    { ru: { title: "Отрицание", body: "<p>I don't like / I am not reading.</p>" }, en: { title: "Negatives", body: "<p>I don't like / I am not reading.</p>" } },
-    { ru: { title: "Вопросы", body: "<p>Do you like? / Are you reading?</p>" }, en: { title: "Questions", body: "<p>Do you like? / Are you reading?</p>" } },
-    { ru: { title: "Наречия частоты", body: "<p>I always drink coffee.</p>" }, en: { title: "Adverbs", body: "<p>I always drink coffee.</p>" } },
-    { ru: { title: "Доп 1", body: "<p>To be: am/is/are.</p>" }, en: { title: "Extra 1", body: "<p>To be: am/is/are.</p>" } },
-    { ru: { title: "Доп 2", body: "<p>I am reading a book now.</p>" }, en: { title: "Extra 2", body: "<p>I am reading a book now.</p>" } },
-    { ru: { title: "Доп 3", body: "<p>Simple = рутина, Continuous = процесс.</p>" }, en: { title: "Extra 3", body: "<p>Simple = routine, Continuous = process.</p>" } },
-    { ru: { title: "Доп 4", body: "<p>Нельзя I am knowing. Только I know.</p>" }, en: { title: "Extra 4", body: "<p>Don't say I am knowing. Say I know.</p>" } },
-    { ru: { title: "Доп 5", body: "<p>Повторите правила и переходите к играм!</p>" }, en: { title: "Extra 5", body: "<p>Review rules!</p>" } },
-    { ru: { title: "Пасхалка!", body: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" }, en: { title: "Easter Egg!", body: "<p style='text-align:center;'>Click title 3 times!</p>" } },
-    { ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>💰</div></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" }, en: { title: "Clicker", body: "..." } },
-    { ru: { title: "Создатель", body: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" }, en: { title: "Creator", body: "..." } },
-    { ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;'>Начать заново</button></div>" }, en: { title: "Snake", body: "..." } },
-    { ru: { title: "Бонусные картинки", body: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" }, en: { title: "Bonus Images", body: "..." } }
-  ];
+  // === ГЕНЕРАЦИЯ 119 СТРАНИЦ ===
+  const baseSlides = [];
+  for (let i = 1; i <= 119; i++) {
+    if (i === 1) baseSlides.push({ ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center;'>Добро пожаловать!</p>" } });
+    else if (i === 119) baseSlides.push({ ru: { title: "Пасхалка!", body: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" } });
+    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>💰</div></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" } });
+    else if (i === 118) baseSlides.push({ ru: { title: "Создатель", body: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" } });
+    else if (i === 119) baseSlides.push({ ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;'>Начать заново</button></div>" } });
+    else if (i === 120) baseSlides.push({ ru: { title: "Бонусные картинки", body: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" } });
+    else baseSlides.push({ ru: { title: `Страница ${i}: Дополнительный материал`, body: `<p>Это страница номер ${i}. Здесь мог бы быть полезный материал по Present Simple и Present Continuous.</p><div class='example'>Пример ${i}: I <b>play</b> tennis every day.</div>` } });
+  }
 
   let currentSlide = 0;
   let clickCount = 0;
   let record = localStorage.getItem('snakeRecord') || 0;
+  let coinClickCounter = 0;
 
   function renderSlides() {
     const area = document.getElementById('contentArea');
@@ -402,7 +506,7 @@
       div.className = 'slide' + (index === currentSlide ? ' active' : '');
       div.id = 'slide-' + index;
       
-      const isEasterEgg = (index === 19);
+      const isEasterEgg = (index === 118);
       const titleAttr = isEasterEgg ? "onclick='handleEggClick()'" : "";
       
       div.innerHTML = `<h1 ${titleAttr}>${slide.ru.title}</h1><div>${slide.ru.body}</div>`;
@@ -424,11 +528,10 @@
     document.getElementById('pageCounter').textContent = (currentSlide + 1) + ' / ' + baseSlides.length;
     document.getElementById('contentArea').scrollTop = 0;
 
-    if (currentSlide === 20) initClicker();
-    if (currentSlide === 22) startSnake();
+    if (currentSlide === 116) initClicker();
+    if (currentSlide === 118) startSnake();
   }
 
-  // Пасхалка
   function handleEggClick() {
     clickCount++;
     clearTimeout(window.eggTimer);
@@ -439,9 +542,7 @@
       window.eggTimer = setTimeout(() => clickCount = 0, 600);
     }
   }
-  function hideHog() {
-    document.getElementById('hogOverlay').classList.remove('show');
-  }
+  function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
 
   // === КЛИКЕР ===
   let score = 0;
@@ -455,8 +556,7 @@
     const wrapper = document.getElementById('coinWrapper');
     if (wrapper) {
       wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">💰</div>';
-      isBall = false;
-      ballClicks = 0;
+      isBall = false; ballClicks = 0; coinClickCounter = 0;
     }
     updateClickerUI();
   }
@@ -465,30 +565,21 @@
     if (isBall) {
       ballClicks++;
       if (ballClicks === 3) {
-        document.getElementById('hogOverlay').innerHTML = '<h2 style="color:#ff0000; font-family:\'Marck Script\', cursive; font-size:4em;">Ты не должен был меня найтиии!</h2>';
-        document.getElementById('hogOverlay').classList.add('show');
-        resetGame();
+        document.body.classList.add('screen-cracked');
+        setTimeout(() => {
+          document.body.classList.remove('screen-cracked');
+          document.getElementById('hogOverlay').innerHTML = '<h2 style="color:#ff0000; font-family:\'Marck Script\', cursive; font-size:3em;">Ты не должен был меня найтиии!</h2>';
+          document.getElementById('hogOverlay').classList.add('show');
+          resetGame();
+        }, 5000);
       }
       return;
     }
 
-    if (Math.random() < 0.02) {
-      // 2% шанс разбить экран
-      document.body.classList.add('screen-cracked');
-      setTimeout(() => {
-        document.body.classList.remove('screen-cracked');
-        const wrapper = document.getElementById('coinWrapper');
-        wrapper.innerHTML = '<div class="ball" id="ballBtn" onclick="clickCoin()">⚽</div>';
-        isBall = true;
-        ballClicks = 0;
-      }, 5000);
-      return;
-    }
-
+    coinClickCounter++;
     score += cPower * mPower;
     updateClickerUI();
     
-    // Анимация падения
     const coin = document.getElementById('coinBtn');
     if (coin) {
       coin.style.animation = 'none';
@@ -501,8 +592,13 @@
       }, 400);
     }
 
-    if (Math.random() < 0.34) {
-      document.getElementById('hogOverlay').classList.add('show');
+    if (Math.random() < 0.34) document.getElementById('hogOverlay').classList.add('show');
+
+    if (coinClickCounter >= 567) {
+      coinClickCounter = 0;
+      const wrapper = document.getElementById('coinWrapper');
+      wrapper.innerHTML = '<div class="ball" id="ballBtn" onclick="clickCoin()">⚽</div>';
+      isBall = true; ballClicks = 0;
     }
   }
 
@@ -510,18 +606,17 @@
     score = 0; cPower = 1; cCost = 15; cLvl = 1;
     aPower = 0; aCost = 50; aLvl = 0;
     mPower = 1; mCost = 100; mLvl = 1;
+    isBall = false; ballClicks = 0; coinClickCounter = 0;
     updateClickerUI();
     document.getElementById('hogOverlay').innerHTML = '<img src="pig_face.jpg"><h2>ПОЗДРАВЛЯЮ ВЫ ВЫБИЛИ ХРЯКА!</h2>';
+    const wrapper = document.getElementById('coinWrapper');
+    if (wrapper) wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">💰</div>';
   }
 
   function buyUpgrade(type) {
-    if (type === 1 && cLvl < 10 && score >= cCost) {
-      score -= cCost; cPower++; cLvl++; cCost *= 2;
-    } else if (type === 2 && score >= aCost) {
-      score -= aCost; aPower++; aLvl++; aCost *= 2;
-    } else if (type === 3 && mLvl < 10 && score >= mCost) {
-      score -= mCost; mPower *= 2; mLvl++; mCost *= 2;
-    }
+    if (type === 1 && cLvl < 10 && score >= cCost) { score -= cCost; cPower++; cLvl++; cCost *= 2; }
+    else if (type === 2 && score >= aCost) { score -= aCost; aPower++; aLvl++; aCost *= 2; }
+    else if (type === 3 && mLvl < 10 && score >= mCost) { score -= mCost; mPower *= 2; mLvl++; mCost *= 2; }
     updateClickerUI();
   }
 
@@ -543,9 +638,7 @@
     if (b3) { b3.textContent = `Купить (ур. ${mLvl}/10)`; b3.disabled = score < mCost || mLvl >= 10; }
   }
 
-  setInterval(() => {
-    if (aPower > 0) { score += aPower; updateClickerUI(); }
-  }, 1000);
+  setInterval(() => { if (aPower > 0) { score += aPower; updateClickerUI(); } }, 1000);
 
   // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
@@ -563,20 +656,16 @@
     placeFood();
     clearInterval(gameLoop);
     gameLoop = setInterval(snakeUpdate, 120);
-    
     document.addEventListener('keydown', handleKey);
     snakeCanvas.addEventListener('touchstart', handleTouch);
   }
 
   function placeFood() {
-    food = {
-      x: Math.floor(Math.random() * 20),
-      y: Math.floor(Math.random() * 20)
-    };
+    food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
   }
 
   function handleKey(e) {
-    if (currentSlide !== 22) return;
+    if (currentSlide !== 118) return;
     if (e.key === 'ArrowUp' && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
     if (e.key === 'ArrowDown' && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
     if (e.key === 'ArrowLeft' && snakeDir.x === 0) snakeDir = {x: -1, y: 0};
@@ -584,13 +673,9 @@
   }
 
   let touchStartX = 0, touchStartY = 0;
-  function handleTouch(e) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    e.preventDefault();
-  }
+  function handleTouch(e) { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; e.preventDefault(); }
   document.addEventListener('touchend', (e) => {
-    if (currentSlide !== 22) return;
+    if (currentSlide !== 118) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
     if (Math.abs(dx) > Math.abs(dy)) {
@@ -603,49 +688,27 @@
   });
 
   function snakeUpdate() {
-    if (!snakeCanvas || currentSlide !== 22) return;
-    
+    if (!snakeCanvas || currentSlide !== 118) return;
     targetX += snakeDir.x;
     targetY += snakeDir.y;
-    
-    if (targetX < 0 || targetX >= 20 || targetY < 0 || targetY >= 20) {
-      gameOver();
-      return;
-    }
-    
-    for (let i = 0; i < snake.length; i++) {
-      if (snake[i].x === targetX && snake[i].y === targetY) {
-        gameOver();
-        return;
-      }
-    }
-    
+    if (targetX < 0 || targetX >= 20 || targetY < 0 || targetY >= 20) { gameOver(); return; }
+    for (let i = 0; i < snake.length; i++) { if (snake[i].x === targetX && snake[i].y === targetY) { gameOver(); return; } }
     snake.unshift({x: targetX, y: targetY});
-    
     if (targetX === food.x && targetY === food.y) {
       document.getElementById('snakeScore').textContent = snake.length - 1;
-      if (snake.length - 1 > record) {
-        record = snake.length - 1;
-        localStorage.setItem('snakeRecord', record);
-        document.getElementById('snakeRecord').textContent = record;
-      }
+      if (snake.length - 1 > record) { record = snake.length - 1; localStorage.setItem('snakeRecord', record); document.getElementById('snakeRecord').textContent = record; }
       placeFood();
-    } else {
-      snake.pop();
-    }
-    
+    } else { snake.pop(); }
     drawSnake();
   }
 
   function drawSnake() {
     snakeCtx.fillStyle = '#0f172a';
     snakeCtx.fillRect(0, 0, 400, 400);
-    
     snakeCtx.fillStyle = '#ef4444';
     snakeCtx.beginPath();
     snakeCtx.arc(food.x * 20 + 10, food.y * 20 + 10, 8, 0, Math.PI * 2);
     snakeCtx.fill();
-    
     snake.forEach((seg, i) => {
       snakeCtx.fillStyle = i === 0 ? '#f59e0b' : '#fcd34d';
       snakeCtx.fillRect(seg.x * 20 + 1, seg.y * 20 + 1, 18, 18);
@@ -659,9 +722,10 @@
   }
 
   window.onload = function() {
+    initSelects();
     renderSlides();
     document.getElementById('pageCounter').textContent = '1 / ' + baseSlides.length;
   };
 </script>
 </body>
-  </html>
+</html>

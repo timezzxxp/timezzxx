@@ -149,7 +149,6 @@
   <div class="main-content" id="contentArea"></div>
 
   <div class="nav-bar">
-    <!-- Кнопки с прямыми вызовами функций -->
     <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Назад</button>
     <span class="page-counter" id="pageCounter">1 / 17</span>
     <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
@@ -159,7 +158,6 @@
   var currentSlide = 0;
   var currentLang = 'ru';
 
-  // Данные страниц
   var slidesData = [
     { ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center; margin-top:20px;'>Добро пожаловать в цифровой конспект!<br>Нажми «Вперед», чтобы начать изучение.</p>" }, en: { title: "Present Simple and Present Continuous", body: "<p style='text-align:center; margin-top:20px;'>Welcome to the digital summary!<br>Press 'Next' to start learning.</p>" } },
     { ru: { title: "Что такое Present Simple?", body: "<p>Время <b>Present Simple</b> (Настоящее простое) обозначает действия, которые происходят <b>регулярно, постоянно</b> или являются <b>общеизвестными фактами</b>.</p><h3>Когда используем:</h3><ul><li>Привычки и рутина (I wake up at 7 am).</li><li>Факты и законы природы (The sun rises in the east).</li><li>Расписания (The train leaves at 6 pm).</li></ul>" }, en: { title: "What is Present Simple?", body: "<p><b>Present Simple</b> describes actions that happen <b>regularly, constantly</b>, or are <b>general facts</b>.</p><h3>When to use:</h3><ul><li>Habits and routines (I wake up at 7 am).</li><li>Facts and laws of nature (The sun rises in the east).</li><li>Timetables (The train leaves at 6 pm).</li></ul>" } },
@@ -177,10 +175,13 @@
     { ru: { title: "Наречия частоты", body: "<p>В Present Simple наречия частоты (always, usually, often) ставятся <b>перед глаголом</b>, но <b>после глагола to be</b>:</p><div class='example'>I <b>always</b> drink coffee.</div><div class='example'>He <b>is always</b> late.</div>" }, en: { title: "Adverbs of Frequency", body: "<p>In Present Simple adverbs of frequency (always, usually, often) go <b>before the main verb</b>, but <b>after the verb to be</b>:</p><div class='example'>I <b>always</b> drink coffee.</div><div class='example'>He <b>is always</b> late.</div>" } },
     { ru: { title: "Глаголы, меняющие значение", body: "<p>Есть глаголы, которые в Simple и Continuous имеют разные оттенки:</p><div class='example cont'><b>see</b> (видеть) -> I see a bird. / <b>see</b> (встречаться) -> I am seeing a doctor.</div>" }, en: { title: "Verbs that Change Meaning", body: "<p>Some verbs have different meanings in Simple and Continuous:</p><div class='example cont'><b>see</b> (perceive) -> I see a bird. / <b>see</b> (meet) -> I am seeing a doctor.</div>" } },
     { ru: { title: "Итоговая шпаргалка", body: "<div class='table-wrap'><table><tr><th>Аспект</th><th>Present Simple</th><th>Present Continuous</th></tr><tr><td>Суть</td><td>Факт, привычка</td><td>Процесс, сейчас</td></tr><tr><td>Маркеры</td><td>always, every day</td><td>now, at the moment</td></tr><tr><td>Форма</td><td>V / V+s</td><td>am/is/are + Ving</td></tr></table></div><br><p style='text-align:center; color:#f59e0b; font-size:1.3em;'><b>Конец конспекта! Отличная работа! 🎉</b></p>" }, en: { title: "Final Cheat Sheet", body: "<div class='table-wrap'><table><tr><th>Aspect</th><th>Present Simple</th><th>Present Continuous</th></tr><tr><td>Essence</td><td>Fact, habit</td><td>Process, now</td></tr><tr><td>Markers</td><td>always, every day</td><td>now, at the moment</td></tr><tr><td>Form</td><td>V / V+s</td><td>am/is/are + Ving</td></tr></table></div><br><p style='text-align:center; color:#f59e0b; font-size:1.3em;'><b>End of summary! Great job! 🎉</b></p>" } },
-    { ru: { title: "Бонус!", body: "<div class='image-container'><img src='pig.jpg' alt='Кабан на мотоцикле'><img src='totya.jpg' alt='Тотя ❤️'></div>" }, en: { title: "Bonus!", body: "<div class='image-container'><img src='pig.jpg' alt='Pig on a motorcycle'><img src='totya.jpg' alt='Totya ❤️'></div>" } }
+    // 17-я страница с обновлёнными именами файлов
+    { 
+      ru: { title: "Бонус!", body: "<div class='image-container'><img src='boar.jpg' alt='Кабан на мотоцикле'><img src='totya.jpg' alt='Тотя ❤️'></div>" }, 
+      en: { title: "Bonus!", body: "<div class='image-container'><img src='boar.jpg' alt='Pig on a motorcycle'><img src='totya.jpg' alt='Totya ❤️'></div>" } 
+    }
   ];
 
-  // Функция отрисовки
   function renderSlides() {
     var area = document.getElementById('contentArea');
     area.innerHTML = '';
@@ -198,7 +199,6 @@
     }
   }
 
-  // Функция переключения
   function changeSlide(direction) {
     currentSlide += direction;
     if (currentSlide < 0) currentSlide = 0;
@@ -206,7 +206,6 @@
     updateView();
   }
 
-  // Функция обновления вида
   function updateView() {
     var slides = document.querySelectorAll('.slide');
     for (var i = 0; i < slides.length; i++) {
@@ -223,7 +222,6 @@
     document.getElementById('contentArea').scrollTop = 0;
   }
 
-  // Смена языка
   function setLang(lang) {
     currentLang = lang;
     document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
@@ -233,7 +231,6 @@
     updateView();
   }
 
-  // ГАРАНТИРОВАННЫЙ ЗАПУСК (сработает в любом случае)
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       renderSlides();

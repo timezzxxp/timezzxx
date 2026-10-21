@@ -49,19 +49,20 @@
     font-size: 0.75em; max-width: 140px;
   }
 
-  .draggable-widget {
-    position: fixed; top: 60px; right: 5px; left: auto;
-    background: var(--card); border: 1px solid var(--border);
-    padding: 10px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    cursor: grab; z-index: 200; display: none; flex-direction: column; gap: 8px;
-    width: 280px; max-width: 90vw; max-height: 80vh; overflow-y: auto;
+  /* Панель настроек (строго по центру, высокий z-index) */
+  #widgetSettings {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: var(--card); border: 2px solid var(--accent);
+    padding: 20px; border-radius: 15px; box-shadow: 0 0 50px rgba(0,0,0,0.9);
+    z-index: 99999; display: none; flex-direction: column; gap: 12px;
+    width: 320px; max-width: 90vw;
   }
-  .draggable-widget:active { cursor: grabbing; }
-  .draggable-widget h3 { font-size: 0.8em; color: var(--accent); margin-bottom: 3px; }
-  .draggable-widget select, .draggable-widget input[type="color"], .draggable-widget input[type="range"] {
-    width: 100%; padding: 6px; border-radius: 4px; background: var(--bg);
+  #widgetSettings h3 { font-size: 1.1em; color: var(--accent); text-align: center; margin-bottom: 5px; }
+  #widgetSettings label { font-size: 0.8em; color: var(--muted); }
+  #widgetSettings select, #widgetSettings input[type="color"], #widgetSettings input[type="range"] {
+    width: 100%; padding: 8px; border-radius: 6px; background: var(--bg);
     color: var(--text); border: 1px solid var(--border); font-family: inherit;
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
 
   .main-content {
@@ -230,24 +231,6 @@
 
   .score-big { font-size: 1.5em; color: var(--accent); font-weight: bold; }
 
-  .upgrades-grid {
-    display: grid; grid-template-columns: 1fr;
-    gap: 10px; width: 100%; margin-top: 10px;
-  }
-  .upgrade-card {
-    background: var(--card); border: 1px solid var(--border);
-    padding: 10px; border-radius: 10px; text-align: center;
-  }
-  .upgrade-card h4 { color: var(--accent); margin-bottom: 5px; font-size: 0.9em; }
-  .upgrade-card p { font-size: 0.8em; color: var(--muted); margin-bottom: 5px; }
-  .upgrade-btn {
-    background: var(--accent2); color: #fff; border: none; padding: 8px 12px;
-    border-radius: 6px; cursor: pointer; width: 100%; transition: 0.3s;
-    font-family: inherit; font-size: 0.85em;
-  }
-  .upgrade-btn:hover:not(:disabled) { background: #dc2626; }
-  .upgrade-btn:disabled { background: var(--muted); cursor: not-allowed; }
-
   #gameCanvas {
     background: var(--bg); border: 2px solid var(--border);
     border-radius: 8px; display: block; margin: 10px auto;
@@ -261,7 +244,7 @@
 
   .overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9); z-index: 9999;
+    background: rgba(0,0,0,0.9); z-index: 999999;
     display: none; flex-direction: column; align-items: center; justify-content: center;
     opacity: 0; transition: opacity 0.3s; padding: 20px; text-align: center;
   }
@@ -287,7 +270,6 @@
   }
   @keyframes lossPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-  /* 5 трещин */
   .screen-cracked::before {
     content: '';
     position: fixed;
@@ -299,7 +281,7 @@
       linear-gradient(-70deg, transparent 49.5%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0.75) 50.5%, transparent 51%),
       linear-gradient(45deg, transparent 49.5%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.8) 50.5%, transparent 51%);
     pointer-events: none;
-    z-index: 9998;
+    z-index: 99998;
     animation: crackShow 10s forwards;
     opacity: 0.9;
   }
@@ -313,8 +295,8 @@
     position: fixed; bottom: 75px; right: 15px;
     background: var(--accent); color: #fff; border: none;
     width: 45px; height: 45px; border-radius: 50%;
-    font-size: 14px; cursor: pointer; z-index: 300;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    font-size: 20px; cursor: pointer; z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     display: flex; align-items: center; justify-content: center;
     transition: 0.3s;
   }
@@ -343,15 +325,16 @@
 
   <button class="widget-toggle" onclick="toggleWidgets()">⚙️</button>
   
-  <div class="draggable-widget" id="widgetSettings">
+  <div id="widgetSettings">
     <h3>Настройки</h3>
-    <label style="font-size: 0.7em; color: var(--muted);">Тема:</label>
+    <label>Тема:</label>
     <select id="themeSelectWidget"></select>
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Масштаб:</label>
+    <label>Масштаб:</label>
     <input type="range" id="zoomInput" min="0.8" max="1.5" step="0.1" value="1">
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет текста:</label>
+    <label>Цвет текста:</label>
     <input type="color" id="textColorInput" value="#ffffff">
     <button id="devTabBtn" class="nav-btn" style="margin-top: 10px; display: none; background: var(--accent2);" onclick="openDevPanel()">Разработчик</button>
+    <button class="nav-btn" style="margin-top: 5px; background: var(--muted);" onclick="toggleWidgets()">Закрыть</button>
   </div>
 
   <div class="main-content" id="contentArea"></div>
@@ -368,7 +351,6 @@
   </div>
 
 <script>
-  // === АУДИО ===
   let audioCtx = null;
   function playSound(freq, duration, type) {
     try {
@@ -386,7 +368,6 @@
     } catch(e) {}
   }
 
-  // === ТЕМЫ ===
   const fixedThemes = [
     { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } },
     { name: "Белая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
@@ -398,7 +379,6 @@
     { name: "Синяя", vars: { bg: "#172554", card: "#1e3a8a", text: "#dbeafe", muted: "#bfdbfe", border: "#1d4ed8", accent: "#60a5fa", accent2: "#3b82f6" } }
   ];
 
-  // Инициализация настроек
   function initSettings() {
     const sel1 = document.getElementById('themeSelect');
     const sel2 = document.getElementById('themeSelectWidget');
@@ -413,7 +393,6 @@
       sel2.appendChild(opt2);
     });
     
-    // Обработчики
     sel1.addEventListener('change', function() { applyTheme(parseInt(this.value)); });
     sel2.addEventListener('change', function() { applyTheme(parseInt(this.value)); });
     
@@ -453,11 +432,8 @@
     playSound(widgetVisible ? 800 : 400, 0.1, 'sine');
   }
 
-  function changeLang(lang) {
-    // Заглушка
-  }
+  function changeLang(lang) {}
 
-  // === 34 СТРАНИЦЫ ===
   const baseSlides = [];
   const topics = [
     { t: "Введение", b: "<p>Добро пожаловать в конспект!</p>" },
@@ -559,7 +535,6 @@
   }
   function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
 
-  // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
   let snakeMoving = false;
 
@@ -667,9 +642,7 @@
     document.getElementById('hogOverlay').classList.add('show');
   }
 
-  // === КЛИКЕР ===
   let score = 0;
-  let cPower = 1;
   let isVerity = false;
   let verityClicks = 0;
   let verityTalking = false;
@@ -808,7 +781,6 @@
     updateProgress();
   }
 
-  // === НАСТРОЙКИ РАЗРАБОТЧИКА ===
   let devHoldTimer = null;
   let devHoldStart = 0;
 
@@ -833,7 +805,6 @@
     alert('Панель разработчика открыта!');
   }
 
-  // === ЗАПУСК ===
   window.onload = function() {
     initSettings();
     renderSlides();

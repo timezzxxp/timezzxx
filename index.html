@@ -24,6 +24,7 @@
     overflow: hidden;
   }
 
+  /* Верхняя панель */
   .topbar {
     height: 60px;
     background: var(--card);
@@ -42,6 +43,7 @@
   }
   .lang-switch button.active { background: var(--accent); color: #000; }
 
+  /* Область контента */
   .main-content {
     flex: 1;
     overflow-y: auto;
@@ -75,7 +77,10 @@
     user-select: none;
     border-bottom: 2px dashed #334155;
     padding-bottom: 15px;
+    transition: 0.2s;
   }
+  h1:hover { color: #fbbf24; }
+  
   h2 { color: #60a5fa; margin-bottom: 15px; font-size: 1.5em; }
   h3 { color: #f59e0b; margin: 15px 0 10px 0; font-size: 1.2em; }
   
@@ -102,6 +107,7 @@
   th { background: #1e293b; color: var(--accent); }
   tr:nth-child(even) { background: #162032; }
 
+  /* Навигация */
   .nav-bar {
     height: 70px;
     background: var(--card);
@@ -120,16 +126,116 @@
   .nav-btn:disabled { background: #475569; cursor: not-allowed; opacity: 0.5; }
   .page-counter { color: var(--muted); font-weight: bold; font-size: 1.1em; }
 
-  /* Пасхалка */
-  #eggModal {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9); z-index: 9999; text-align: center;
+  /* === ИГРА КЛИКЕР === */
+  #clickerGame {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.98);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
   }
-  #eggModal img {
-    max-width: 95%; max-height: 80vh; margin-top: 10vh;
-    border: 4px solid var(--accent2); border-radius: 15px; box-shadow: 0 0 30px var(--accent2);
+  
+  .game-header {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
   }
-  .close-btn { color: #fff; font-size: 40px; position: absolute; top: 10px; right: 25px; cursor: pointer; font-weight: bold; }
+  
+  .close-game {
+    background: transparent;
+    border: 2px solid var(--accent2);
+    color: var(--accent2);
+    font-size: 24px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+  .close-game:hover { background: var(--accent2); color: #fff; }
+
+  .score-display {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .cps-display {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+  }
+
+  /* Крышка от колы */
+  .bottle-cap {
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 30% 30%, #e5e7eb, #9ca3af);
+    border-radius: 50%;
+    border: 8px solid #6b7280;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    font-weight: bold;
+    color: #374151;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.3);
+    transition: transform 0.05s;
+    user-select: none;
+    margin-bottom: 30px;
+  }
+  .bottle-cap:active {
+    transform: scale(0.92);
+  }
+
+  .upgrades {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .upgrade-card {
+    background: var(--card);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+  }
+  .upgrade-card h3 { margin-bottom: 10px; font-size: 1.2em; color: var(--accent); }
+  .upgrade-card p { font-size: 0.9em; color: var(--muted); margin-bottom: 15px; }
+  .upgrade-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    transition: 0.2s;
+  }
+  .upgrade-btn:hover:not(:disabled) { background: #2563eb; }
+  .upgrade-btn:disabled { background: #475569; cursor: not-allowed; opacity: 0.5; }
+
+  @media (max-width: 600px) {
+    .upgrades { flex-direction: column; align-items: center; }
+    .upgrade-card { width: 100%; }
+    .score-display { font-size: 1.5em; }
+  }
 </style>
 </head>
 <body>
@@ -150,11 +256,35 @@
     <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
   </div>
 
-  <!-- Пасхалка -->
-  <div id="eggModal" onclick="closeEgg()">
-    <span class="close-btn">&times;</span>
-    <!-- ВАЖНО: Замени ТВОЙ_НИК и НАЗВАНИЕ_РЕПОЗИТОРИЯ на свои данные! -->
-    <img src="https://timezzxxp.github.io/timezzxxp.github.io/pig.jpg"
+  <!-- ИГРА КЛИКЕР -->
+  <div id="clickerGame">
+    <div class="game-header">
+      <h2 style="color: var(--accent); margin: 0;">Кликер «Крышка от колы»</h2>
+      <button class="close-game" onclick="closeGame()">×</button>
+    </div>
+    
+    <div class="score-display" id="scoreDisplay">0 кликов</div>
+    <div class="cps-display" id="cpsDisplay">0 в секунду</div>
+
+    <!-- Кнопка-крышка -->
+    <div class="bottle-cap" onclick="clickCap()" id="capBtn">
+      🥤
+    </div>
+
+    <div class="upgrades">
+      <div class="upgrade-card">
+        <h3>Сила клика</h3>
+        <p>Увеличивает количество кликов за 1 нажатие.</p>
+        <p><b>Цена: <span id="clickUpgradeCost">15</span></b></p>
+        <button class="upgrade-btn" id="buyClickBtn" onclick="buyClickUpgrade()">Купить</button>
+      </div>
+      <div class="upgrade-card">
+        <h3>Автокликер</h3>
+        <p>Автоматически добавляет клики каждую секунду.</p>
+        <p><b>Цена: <span id="autoUpgradeCost">50</span></b></p>
+        <button class="upgrade-btn" id="buyAutoBtn" onclick="buyAutoUpgrade()">Купить</button>
+      </div>
+    </div>
   </div>
 
 <script>
@@ -228,6 +358,7 @@
     }
   ];
 
+  // === ЛОГИКА КОНСПЕКТА ===
   function renderSlides() {
     const area = document.getElementById('contentArea');
     area.innerHTML = '';
@@ -237,8 +368,9 @@
       div.className = 'slide' + (index === currentSlide ? ' active' : '');
       div.id = 'slide-' + index;
       
+      // На первом слайде заголовок открывает игру
       const isFirst = index === 0;
-      const titleAttr = isFirst ? "onclick='showEgg()'" : "";
+      const titleAttr = isFirst ? "onclick='openGame()'" : "";
       
       div.innerHTML = `
         <h1 ${titleAttr}>${slide[currentLang].title}</h1>
@@ -268,14 +400,6 @@
     document.getElementById('contentArea').scrollTop = 0;
   }
 
-  function showEgg() {
-    document.getElementById('eggModal').style.display = 'block';
-  }
-
-  function closeEgg() {
-    document.getElementById('eggModal').style.display = 'none';
-  }
-
   function setLang(lang) {
     currentLang = lang;
     document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
@@ -285,6 +409,64 @@
     updateView();
   }
 
+  // === ЛОГИКА ИГРЫ КЛИКЕРА ===
+  let score = 0;
+  let clickPower = 1;
+  let autoClicks = 0;
+  let clickUpgradeCost = 15;
+  let autoUpgradeCost = 50;
+
+  function openGame() {
+    document.getElementById('clickerGame').style.display = 'flex';
+    updateGameUI();
+  }
+
+  function closeGame() {
+    document.getElementById('clickerGame').style.display = 'none';
+  }
+
+  function clickCap() {
+    score += clickPower;
+    updateGameUI();
+  }
+
+  function buyClickUpgrade() {
+    if (score >= clickUpgradeCost) {
+      score -= clickUpgradeCost;
+      clickPower += 1;
+      clickUpgradeCost *= 2;
+      updateGameUI();
+    }
+  }
+
+  function buyAutoUpgrade() {
+    if (score >= autoUpgradeCost) {
+      score -= autoUpgradeCost;
+      autoClicks += 1;
+      autoUpgradeCost *= 2;
+      updateGameUI();
+    }
+  }
+
+  function updateGameUI() {
+    document.getElementById('scoreDisplay').textContent = score + ' кликов';
+    document.getElementById('cpsDisplay').textContent = autoClicks + ' в секунду';
+    document.getElementById('clickUpgradeCost').textContent = clickUpgradeCost;
+    document.getElementById('autoUpgradeCost').textContent = autoUpgradeCost;
+
+    document.getElementById('buyClickBtn').disabled = score < clickUpgradeCost;
+    document.getElementById('buyAutoBtn').disabled = score < autoUpgradeCost;
+  }
+
+  // Автокликер (работает каждую секунду)
+  setInterval(() => {
+    if (autoClicks > 0) {
+      score += autoClicks;
+      updateGameUI();
+    }
+  }, 1000);
+
+  // Запуск конспекта
   document.addEventListener('DOMContentLoaded', () => {
     renderSlides();
     updateView();
@@ -292,4 +474,4 @@
 </script>
 
 </body>
-</html>
+  </html>

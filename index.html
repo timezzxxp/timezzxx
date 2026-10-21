@@ -13,6 +13,8 @@
     --bubble-bg: #1e293b;
     --anim-speed: 0.05s;
     --anim-style: 'anim-typewriter';
+    --zoom-level: 1;
+    --verity-color: #991b1b;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -26,6 +28,7 @@
     overflow: hidden;
     transition: background 0.3s ease, color 0.3s ease;
     user-select: none;
+    font-size: calc(16px * var(--zoom-level));
   }
 
   ::-webkit-scrollbar { width: 6px; }
@@ -57,7 +60,7 @@
   }
   .draggable-widget:active { cursor: grabbing; }
   .draggable-widget h3 { font-size: 0.8em; color: var(--accent); margin-bottom: 3px; }
-  .draggable-widget select {
+  .draggable-widget select, .draggable-widget input[type="color"], .draggable-widget input[type="range"] {
     width: 100%; padding: 6px; border-radius: 4px; background: var(--bg);
     color: var(--text); border: 1px solid var(--border); font-family: inherit;
     font-size: 0.8em;
@@ -150,13 +153,8 @@
     user-select: none; position: absolute;
   }
   
-  @keyframes fallDown {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(150px) scale(0.3); opacity: 0; }
-  }
-
   .ball {
-    width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
+    width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #f87171, var(--verity-color));
     border-radius: 50%; border: 6px solid #450a0a; cursor: pointer;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     box-shadow: 0 0 25px #ef4444;
@@ -173,7 +171,7 @@
 
   .monster {
     width: 150px; height: 300px;
-    background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
+    background: radial-gradient(circle at 30% 30%, #f87171, var(--verity-color));
     border-radius: 50% 50% 10% 10%;
     border: 6px solid #450a0a;
     box-shadow: 0 0 40px #ef4444;
@@ -435,14 +433,16 @@
     <select id="themeSelectWidget" onchange="changeTheme(this.value)"></select>
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Шрифт:</label>
     <select id="fontSelect" onchange="changeFont(this.value)"></select>
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Масштаб:</label>
+    <input type="range" id="zoomInput" min="0.8" max="1.5" step="0.1" value="1" onchange="changeZoom(this.value)">
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет текста:</label>
+    <input type="color" id="textColorInput" value="#f8fafc" onchange="changeTextColor(this.value)">
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет Верити:</label>
+    <input type="color" id="verityColorInput" value="#991b1b" onchange="changeVerityColor(this.value)">
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Появление слов:</label>
     <select id="animSelect" onchange="changeAnim(this.value)"></select>
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Скорость анимации:</label>
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Скорость:</label>
     <select id="speedSelect" onchange="changeSpeed(this.value)"></select>
-    <div style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Предпросмотр:</div>
-    <div id="animPreview" style="background: var(--bg); padding: 5px; border-radius: 5px; text-align: center; font-size: 0.8em;">
-      <span id="previewText" class="anim-typewriter" style="--anim-speed: 0.05s;">Пример текста</span>
-    </div>
   </div>
 
   <div class="main-content" id="contentArea"></div>
@@ -459,7 +459,7 @@
   </div>
 
 <script>
-  // === ДАННЫЕ ===
+  // === НАСТРОЙКИ ===
   const fontsList = [
     "'Segoe UI', sans-serif", "'Roboto', sans-serif", "'Comfortaa', cursive", 
     "'Marck Script', cursive", "'Pacifico', cursive", "'Press Start 2P', cursive",
@@ -527,9 +527,21 @@
       const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`;
       const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
       
-      themes.push({ name: `Цвет ${i + 1} (hue: ${hue})`, vars: { bg, card, text, muted, border, accent, accent2 } });
+      themes.push({ name: `Цвет ${i + 1} (${getColorName(hue)})`, vars: { bg, card, text, muted, border, accent, accent2 } });
     }
     return themes;
+  }
+
+  function getColorName(hue) {
+    if (hue < 15 || hue >= 345) return 'Красный';
+    if (hue < 45) return 'Оранжевый';
+    if (hue < 75) return 'Жёлтый';
+    if (hue < 150) return 'Зелёный';
+    if (hue < 195) return 'Бирюзовый';
+    if (hue < 255) return 'Синий';
+    if (hue < 290) return 'Фиолетовый';
+    if (hue < 345) return 'Розовый';
+    return 'Другой';
   }
 
   const allThemes = generateThemes();
@@ -589,43 +601,15 @@
     });
     
     applyTheme(0);
-    updatePreview();
   }
 
   function changeTheme(index) { applyTheme(parseInt(index)); }
-  
-  function changeFont(fontName) { 
-    document.documentElement.style.setProperty('--font-main', fontName); 
-    updatePreview();
-  }
-
-  function changeAnim(animName) {
-    document.documentElement.style.setProperty('--anim-style', animName);
-    const preview = document.getElementById('previewText');
-    preview.className = animName;
-    preview.style.animation = 'none';
-    void preview.offsetWidth;
-    preview.style.animation = '';
-    updatePreview();
-  }
-
-  function changeSpeed(speedVal) {
-    document.documentElement.style.setProperty('--anim-speed', speedVal);
-    updatePreview();
-  }
-
-  function updatePreview() {
-    const previewText = document.getElementById('previewText');
-    const anim = document.getElementById('animSelect').value;
-    const speed = document.getElementById('speedSelect').value;
-    
-    previewText.className = anim;
-    previewText.style.setProperty('--anim-speed', speed);
-    
-    previewText.style.animation = 'none';
-    void previewText.offsetWidth;
-    previewText.style.animation = '';
-  }
+  function changeFont(fontName) { document.documentElement.style.setProperty('--font-main', fontName); }
+  function changeZoom(val) { document.documentElement.style.setProperty('--zoom-level', val); }
+  function changeTextColor(color) { document.documentElement.style.setProperty('--text', color); }
+  function changeVerityColor(color) { document.documentElement.style.setProperty('--verity-color', color); }
+  function changeAnim(animName) { document.documentElement.style.setProperty('--anim-style', animName); }
+  function changeSpeed(speedVal) { document.documentElement.style.setProperty('--anim-speed', speedVal); }
 
   let currentLang = 'ru';
   let verityPhrase = "Hey it's me, it's verity. Ask me anything";
@@ -724,15 +708,36 @@
   });
   document.addEventListener('mouseup', () => { isDragging = false; });
 
+  // === СТРАНИЦЫ (только нужные тексты и примеры) ===
   const baseSlides = [];
   for (let i = 1; i <= 119; i++) {
     if (i === 1) baseSlides.push({ ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center;'>Добро пожаловать!</p>" } });
     else if (i === 119) baseSlides.push({ ru: { title: "Пасхалка!", body: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" } });
-    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center;'>До попытки: <span id='progressDisplay'>0 / 167</span></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" } });
+    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center;'>До попытки: <span id='progressDisplay'>0 / 167</span></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div><button class='nav-btn' style='margin-top:15px;' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()'>Начать игру</button></div>" } });
     else if (i === 118) baseSlides.push({ ru: { title: "Создатель", body: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" } });
-    else if (i === 119) baseSlides.push({ ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;'>Начать заново</button></div>" } });
+    else if (i === 119) baseSlides.push({ ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()'>Начать игру</button></div>" } });
     else if (i === 120) baseSlides.push({ ru: { title: "Бонусные картинки", body: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" } });
-    else baseSlides.push({ ru: { title: `Страница ${i}: Дополнительный материал`, body: `<p>Это страница номер ${i}. Здесь мог бы быть полезный материал по Present Simple и Present Continuous.</p><div class='example'>Пример ${i}: I <b>play</b> tennis every day.</div>` } });
+    else {
+      // Только реальные темы
+      const topics = [
+        { t: "Что такое Present Simple?", b: "<p>Время <b>Present Simple</b> обозначает регулярные действия, привычки и факты.</p><ul><li>Привычки (I wake up at 7 am).</li><li>Факты (The sun rises in the east).</li><li>Расписания (The train leaves at 6 pm).</li></ul><div class='example'>I <b>play</b> tennis every Sunday.</div>" },
+        { t: "Образование Present Simple", b: "<ul><li><b>Утверждение:</b> Подлежащее + глагол (+s/es для he/she/it).</li><li><b>Отрицание:</b> Подлежащее + do/does not + глагол.</li><li><b>Вопрос:</b> Do/Does + подлежащее + глагол?</li></ul><div class='example'>I <b>play</b> tennis.<br>She <b>plays</b> tennis.</div>" },
+        { t: "Маркеры Present Simple", b: "<p>Слова-подсказки:</p><ul><li><b>always</b> (всегда)</li><li><b>usually</b> (обычно)</li><li><b>often</b> (часто)</li><li><b>sometimes</b> (иногда)</li><li><b>never</b> (никогда)</li><li><b>every day</b> (каждый день)</li></ul><div class='example'>I <b>always</b> drink coffee in the morning.</div>" },
+        { t: "Что такое Present Continuous?", b: "<p><b>Present Continuous</b> обозначает действия, происходящие прямо сейчас или запланированные на будущее.</p><ul><li>Действие в процессе (I am reading now).</li><li>Временные ситуации (He is living in London this month).</li><li>Планы (We are meeting tomorrow).</li></ul><div class='example cont'>I <b>am reading</b> a book now.</div>" },
+        { t: "Образование Present Continuous", b: "<ul><li><b>Утверждение:</b> Подлежащее + am/is/are + глагол+ing.</li><li><b>Отрицание:</b> Подлежащее + am/is/are not + глагол+ing.</li><li><b>Вопрос:</b> Am/Is/Are + подлежащее + глагол+ing?</li></ul><div class='example cont'>I <b>am playing</b> tennis.<br>They <b>are playing</b> tennis.</div>" },
+        { t: "Маркеры Present Continuous", b: "<ul><li><b>now</b> (сейчас)</li><li><b>right now</b> (прямо сейчас)</li><li><b>at the moment</b> (в данный момент)</li><li><b>Look!</b> (Смотри!)</li><li><b>Listen!</b> (Слушай!)</li></ul><div class='example cont'>I <b>am working</b> at the moment.</div>" },
+        { t: "Сравнение времен", b: "<table style='width:100%; border-collapse:collapse;'><tr><th style='border:1px solid var(--border); padding:5px;'>Simple</th><th style='border:1px solid var(--border); padding:5px;'>Continuous</th></tr><tr><td style='border:1px solid var(--border); padding:5px;'>I work every day.</td><td style='border:1px solid var(--border); padding:5px;'>I am working now.</td></tr></table><div class='example'>Simple = рутина, Continuous = процесс.</div>" },
+        { t: "Глаголы состояния (Stative Verbs)", b: "<p>Некоторые глаголы <b>не используются</b> в Continuous:</p><ul><li><b>Чувства:</b> like, love, hate, want, need.</li><li><b>Мышление:</b> know, understand, believe, remember.</li><li><b>Восприятие:</b> see, hear.</li></ul><div class='example'>I <b>know</b> the answer. (НЕ I am knowing).</div>" },
+        { t: "Правило добавления -ing", b: "<p>При образовании Continuous мы добавляем <b>-ing</b>:</p><ul><li>Обычно: play -> play<b>ing</b>.</li><li>Немая -e отпадает: make -> mak<b>ing</b>.</li><li>Удвоение: run -> run<b>ning</b>.</li><li>ie меняется на y: lie -> ly<b>ing</b>.</li></ul><div class='example cont'>I am run<b>ning</b> now.</div>" },
+        { t: "Отрицание и Вопросы", b: "<h3>Present Simple:</h3><div class='example'>I <b>do not like</b> coffee.<br><b>Do</b> you <b>like</b> coffee?</div><h3>Present Continuous:</h3><div class='example cont'>I <b>am not reading</b> now.<br><b>Are</b> you <b>reading</b> now?</div>" },
+        { t: "Специальные вопросы", b: "<p>Вопросительные слова ставятся в начало:</p><div class='example'><b>Where</b> do you live?</div><div class='example cont'><b>What</b> are you doing?</div>" },
+        { t: "Наречия частоты", b: "<p>В Simple наречия частоты ставятся <b>перед глаголом</b>, но <b>после to be</b>:</p><div class='example'>I <b>always</b> drink coffee.</div><div class='example'>He <b>is always</b> late.</div>" },
+        { t: "Глаголы, меняющие значение", b: "<p>Есть глаголы с разными оттенками:</p><div class='example cont'><b>see</b> (видеть) -> I see a bird. / <b>see</b> (встречаться) -> I am seeing a doctor.</div>" },
+        { t: "Дополнительно", b: "<p>Повторите правила и переходите к играм!</p>" }
+      ];
+      const topic = topics[(i - 1) % topics.length];
+      baseSlides.push({ ru: { title: `${i}. ${topic.t}`, body: topic.b } });
+    }
   }
 
   let currentSlide = 0;
@@ -859,7 +864,6 @@
     score += cPower * mPower;
     updateClickerUI();
     
-    // Пасхалка на 67 кликов
     if (coinClickCounter === 67) {
       document.getElementById('hogImg').style.display = 'block';
       document.getElementById('hogImg').src = 'meme.jpg';
@@ -867,7 +871,6 @@
       document.getElementById('hogOverlay').classList.add('show');
     }
 
-    // Логика падения с шансом
     if (coinClickCounter >= 167) {
       if (Math.random() < 0.1) {
         coinClickCounter = 0;
@@ -969,7 +972,6 @@
 
   // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
-  let snakeX = 10, snakeY = 10, targetX = 10, targetY = 10;
 
   function startSnake() {
     snakeCanvas = document.getElementById('gameCanvas');
@@ -977,57 +979,27 @@
     snakeCtx = snakeCanvas.getContext('2d');
     snake = [{x: 10, y: 10}];
     snakeDir = {x: 0, y: 0};
-    targetX = 10; targetY = 10;
+    let targetX = 10, targetY = 10;
     document.getElementById('snakeScore').textContent = 0;
     document.getElementById('snakeRecord').textContent = record;
     placeFood();
     clearInterval(gameLoop);
-    gameLoop = setInterval(snakeUpdate, 120);
-    document.addEventListener('keydown', handleKey);
-    snakeCanvas.addEventListener('touchstart', handleTouch);
+    gameLoop = setInterval(() => {
+      targetX += snakeDir.x;
+      targetY += snakeDir.y;
+      if (targetX < 0 || targetX >= 20 || targetY < 0 || targetY >= 20) { gameOver(); return; }
+      for (let i = 0; i < snake.length; i++) { if (snake[i].x === targetX && snake[i].y === targetY) { gameOver(); return; } }
+      snake.unshift({x: targetX, y: targetY});
+      if (targetX === food.x && targetY === food.y) {
+        document.getElementById('snakeScore').textContent = snake.length - 1;
+        if (snake.length - 1 > record) { record = snake.length - 1; localStorage.setItem('snakeRecord', record); document.getElementById('snakeRecord').textContent = record; }
+        placeFood();
+      } else { snake.pop(); }
+      drawSnake();
+    }, 120);
   }
 
-  function placeFood() {
-    food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
-  }
-
-  function handleKey(e) {
-    if (currentSlide !== 118) return;
-    if (e.key === 'ArrowUp' && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
-    if (e.key === 'ArrowDown' && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
-    if (e.key === 'ArrowLeft' && snakeDir.x === 0) snakeDir = {x: -1, y: 0};
-    if (e.key === 'ArrowRight' && snakeDir.x === 0) snakeDir = {x: 1, y: 0};
-  }
-
-  let touchStartX = 0, touchStartY = 0;
-  function handleTouch(e) { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; e.preventDefault(); }
-  document.addEventListener('touchend', (e) => {
-    if (currentSlide !== 118) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 30 && snakeDir.x === 0) snakeDir = {x: 1, y: 0};
-      if (dx < -30 && snakeDir.x === 0) snakeDir = {x: -1, y: 0};
-    } else {
-      if (dy > 30 && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
-      if (dy < -30 && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
-    }
-  });
-
-  function snakeUpdate() {
-    if (!snakeCanvas || currentSlide !== 118) return;
-    targetX += snakeDir.x;
-    targetY += snakeDir.y;
-    if (targetX < 0 || targetX >= 20 || targetY < 0 || targetY >= 20) { gameOver(); return; }
-    for (let i = 0; i < snake.length; i++) { if (snake[i].x === targetX && snake[i].y === targetY) { gameOver(); return; } }
-    snake.unshift({x: targetX, y: targetY});
-    if (targetX === food.x && targetY === food.y) {
-      document.getElementById('snakeScore').textContent = snake.length - 1;
-      if (snake.length - 1 > record) { record = snake.length - 1; localStorage.setItem('snakeRecord', record); document.getElementById('snakeRecord').textContent = record; }
-      placeFood();
-    } else { snake.pop(); }
-    drawSnake();
-  }
+  function placeFood() { food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) }; }
 
   function drawSnake() {
     snakeCtx.fillStyle = '#0f172a';
@@ -1048,6 +1020,64 @@
     document.getElementById('hogOverlay').classList.add('show');
   }
 
+  // === НАСТРОЙКИ РАЗРАБОТЧИКА (УДЕРЖАНИЕ 45 СЕК) ===
+  let devHoldTimer = null;
+  let devHoldStart = 0;
+
+  function startDevHold() {
+    devHoldStart = Date.now();
+    devHoldTimer = setInterval(() => {
+      if (Date.now() - devHoldStart >= 45000) {
+        clearInterval(devHoldTimer);
+        openDevPanel();
+      }
+    }, 1000);
+  }
+
+  function endDevHold() {
+    if (devHoldTimer) clearInterval(devHoldTimer);
+    devHoldTimer = null;
+  }
+
+  function openDevPanel() {
+    let devPanel = document.getElementById('devPanel');
+    if (!devPanel) {
+      devPanel = document.createElement('div');
+      devPanel.id = 'devPanel';
+      devPanel.style.cssText = `
+        position: fixed; top: 10%; left: 10%; width: 80%; height: 80%;
+        background: var(--card); border: 2px solid var(--accent);
+        border-radius: 15px; z-index: 10000; padding: 20px; overflow-y: auto;
+        box-shadow: 0 0 50px rgba(0,0,0,0.8); font-family: var(--font-main);
+        color: var(--text);
+      `;
+      devPanel.innerHTML = `
+        <h2 style="color: var(--accent); text-align: center; margin-bottom: 20px;">Настройки разработчика</h2>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px;">Цвет Верити:</label>
+          <input type="color" id="devVerityColor" value="#991b1b" style="width: 100%; padding: 5px;" onchange="changeVerityColor(this.value)">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px;">Лицо Верити (URL):</label>
+          <input type="text" id="devVerityFace" placeholder="Введите URL картинки" style="width: 100%; padding: 5px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg); color: var(--text);">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <button onclick="deleteConspect()" style="background: red; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Удалить конспект</button>
+          <button onclick="location.reload()" style="background: var(--accent); color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Восстановить конспект</button>
+        </div>
+        <button onclick="document.getElementById('devPanel').remove()" style="background: var(--muted); color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%;">Закрыть</button>
+      `;
+      document.body.appendChild(devPanel);
+    }
+    devPanel.style.display = 'block';
+  }
+
+  function deleteConspect() {
+    baseSlides.length = 0;
+    renderSlides();
+  }
+
+  // === ЗАПУСК ===
   window.onload = function() {
     initSelects();
     renderSlides();

@@ -141,6 +141,7 @@
     margin-top: 15px;
     line-height: 1.4;
     opacity: 0.9;
+    cursor: pointer;
   }
 
   .start-btn {
@@ -466,7 +467,7 @@
     { t: "Бонус 2", b: "<p>Переходите к играм!</p>" },
     { t: "Змейка", b: "<div style='text-align:center;'><button class='start-btn' id='snakeStartBtn' onclick='startSnake()'>Начнём?</button><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400' style='display:none;'></canvas></div>" },
     { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;' id='progressDisplay'>До попытки: 0 / 167</div></div></div>" },
-    { t: "Разработчик", b: "<div style='text-align:center;'><div class='dev-frame' onclick='devClick()'><img src='anime.jpg' alt='Anime'></div><div class='creator-signature'>Разработчик<br>Магдеев Тимур<br>(Термометр)</div></div>" },
+    { t: "Разработчик", b: "<div style='text-align:center;'><div class='dev-frame' id='devFrame' onclick='devClick()'><img src='anime.jpg' alt='Anime'></div><div class='creator-signature' id='devName' onclick='devClick()'>Разработчик<br>Магдеев Тимур<br>(Термометр)</div></div>" },
     { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" }
   ];
 
@@ -481,7 +482,9 @@
   let coinClickCounter = 0;
   let attemptCounter = 0;
   let verityPhrase = "Hey it's me, it's verity";
-  let devClicks = 0;
+
+  let devStep = 0;
+  let devTimer = null;
 
   function renderSlides() {
     const area = document.getElementById('contentArea');
@@ -536,15 +539,20 @@
   function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
 
   function devClick() {
-    devClicks++;
-    clearTimeout(window.devTimer);
-    if (devClicks === 3) {
+    // Логика: первый клик (или клик по имени/картинке) начинает отсчёт 5 секунд
+    if (devStep === 0) {
+      devStep = 1;
+      devTimer = setTimeout(() => { devStep = 0; }, 5000);
+    } else if (devStep === 1) {
+      // Второй клик (по другому элементу)
+      devStep = 2;
+      clearTimeout(devTimer);
+      
       document.getElementById('devTabBtn').style.display = 'block';
       playSound(1000, 0.3, 'sine');
-      devClicks = 0;
       alert('Вкладка «Разработчик» добавлена в настройки!');
-    } else {
-      window.devTimer = setTimeout(() => devClicks = 0, 600);
+      
+      devStep = 0;
     }
   }
 

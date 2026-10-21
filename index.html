@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
+    /* По умолчанию тёмная тема */
     --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; 
     --accent: #f59e0b; --accent2: #ef4444; --border: #334155;
     --font-main: 'Segoe UI', system-ui, sans-serif;
@@ -48,7 +49,7 @@
   .theme-select, .lang-select {
     background: var(--bg); color: var(--text); border: 1px solid var(--border);
     padding: 4px 6px; border-radius: 6px; cursor: pointer; font-family: inherit; outline: none;
-    font-size: 0.75em; max-width: 120px;
+    font-size: 0.75em; max-width: 140px;
   }
 
   .draggable-widget {
@@ -114,10 +115,10 @@
   .nav-btn {
     background: var(--accent); color: #fff; border: none; padding: 8px 15px;
     border-radius: 8px; font-size: 0.9em; cursor: pointer; font-weight: bold;
-    transition: 0.3s; font-family: inherit;
+    transition: background 0.3s; font-family: inherit;
   }
-  .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-  .nav-btn:disabled { background: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+  .nav-btn:hover { background: #d97706; }
+  .nav-btn:disabled { background: var(--muted); cursor: not-allowed; }
   .page-counter { color: var(--muted); font-weight: bold; font-size: 0.9em; }
 
   .image-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
@@ -125,6 +126,16 @@
     max-width: 100%; max-height: 250px; border-radius: 10px;
     border: 3px solid var(--accent); box-shadow: 0 0 15px rgba(0,0,0,0.3);
   }
+
+  .start-btn {
+    background: #22c55e; color: var(--text); border: none;
+    padding: 15px 40px; border-radius: 12px; font-size: 1.5em;
+    font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(34,197,94,0.4);
+    transition: background 0.3s, transform 0.1s;
+    display: block; margin: 20px auto; font-family: var(--font-main);
+    width: 100%; max-width: 300px;
+  }
+  .start-btn:active { transform: scale(0.95); }
 
   .clicker-area {
     display: flex; flex-direction: column; align-items: center; gap: 15px;
@@ -306,68 +317,6 @@
   }
   .widget-toggle:hover { transform: rotate(90deg) scale(1.1); }
 
-  /* Анимации для текста */
-  .anim-typewriter { overflow: hidden; white-space: nowrap; border-right: 2px solid; animation: typing var(--anim-speed) steps(30, end), blink-caret .75s step-end infinite; }
-  @keyframes typing { from { width: 0; } to { width: 100%; } }
-  @keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: var(--accent); } }
-
-  .anim-fade { animation: fadeIn var(--anim-speed) ease-in forwards; opacity: 0; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .anim-slide-up { animation: slideUp var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(20px); }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-  .anim-slide-down { animation: slideDown var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(-20px); }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-  .anim-slide-left { animation: slideLeft var(--anim-speed) ease-out forwards; opacity: 0; transform: translateX(20px); }
-  @keyframes slideLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-
-  .anim-slide-right { animation: slideRight var(--anim-speed) ease-out forwards; opacity: 0; transform: translateX(-20px); }
-  @keyframes slideRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-
-  .anim-scale-up { animation: scaleUp var(--anim-speed) ease-out forwards; opacity: 0; transform: scale(0.5); }
-  @keyframes scaleUp { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
-
-  .anim-scale-down { animation: scaleDown var(--anim-speed) ease-out forwards; opacity: 0; transform: scale(1.5); }
-  @keyframes scaleDown { from { opacity: 0; transform: scale(1.5); } to { opacity: 1; transform: scale(1); } }
-
-  .anim-rotate { animation: rotateIn var(--anim-speed) ease-out forwards; opacity: 0; transform: rotate(-180deg); }
-  @keyframes rotateIn { from { opacity: 0; transform: rotate(-180deg); } to { opacity: 1; transform: rotate(0); } }
-
-  .anim-bounce { animation: bounceIn var(--anim-speed) ease-out forwards; opacity: 0; }
-  @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
-
-  .anim-flip { animation: flipIn var(--anim-speed) ease-out forwards; opacity: 0; transform: perspective(400px) rotateY(90deg); }
-  @keyframes flipIn { from { opacity: 0; transform: perspective(400px) rotateY(90deg); } to { opacity: 1; transform: perspective(400px) rotateY(0); } }
-
-  .anim-zoom { animation: zoomIn var(--anim-speed) ease-out forwards; opacity: 0; transform: scale(2); }
-  @keyframes zoomIn { from { opacity: 0; transform: scale(2); } to { opacity: 1; transform: scale(1); } }
-
-  .anim-blur { animation: blurIn var(--anim-speed) ease-out forwards; opacity: 0; filter: blur(10px); }
-  @keyframes blurIn { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
-
-  .anim-flip-x { animation: flipXIn var(--anim-speed) ease-out forwards; opacity: 0; transform: rotateX(90deg); }
-  @keyframes flipXIn { from { opacity: 0; transform: rotateX(90deg); } to { opacity: 1; transform: rotateX(0); } }
-
-  .anim-roll { animation: rollIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateX(-50px) rotate(-90deg); }
-  @keyframes rollIn { from { opacity: 0; transform: translateX(-50px) rotate(-90deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
-
-  .anim-drop { animation: dropIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(-50px); }
-  @keyframes dropIn { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
-
-  .anim-swing { animation: swingIn var(--anim-speed) ease-out forwards; opacity: 0; transform-origin: top center; }
-  @keyframes swingIn { 0% { opacity: 0; transform: rotate(15deg); } 100% { opacity: 1; transform: rotate(0); } }
-
-  .anim-fade-up { animation: fadeUpIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(10px); }
-  @keyframes fadeUpIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  .anim-fade-down { animation: fadeDownIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(-10px); }
-  @keyframes fadeDownIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-  .anim-pulse { animation: pulseIn var(--anim-speed) ease-out forwards; opacity: 0; }
-  @keyframes pulseIn { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } 100% { transform: scale(1); } }
-
   @media (max-width: 400px) {
     .topbar h2 { font-size: 0.75em; }
     .topbar .version { display: none; }
@@ -376,7 +325,7 @@
   }
 </style>
 </head>
-<body class="theme-dark">
+<body>
 
   <div class="topbar">
     <h2>Мега-Конспект <span class="version">Версия 5.6</span></h2>
@@ -439,116 +388,35 @@
     <input type="color" id="textColorInput" value="#f8fafc" onchange="changeTextColor(this.value)">
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет Верити:</label>
     <input type="color" id="verityColorInput" value="#991b1b" onchange="changeVerityColor(this.value)">
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Появление слов:</label>
-    <select id="animSelect" onchange="changeAnim(this.value)"></select>
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Скорость:</label>
-    <select id="speedSelect" onchange="changeSpeed(this.value)"></select>
+    <button id="devTabBtn" class="nav-btn" style="margin-top: 10px; display: none; background: var(--accent2);" onclick="openDevPanel()">Разработчик</button>
   </div>
 
   <div class="main-content" id="contentArea"></div>
 
   <div class="nav-bar">
     <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Назад</button>
-    <span class="page-counter" id="pageCounter">1 / 119</span>
+    <span class="page-counter" id="pageCounter">1 / 34</span>
     <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
   </div>
 
   <div id="hogOverlay" class="overlay" onclick="hideHog()">
-    <img src="meme.jpg" alt="Хряк" id="hogImg" style="display:none;">
+    <img src="totya.jpg" alt="Тотя" id="hogImg" style="display:none;">
     <h2 id="hogText">67</h2>
   </div>
 
 <script>
-  // === НАСТРОЙКИ ===
-  const fontsList = [
-    "'Segoe UI', sans-serif", "'Roboto', sans-serif", "'Comfortaa', cursive", 
-    "'Marck Script', cursive", "'Pacifico', cursive", "'Press Start 2P', cursive",
-    "'Russo One', sans-serif", "'Yeseva One', serif", "'Lobster', cursive", 
-    "'Playfair Display', serif", "'Montserrat', sans-serif",
-    "Arial, sans-serif", "Verdana, sans-serif", "Tahoma, sans-serif", 
-    "Trebuchet MS, sans-serif", "Impact, sans-serif", "Comic Sans MS, cursive",
-    "Brush Script MT, cursive", "Palatino Linotype, serif", "Lucida Console, monospace",
-    "Georgia, serif", "Times New Roman, serif", "Courier New, monospace",
-    "Garamond, serif", "Bookman, serif", "Candara, sans-serif", "Calibri, sans-serif",
-    "Consolas, monospace", "Corbel, sans-serif", "Franklin Gothic Medium, sans-serif",
-    "Gill Sans, sans-serif", "Century Gothic, sans-serif", "Rockwell, serif",
-    "Baskerville, serif", "Copperplate, cursive", "Papyrus, fantasy",
-    "Optima, sans-serif", "Futura, sans-serif", "Perpetua, serif", "Bodoni MT, serif",
-    "Cambria, serif", "Constantia, serif", "Didot, serif", "Ebrima, sans-serif",
-    "Gabriola, cursive", "HoloLens MDL2 Assets, sans-serif", "Javanese Text, sans-serif",
-    "Leelawadee UI, sans-serif", "Lucida Sans Unicode, sans-serif", "Malgun Gothic, sans-serif",
-    "Microsoft Himalaya, serif", "Microsoft JhengHei, sans-serif", "Microsoft YaHei, sans-serif",
-    "MingLiU-ExtB, serif", "Mongolian Baiti, serif", "MS Gothic, sans-serif",
-    "MV Boli, cursive", "Myanmar Text, sans-serif", "Nirmala UI, sans-serif",
-    "Palatino Linotype, serif", "Segoe Print, cursive", "Segoe Script, cursive",
-    "SimSun, serif", "Sitka Text, serif", "Sylfaen, serif", "Symbol, sans-serif",
-    "Tahoma, sans-serif", "Times New Roman, serif", "Trebuchet MS, sans-serif",
-    "Verdana, sans-serif", "Webdings, sans-serif", "Wingdings, sans-serif",
-    "Yu Gothic, sans-serif", "Zapf Dingbats, sans-serif", "Arial Black, sans-serif",
-    "Arial Narrow, sans-serif", "Arial Rounded MT Bold, sans-serif", "Bahnschrift, sans-serif",
-    "Calisto MT, serif", "Century, serif", "Colonna MT, serif", "Comic Sans MS, cursive",
-    "Courier, monospace", "Eras Bold ITC, sans-serif", "Freestyle Script, cursive",
-    "French Script MT, cursive", "Gigi, cursive", "Haettenschweiler, sans-serif",
-    "Harlow Solid Italic, cursive", "Harrington, serif", "High Tower Text, serif",
-    "Jokerman, cursive", "Juice ITC, cursive", "Kristen ITC, cursive",
-    "Lucida Handwriting, cursive", "Magneto, cursive", "Mistral, cursive",
-    "Modern No. 20, serif", "Monotype Corsiva, cursive", "Niagara Engraved, sans-serif"
+  // === ФИКСИРОВАННЫЕ ТЕМЫ ===
+  const fixedThemes = [
+    { name: "Тёмная", vars: { bg: "#0f172a", card: "#1e293b", text: "#f8fafc", muted: "#94a3b8", border: "#334155", accent: "#f59e0b", accent2: "#ef4444" } },
+    { name: "Светлая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
+    { name: "Синяя", vars: { bg: "#172554", card: "#1e3a8a", text: "#dbeafe", muted: "#bfdbfe", border: "#1d4ed8", accent: "#60a5fa", accent2: "#3b82f6" } },
+    { name: "Лазурная", vars: { bg: "#0c4a6e", card: "#075985", text: "#e0f2fe", muted: "#bae6fd", border: "#0369a1", accent: "#38bdf8", accent2: "#0ea5e9" } },
+    { name: "Голубая", vars: { bg: "#164e63", card: "#155e75", text: "#cffafe", muted: "#a5f3fc", border: "#0891b2", accent: "#22d3ee", accent2: "#06b6d4" } },
+    { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } }
   ];
 
-  const animList = [
-    'anim-typewriter', 'anim-fade', 'anim-slide-up', 'anim-slide-down', 
-    'anim-slide-left', 'anim-slide-right', 'anim-scale-up', 'anim-scale-down',
-    'anim-rotate', 'anim-bounce', 'anim-flip', 'anim-zoom', 'anim-blur',
-    'anim-flip-x', 'anim-roll', 'anim-drop', 'anim-swing', 'anim-fade-up',
-    'anim-fade-down', 'anim-pulse'
-  ];
-
-  const speedList = [
-    { name: 'Очень медленно (1.5s)', val: '1.5s' },
-    { name: 'Медленно (1.0s)', val: '1.0s' },
-    { name: 'Средне (0.5s)', val: '0.5s' },
-    { name: 'Быстро (0.2s)', val: '0.2s' },
-    { name: 'Очень быстро (0.05s)', val: '0.05s' }
-  ];
-
-  function generateThemes() {
-    const themes = [];
-    for (let i = 0; i < 250; i++) {
-      const hue = Math.floor((i * 360) / 250);
-      const bgL = 10 + (i % 3) * 5;
-      const cardL = bgL + 8;
-      const textL = 95 - (i % 2) * 5;
-      
-      const bg = `hsl(${hue}, 40%, ${bgL}%)`;
-      const card = `hsl(${hue}, 40%, ${cardL}%)`;
-      const text = `hsl(${hue}, 10%, ${textL}%)`;
-      const muted = `hsl(${hue}, 20%, 60%)`;
-      const border = `hsl(${hue}, 30%, 30%)`;
-      const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`;
-      const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
-      
-      themes.push({ name: `Цвет ${i + 1} (${getColorName(hue)})`, vars: { bg, card, text, muted, border, accent, accent2 } });
-    }
-    return themes;
-  }
-
-  function getColorName(hue) {
-    if (hue < 15 || hue >= 345) return 'Красный';
-    if (hue < 45) return 'Оранжевый';
-    if (hue < 75) return 'Жёлтый';
-    if (hue < 150) return 'Зелёный';
-    if (hue < 195) return 'Бирюзовый';
-    if (hue < 255) return 'Синий';
-    if (hue < 290) return 'Фиолетовый';
-    if (hue < 345) return 'Розовый';
-    return 'Другой';
-  }
-
-  const allThemes = generateThemes();
-
-  function applyTheme(index) {
-    const theme = allThemes[index];
-    if (!theme) return;
+  function applyThemeByName(name) {
+    const theme = fixedThemes.find(t => t.name === name) || fixedThemes[0];
     const root = document.documentElement;
     root.style.setProperty('--bg', theme.vars.bg);
     root.style.setProperty('--card', theme.vars.card);
@@ -558,19 +426,14 @@
     root.style.setProperty('--accent', theme.vars.accent);
     root.style.setProperty('--accent2', theme.vars.accent2);
     root.style.setProperty('--bubble-bg', theme.vars.card);
-    
-    document.getElementById('themeSelect').selectedIndex = index;
-    document.getElementById('themeSelectWidget').selectedIndex = index;
   }
 
+  // === ИНИЦИАЛИЗАЦИЯ ===
   function initSelects() {
     const select1 = document.getElementById('themeSelect');
     const select2 = document.getElementById('themeSelectWidget');
-    const fontSelect = document.getElementById('fontSelect');
-    const animSelect = document.getElementById('animSelect');
-    const speedSelect = document.getElementById('speedSelect');
 
-    allThemes.forEach((theme, i) => {
+    fixedThemes.forEach((theme, i) => {
       const opt1 = document.createElement('option');
       opt1.value = i; opt1.textContent = theme.name;
       select1.appendChild(opt1);
@@ -578,166 +441,63 @@
       opt2.value = i; opt2.textContent = theme.name;
       select2.appendChild(opt2);
     });
-
-    fontsList.forEach((font, i) => {
-      const opt = document.createElement('option');
-      opt.value = font;
-      opt.textContent = font.split(',')[0].replace(/'/g, '') + ' (' + i + ')';
-      fontSelect.appendChild(opt);
-    });
-
-    animList.forEach((anim, i) => {
-      const opt = document.createElement('option');
-      opt.value = anim;
-      opt.textContent = anim.replace('anim-', '');
-      animSelect.appendChild(opt);
-    });
-
-    speedList.forEach((speed, i) => {
-      const opt = document.createElement('option');
-      opt.value = speed.val;
-      opt.textContent = speed.name;
-      speedSelect.appendChild(opt);
-    });
     
-    applyTheme(0);
+    // По умолчанию тёмная тема
+    applyThemeByName("Тёмная");
+    select1.selectedIndex = 0;
+    select2.selectedIndex = 0;
   }
 
-  function changeTheme(index) { applyTheme(parseInt(index)); }
-  function changeFont(fontName) { document.documentElement.style.setProperty('--font-main', fontName); }
-  function changeZoom(val) { document.documentElement.style.setProperty('--zoom-level', val); }
-  function changeTextColor(color) { document.documentElement.style.setProperty('--text', color); }
-  function changeVerityColor(color) { document.documentElement.style.setProperty('--verity-color', color); }
-  function changeAnim(animName) { document.documentElement.style.setProperty('--anim-style', animName); }
-  function changeSpeed(speedVal) { document.documentElement.style.setProperty('--anim-speed', speedVal); }
-
-  let currentLang = 'ru';
-  let verityPhrase = "Hey it's me, it's verity. Ask me anything";
-
-  const verityTranslations = {
-    ru: "Привет, это я, Верити. Спроси меня о чем угодно",
-    en: "Hey it's me, it's verity. Ask me anything",
-    es: "Hola, soy yo, Verity. Pregúntame lo que quieras",
-    de: "Hey, ich bin's, Verity. Frag mich alles",
-    fr: "Salut, c'est moi, Verity. Demande-moi n'importe quoi",
-    it: "Ehi, sono io, Verity. Chiedimi qualsiasi cosa",
-    pt: "Ei, sou eu, Verity. Pergunte-me qualquer coisa",
-    zh: "嘿，是我，Verity。问我任何事",
-    ja: "ねえ、私だよ、Verity。何でも聞いて",
-    ko: "헤이, 나야, Verity. 뭐든지 물어봐",
-    ar: "مرحبًا، إنه أنا، فيريتي. اسألني أي شيء",
-    tr: "Hey, benim, Verity. Bana her şeyi sor",
-    pl: "Hej, to ja, Verity. Zapytaj mnie o wszystko",
-    uk: "Гей, це я, Вериті. Запитай мене про що завгодно",
-    sv: "Hej, det är jag, Verity. Fråga mig vad som helst",
-    no: "Hei, det er meg, Verity. Spør meg om hva som helst",
-    da: "Hej, det er mig, Verity. Spørg mig om hvad som helst",
-    fi: "Hei, se olen minä, Verity. Kysy minulta mitä tahansa",
-    cs: "Ahoj, to jsem já, Verity. Zeptej se mě na cokoli",
-    sk: "Ahoj, to som ja, Verity. Opýtaj sa ma na čokoľvek",
-    hu: "Hé, én vagyok, Verity. Kérdezz bármit",
-    ro: "Hei, sunt eu, Verity. Întreabă-mă orice",
-    bg: "Хей, това съм аз, Верити. Питай ме за каквото и да е",
-    el: "Γεια, είμαι εγώ, Verity. Ρώτησέ με οτιδήποτε",
-    he: "היי, זה אני, וריטי. שאל אותי כל דבר",
-    hi: "अरे, यह मैं हूँ, वेरिटी। मुझसे कुछ भी पूछो",
-    id: "Hei, ini aku, Verity. Tanya aku apa saja",
-    ms: "Hei, ini saya, Verity. Tanya saya apa sahaja",
-    th: "เฮ้ ฉันเอง Verity ถามอะไรก็ได้",
-    vi: "Này, là tôi đây, Verity. Hỏi tôi bất cứ điều gì",
-    nl: "Hé, ik ben het, Verity. Vraag me alles",
-    is: "Hey, það er ég, Verity. Spurðu mig hvað sem er",
-    ga: "Hey, is mise, Verity. Fiafraigh díom rud ar bith",
-    cy: "Hei, fi yw Verity. Gofynna i mi unrhyw beth",
-    sr: "Хеј, то сам ја, Верити. Питај ме било шта",
-    hr: "Hej, to sam ja, Verity. Pitaj me bilo što",
-    tt: "Әй, бу мин, Верити. Миннән нәрсә теләсәң дә сора",
-    ba: "Эй, был мин, Верити. Минән нимәлер һора"
-  };
-
-  function changeLang(lang) {
-    currentLang = lang;
-    document.getElementById('langSelect').value = lang;
-    
-    const prevText = { 
-      ru: '← Назад', en: '← Back', es: '← Atrás', de: '← Zurück', fr: '← Retour', 
-      it: '← Indietro', pt: '← Voltar', zh: '← 后退', ja: '← 戻る', ko: '← 뒤로', 
-      ar: '← رجوع', tr: '← Geri', pl: '← Wstecz', uk: '← Назад', sv: '← Tillbaka', 
-      no: '← Tilbake', da: '← Tilbage', fi: '← Takaisin', cs: '← Zpět', sk: '← Späť', 
-      hu: '← Vissza', ro: '← Înapoi', bg: '← Назад', el: '← Πίσω', he: '← חזור', 
-      hi: '← पीछे', id: '← Kembali', ms: '← Kembali', th: '← ย้อนกลับ', vi: '← Quay lại', 
-      nl: '← Terug', is: '← Til baka', ga: '← Ar ais', cy: '← Yn ôl', sr: '← Назад', 
-      hr: '← Natrag', tt: '← Артка', ba: '← Артҡа' 
-    };
-    const nextText = { 
-      ru: 'Вперед →', en: 'Next →', es: 'Siguiente →', de: 'Weiter →', fr: 'Suivant →', 
-      it: 'Avanti →', pt: 'Próximo →', zh: '下一步 →', ja: '次へ →', ko: '다음 →', 
-      ar: 'التالي →', tr: 'İleri →', pl: 'Dalej →', uk: 'Вперед →', sv: 'Nästa →', 
-      no: 'Neste →', da: 'Næste →', fi: 'Seuraava →', cs: 'Další →', sk: 'Ďalej →', 
-      hu: 'Következő →', ro: 'Următor →', bg: 'Напред →', el: 'Επόμενο →', he: 'הבא →', 
-      hi: 'अगला →', id: 'Berikutnya →', ms: 'Seterusnya →', th: 'ถัดไป →', vi: 'Tiếp theo →', 
-      nl: 'Volgende →', is: 'Næsta →', ga: 'Ar aghaidh →', cy: 'Nesaf →', sr: 'Напред →', 
-      hr: 'Dalje →', tt: 'Алга →', ba: 'Алға →' 
-    };
-    
-    if (prevText[lang]) document.getElementById('prevBtn').textContent = prevText[lang];
-    if (nextText[lang]) document.getElementById('nextBtn').textContent = nextText[lang];
-    
-    verityPhrase = verityTranslations[lang] || verityTranslations['en'];
-    renderSlides();
+  function changeTheme(index) {
+    const theme = fixedThemes[parseInt(index)];
+    if (!theme) return;
+    applyThemeByName(theme.name);
+    document.getElementById('themeSelect').selectedIndex = index;
+    document.getElementById('themeSelectWidget').selectedIndex = index;
   }
 
-  let widgetVisible = false;
-  function toggleWidgets() {
-    widgetVisible = !widgetVisible;
-    document.getElementById('widgetSettings').style.display = widgetVisible ? 'flex' : 'none';
-  }
-  const widget = document.getElementById('widgetSettings');
-  let isDragging = false, offsetX, offsetY;
-  widget.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    offsetX = e.clientX - widget.getBoundingClientRect().left;
-    offsetY = e.clientY - widget.getBoundingClientRect().top;
-  });
-  document.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-      widget.style.left = (e.clientX - offsetX) + 'px';
-      widget.style.top = (e.clientY - offsetY) + 'px';
-      widget.style.right = 'auto';
-    }
-  });
-  document.addEventListener('mouseup', () => { isDragging = false; });
-
-  // === СТРАНИЦЫ (только нужные тексты и примеры) ===
+  // === 34 СТРАНИЦЫ ===
   const baseSlides = [];
-  for (let i = 1; i <= 119; i++) {
-    if (i === 1) baseSlides.push({ ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center;'>Добро пожаловать!</p>" } });
-    else if (i === 119) baseSlides.push({ ru: { title: "Пасхалка!", body: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" } });
-    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center;'>До попытки: <span id='progressDisplay'>0 / 167</span></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div><button class='nav-btn' style='margin-top:15px;' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()'>Начать игру</button></div>" } });
-    else if (i === 118) baseSlides.push({ ru: { title: "Создатель", body: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" } });
-    else if (i === 119) baseSlides.push({ ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()'>Начать игру</button></div>" } });
-    else if (i === 120) baseSlides.push({ ru: { title: "Бонусные картинки", body: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" } });
-    else {
-      // Только реальные темы
-      const topics = [
-        { t: "Что такое Present Simple?", b: "<p>Время <b>Present Simple</b> обозначает регулярные действия, привычки и факты.</p><ul><li>Привычки (I wake up at 7 am).</li><li>Факты (The sun rises in the east).</li><li>Расписания (The train leaves at 6 pm).</li></ul><div class='example'>I <b>play</b> tennis every Sunday.</div>" },
-        { t: "Образование Present Simple", b: "<ul><li><b>Утверждение:</b> Подлежащее + глагол (+s/es для he/she/it).</li><li><b>Отрицание:</b> Подлежащее + do/does not + глагол.</li><li><b>Вопрос:</b> Do/Does + подлежащее + глагол?</li></ul><div class='example'>I <b>play</b> tennis.<br>She <b>plays</b> tennis.</div>" },
-        { t: "Маркеры Present Simple", b: "<p>Слова-подсказки:</p><ul><li><b>always</b> (всегда)</li><li><b>usually</b> (обычно)</li><li><b>often</b> (часто)</li><li><b>sometimes</b> (иногда)</li><li><b>never</b> (никогда)</li><li><b>every day</b> (каждый день)</li></ul><div class='example'>I <b>always</b> drink coffee in the morning.</div>" },
-        { t: "Что такое Present Continuous?", b: "<p><b>Present Continuous</b> обозначает действия, происходящие прямо сейчас или запланированные на будущее.</p><ul><li>Действие в процессе (I am reading now).</li><li>Временные ситуации (He is living in London this month).</li><li>Планы (We are meeting tomorrow).</li></ul><div class='example cont'>I <b>am reading</b> a book now.</div>" },
-        { t: "Образование Present Continuous", b: "<ul><li><b>Утверждение:</b> Подлежащее + am/is/are + глагол+ing.</li><li><b>Отрицание:</b> Подлежащее + am/is/are not + глагол+ing.</li><li><b>Вопрос:</b> Am/Is/Are + подлежащее + глагол+ing?</li></ul><div class='example cont'>I <b>am playing</b> tennis.<br>They <b>are playing</b> tennis.</div>" },
-        { t: "Маркеры Present Continuous", b: "<ul><li><b>now</b> (сейчас)</li><li><b>right now</b> (прямо сейчас)</li><li><b>at the moment</b> (в данный момент)</li><li><b>Look!</b> (Смотри!)</li><li><b>Listen!</b> (Слушай!)</li></ul><div class='example cont'>I <b>am working</b> at the moment.</div>" },
-        { t: "Сравнение времен", b: "<table style='width:100%; border-collapse:collapse;'><tr><th style='border:1px solid var(--border); padding:5px;'>Simple</th><th style='border:1px solid var(--border); padding:5px;'>Continuous</th></tr><tr><td style='border:1px solid var(--border); padding:5px;'>I work every day.</td><td style='border:1px solid var(--border); padding:5px;'>I am working now.</td></tr></table><div class='example'>Simple = рутина, Continuous = процесс.</div>" },
-        { t: "Глаголы состояния (Stative Verbs)", b: "<p>Некоторые глаголы <b>не используются</b> в Continuous:</p><ul><li><b>Чувства:</b> like, love, hate, want, need.</li><li><b>Мышление:</b> know, understand, believe, remember.</li><li><b>Восприятие:</b> see, hear.</li></ul><div class='example'>I <b>know</b> the answer. (НЕ I am knowing).</div>" },
-        { t: "Правило добавления -ing", b: "<p>При образовании Continuous мы добавляем <b>-ing</b>:</p><ul><li>Обычно: play -> play<b>ing</b>.</li><li>Немая -e отпадает: make -> mak<b>ing</b>.</li><li>Удвоение: run -> run<b>ning</b>.</li><li>ie меняется на y: lie -> ly<b>ing</b>.</li></ul><div class='example cont'>I am run<b>ning</b> now.</div>" },
-        { t: "Отрицание и Вопросы", b: "<h3>Present Simple:</h3><div class='example'>I <b>do not like</b> coffee.<br><b>Do</b> you <b>like</b> coffee?</div><h3>Present Continuous:</h3><div class='example cont'>I <b>am not reading</b> now.<br><b>Are</b> you <b>reading</b> now?</div>" },
-        { t: "Специальные вопросы", b: "<p>Вопросительные слова ставятся в начало:</p><div class='example'><b>Where</b> do you live?</div><div class='example cont'><b>What</b> are you doing?</div>" },
-        { t: "Наречия частоты", b: "<p>В Simple наречия частоты ставятся <b>перед глаголом</b>, но <b>после to be</b>:</p><div class='example'>I <b>always</b> drink coffee.</div><div class='example'>He <b>is always</b> late.</div>" },
-        { t: "Глаголы, меняющие значение", b: "<p>Есть глаголы с разными оттенками:</p><div class='example cont'><b>see</b> (видеть) -> I see a bird. / <b>see</b> (встречаться) -> I am seeing a doctor.</div>" },
-        { t: "Дополнительно", b: "<p>Повторите правила и переходите к играм!</p>" }
-      ];
-      const topic = topics[(i - 1) % topics.length];
-      baseSlides.push({ ru: { title: `${i}. ${topic.t}`, body: topic.b } });
-    }
+  const topics = [
+    { t: "Введение", b: "<p>Добро пожаловать в конспект!</p>" },
+    { t: "Что такое Present Simple?", b: "<p>Регулярные действия и факты.</p><div class='example'>I play tennis.</div>" },
+    { t: "Образование Present Simple", b: "<ul><li>+s/es для he/she/it</li></ul>" },
+    { t: "Маркеры Present Simple", b: "<ul><li>always, usually, every day</li></ul>" },
+    { t: "Что такое Present Continuous?", b: "<p>Действия прямо сейчас.</p><div class='example cont'>I am reading.</div>" },
+    { t: "Образование Present Continuous", b: "<ul><li>am/is/are + ing</li></ul>" },
+    { t: "Маркеры Present Continuous", b: "<ul><li>now, at the moment</li></ul>" },
+    { t: "Сравнение", b: "<p>Simple = рутина, Continuous = процесс.</p>" },
+    { t: "Stative Verbs", b: "<p>like, love, know.</p>" },
+    { t: "Правило -ing", b: "<p>play -> playing.</p>" },
+    { t: "Отрицание", b: "<p>I don't like / I am not reading.</p>" },
+    { t: "Вопросы", b: "<p>Do you like? / Are you reading?</p>" },
+    { t: "Наречия частоты", b: "<p>I always drink coffee.</p>" },
+    { t: "Глаголы, меняющие значение", b: "<p>see (видеть) vs see (встречаться).</p>" },
+    { t: "Примеры 1", b: "<div class='example'>I work every day.</div>" },
+    { t: "Примеры 2", b: "<div class='example cont'>I am working now.</div>" },
+    { t: "Примеры 3", b: "<div class='example'>She reads books.</div>" },
+    { t: "Примеры 4", b: "<div class='example cont'>She is reading a book.</div>" },
+    { t: "Практика 1", b: "<p>I ___ (play) tennis now. -> am playing.</p>" },
+    { t: "Практика 2", b: "<p>He ___ (go) to school every day. -> goes.</p>" },
+    { t: "Практика 3", b: "<p>They ___ (not / like) coffee. -> don't like.</p>" },
+    { t: "Практика 4", b: "<p>We ___ (meet) tomorrow. -> are meeting.</p>" },
+    { t: "Практика 5", b: "<p>Water ___ (boil) at 100°C. -> boils.</p>" },
+    { t: "Исключения", b: "<p>have (иметь) / have (испытывать).</p>" },
+    { t: "Итог 1", b: "<p>Simple = факт, Continuous = процесс.</p>" },
+    { t: "Итог 2", b: "<p>Маркеры: always / now.</p>" },
+    { t: "Итог 3", b: "<p>Форма: V / V+ing.</p>" },
+    { t: "Бонус 1", b: "<p>Повторите все правила.</p>" },
+    { t: "Бонус 2", b: "<p>Переходите к играм!</p>" },
+    { t: "Змейка", b: "<div style='text-align:center;'><button class='start-btn' id='snakeStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='startSnake()'>Начнём?</button><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400' style='display:none;'></canvas></div>" },
+    { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div></div></div>" },
+    { t: "Создатель", b: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" },
+    { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" },
+    { t: "Картинки", b: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" }
+  ];
+
+  for (let i = 1; i <= 34; i++) {
+    const topic = topics[(i - 1) % topics.length];
+    baseSlides.push({ ru: { title: `${i}. ${topic.t}`, body: topic.b } });
   }
 
   let currentSlide = 0;
@@ -754,7 +514,7 @@
       div.className = 'slide' + (index === currentSlide ? ' active' : '');
       div.id = 'slide-' + index;
       
-      const isEasterEgg = (index === 118);
+      const isEasterEgg = (index === 33);
       const titleAttr = isEasterEgg ? "onclick='handleEggClick()'" : "";
       
       div.innerHTML = `<h1 ${titleAttr}>${slide.ru.title}</h1><div>${slide.ru.body}</div>`;
@@ -776,14 +536,17 @@
     document.getElementById('pageCounter').textContent = (currentSlide + 1) + ' / ' + baseSlides.length;
     document.getElementById('contentArea').scrollTop = 0;
 
-    if (currentSlide === 116) initClicker();
-    if (currentSlide === 118) startSnake();
+    if (currentSlide === 29) initSnakePage();
+    if (currentSlide === 30) initClickerPage();
   }
 
   function handleEggClick() {
     clickCount++;
     clearTimeout(window.eggTimer);
     if (clickCount === 3) {
+      document.getElementById('hogImg').style.display = 'block';
+      document.getElementById('hogImg').src = 'totya.jpg';
+      document.getElementById('hogText').textContent = 'Тотя ❤️';
       document.getElementById('hogOverlay').classList.add('show');
       clickCount = 0;
     } else {
@@ -792,190 +555,23 @@
   }
   function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
 
-  // === КЛИКЕР ===
-  let score = 0;
-  let cPower = 1, cCost = 15, cLvl = 1;
-  let aPower = 0, aCost = 50, aLvl = 0;
-  let mPower = 1, mCost = 100, mLvl = 1;
-  let isVerity = false;
-  let verityClicks = 0;
-  let verityTalking = false;
-  let verityTimeout;
-
-  function initClicker() {
-    const wrapper = document.getElementById('coinWrapper');
-    if (wrapper) {
-      wrapper.innerHTML = `
-        <div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>
-        <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;">
-          До попытки: <span id="progressDisplay">0 / 167</span>
-        </div>
-      `;
-      isVerity = false; verityClicks = 0; verityTalking = false;
-      coinClickCounter = 0;
-      attemptCounter = 0;
-      if (verityTimeout) clearTimeout(verityTimeout);
-    }
-    updateClickerUI();
-  }
-
-  function clickCoin() {
-    if (isVerity) {
-      verityClicks++;
-      
-      if (verityTalking) {
-        verityTalking = false;
-        clearTimeout(verityTimeout);
-        const bubble = document.querySelector('.speech-bubble');
-        if (bubble) bubble.remove();
-        
-        const wrapper = document.getElementById('coinWrapper');
-        const ball = wrapper.querySelector('.ball');
-        if (ball) {
-          const stopBubble = document.createElement('div');
-          stopBubble.className = 'speech-bubble';
-          stopBubble.textContent = 'Стоп';
-          stopBubble.style.fontFamily = 'var(--font-main)';
-          stopBubble.style.fontSize = '1em';
-          ball.appendChild(stopBubble);
-          
-          setTimeout(() => { if (stopBubble.parentNode) stopBubble.remove(); }, 1000);
-        }
-      }
-      
-      if (verityClicks >= 3) {
-        verityClicks = 0;
-        const wrapper = document.getElementById('coinWrapper');
-        wrapper.innerHTML = `
-          <div class="monster" onclick="closeMonster()">
-            <div class="speech-bubble" style="font-family: var(--font-main);">${verityPhrase}</div>
-          </div>
-        `;
-        
-        document.body.classList.add('screen-cracked');
-        setTimeout(() => {
-          document.body.classList.remove('screen-cracked');
-        }, 10000);
-      }
-      return;
-    }
-
-    coinClickCounter++;
-    score += cPower * mPower;
-    updateClickerUI();
-    
-    if (coinClickCounter === 67) {
-      document.getElementById('hogImg').style.display = 'block';
-      document.getElementById('hogImg').src = 'meme.jpg';
-      document.getElementById('hogText').textContent = '67';
-      document.getElementById('hogOverlay').classList.add('show');
-    }
-
-    if (coinClickCounter >= 167) {
-      if (Math.random() < 0.1) {
-        coinClickCounter = 0;
-        attemptCounter = 0;
-        spawnVerity();
-      } else {
-        attemptCounter++;
-        if (attemptCounter >= 167) {
-          coinClickCounter = 0;
-          attemptCounter = 0;
-        }
-      }
-    }
-    
-    const progressEl = document.getElementById('progressDisplay');
-    if (progressEl) {
-      if (coinClickCounter < 167) {
-        progressEl.textContent = `${coinClickCounter} / 167`;
-      } else {
-        progressEl.textContent = `Попытка ${attemptCounter} / 167 (10% шанс)`;
-      }
-    }
-  }
-
-  function spawnVerity() {
-    const wrapper = document.getElementById('coinWrapper');
-    wrapper.innerHTML = `
-      <div class="verity-title">Верити</div>
-      <div class="ball" onclick="clickCoin()">
-        <div class="speech-bubble" style="font-family: var(--font-main);">
-          <span class="anim-fade" style="--anim-speed: 0.5s;">${verityPhrase}</span>
-        </div>
-        <div class="ball-eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
-        <div class="mouth"></div>
-      </div>
-      <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;">
-        До попытки: <span id="progressDisplay">0 / 167</span>
-      </div>
-    `;
-    isVerity = true;
-    verityTalking = true;
-    verityClicks = 0;
-    
-    verityTimeout = setTimeout(() => {
-      if (verityTalking) {
-        verityTalking = false;
-        const bubble = document.querySelector('.speech-bubble');
-        if (bubble) bubble.remove();
-      }
-    }, 3000);
-  }
-
-  function closeMonster() {
-    const wrapper = document.getElementById('coinWrapper');
-    if (wrapper) {
-      wrapper.innerHTML = `
-        <div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>
-        <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;">
-          До попытки: <span id="progressDisplay">0 / 167</span>
-        </div>
-      `;
-      isVerity = false;
-      verityTalking = false;
-    }
-    score = 0; cPower = 1; cCost = 15; cLvl = 1;
-    aPower = 0; aCost = 50; aLvl = 0;
-    mPower = 1; mCost = 100; mLvl = 1;
-    coinClickCounter = 0;
-    attemptCounter = 0;
-    updateClickerUI();
-  }
-
-  function buyUpgrade(type) {
-    if (type === 1 && cLvl < 10 && score >= cCost) { score -= cCost; cPower++; cLvl++; cCost *= 2; }
-    else if (type === 2 && score >= aCost) { score -= aCost; aPower++; aLvl++; aCost *= 2; }
-    else if (type === 3 && mLvl < 10 && score >= mCost) { score -= mCost; mPower *= 2; mLvl++; mCost *= 2; }
-    updateClickerUI();
-  }
-
-  function updateClickerUI() {
-    const s = document.getElementById('scoreDisplay');
-    if (s) s.textContent = score;
-    const c1 = document.getElementById('costClick');
-    if (c1) c1.textContent = cCost;
-    const c2 = document.getElementById('costAuto');
-    if (c2) c2.textContent = aCost;
-    const c3 = document.getElementById('costMult');
-    if (c3) c3.textContent = mCost;
-    
-    const b1 = document.getElementById('btnClick');
-    if (b1) { b1.textContent = `Купить (ур. ${cLvl}/10)`; b1.disabled = score < cCost || cLvl >= 10; }
-    const b2 = document.getElementById('btnAuto');
-    if (b2) { b2.textContent = `Купить (ур. ${aLvl})`; b2.disabled = score < aCost; }
-    const b3 = document.getElementById('btnMult');
-    if (b3) { b3.textContent = `Купить (ур. ${mLvl}/10)`; b3.disabled = score < mCost || mLvl >= 10; }
-  }
-
-  setInterval(() => { if (aPower > 0) { score += aPower; updateClickerUI(); } }, 1000);
-
   // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
+  let snakeStarted = false;
+
+  function initSnakePage() {
+    const btn = document.getElementById('snakeStartBtn');
+    if (btn) { btn.style.display = 'block'; }
+    if (snakeCanvas) { snakeCanvas.style.display = 'none'; }
+    snakeStarted = false;
+  }
 
   function startSnake() {
+    const btn = document.getElementById('snakeStartBtn');
+    if (btn) btn.style.display = 'none';
+    
     snakeCanvas = document.getElementById('gameCanvas');
-    if (!snakeCanvas) return;
+    snakeCanvas.style.display = 'block';
     snakeCtx = snakeCanvas.getContext('2d');
     snake = [{x: 10, y: 10}];
     snakeDir = {x: 0, y: 0};
@@ -993,6 +589,12 @@
       if (targetX === food.x && targetY === food.y) {
         document.getElementById('snakeScore').textContent = snake.length - 1;
         if (snake.length - 1 > record) { record = snake.length - 1; localStorage.setItem('snakeRecord', record); document.getElementById('snakeRecord').textContent = record; }
+        if (snake.length - 1 === 67) {
+          document.getElementById('hogImg').style.display = 'block';
+          document.getElementById('hogImg').src = 'meme.jpg';
+          document.getElementById('hogText').textContent = '67!';
+          document.getElementById('hogOverlay').classList.add('show');
+        }
         placeFood();
       } else { snake.pop(); }
       drawSnake();
@@ -1020,7 +622,46 @@
     document.getElementById('hogOverlay').classList.add('show');
   }
 
-  // === НАСТРОЙКИ РАЗРАБОТЧИКА (УДЕРЖАНИЕ 45 СЕК) ===
+  // === КЛИКЕР ===
+  let score = 0;
+  let cPower = 1;
+  let isVerity = false;
+  let verityClicks = 0;
+
+  function initClickerPage() {
+    document.getElementById('clickerStartBtn').style.display = 'block';
+    document.getElementById('clickerUI').style.display = 'none';
+  }
+
+  function initClicker() {
+    document.getElementById('clickerStartBtn').style.display = 'none';
+    document.getElementById('clickerUI').style.display = 'flex';
+    document.getElementById('scoreDisplay').textContent = 0;
+  }
+
+  function clickCoin() {
+    if (isVerity) {
+      verityClicks++;
+      if (verityClicks >= 3) {
+        document.body.classList.add('screen-cracked');
+        setTimeout(() => document.body.classList.remove('screen-cracked'), 10000);
+      }
+      return;
+    }
+
+    coinClickCounter++;
+    score++;
+    document.getElementById('scoreDisplay').textContent = score;
+    
+    if (coinClickCounter === 67) {
+      document.getElementById('hogImg').style.display = 'block';
+      document.getElementById('hogImg').src = 'meme.jpg';
+      document.getElementById('hogText').textContent = '67!';
+      document.getElementById('hogOverlay').classList.add('show');
+    }
+  }
+
+  // === НАСТРОЙКИ РАЗРАБОТЧИКА ===
   let devHoldTimer = null;
   let devHoldStart = 0;
 
@@ -1029,7 +670,7 @@
     devHoldTimer = setInterval(() => {
       if (Date.now() - devHoldStart >= 45000) {
         clearInterval(devHoldTimer);
-        openDevPanel();
+        document.getElementById('devTabBtn').style.display = 'block';
       }
     }, 1000);
   }
@@ -1040,46 +681,12 @@
   }
 
   function openDevPanel() {
-    let devPanel = document.getElementById('devPanel');
-    if (!devPanel) {
-      devPanel = document.createElement('div');
-      devPanel.id = 'devPanel';
-      devPanel.style.cssText = `
-        position: fixed; top: 10%; left: 10%; width: 80%; height: 80%;
-        background: var(--card); border: 2px solid var(--accent);
-        border-radius: 15px; z-index: 10000; padding: 20px; overflow-y: auto;
-        box-shadow: 0 0 50px rgba(0,0,0,0.8); font-family: var(--font-main);
-        color: var(--text);
-      `;
-      devPanel.innerHTML = `
-        <h2 style="color: var(--accent); text-align: center; margin-bottom: 20px;">Настройки разработчика</h2>
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px;">Цвет Верити:</label>
-          <input type="color" id="devVerityColor" value="#991b1b" style="width: 100%; padding: 5px;" onchange="changeVerityColor(this.value)">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px;">Лицо Верити (URL):</label>
-          <input type="text" id="devVerityFace" placeholder="Введите URL картинки" style="width: 100%; padding: 5px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg); color: var(--text);">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <button onclick="deleteConspect()" style="background: red; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Удалить конспект</button>
-          <button onclick="location.reload()" style="background: var(--accent); color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Восстановить конспект</button>
-        </div>
-        <button onclick="document.getElementById('devPanel').remove()" style="background: var(--muted); color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%;">Закрыть</button>
-      `;
-      document.body.appendChild(devPanel);
-    }
-    devPanel.style.display = 'block';
-  }
-
-  function deleteConspect() {
-    baseSlides.length = 0;
-    renderSlides();
+    alert('Панель разработчика открыта!');
   }
 
   // === ЗАПУСК ===
   window.onload = function() {
-    initSelects();
+    initSelects(); // Устанавливает тёмную тему по умолчанию
     renderSlides();
     document.getElementById('pageCounter').textContent = '1 / ' + baseSlides.length;
   };

@@ -274,53 +274,52 @@
   <div class="topbar">
     <h2>Мега-Конспект</h2>
     <div class="controls">
-      <!-- Флаги для языков -->
       <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
-        <option value="ru">🇷🇺 RU</option>
-        <option value="en">🇬🇧 EN</option>
-        <option value="es">🇪🇸 ES</option>
-        <option value="de">🇩🇪 DE</option>
-        <option value="fr">🇫🇷 FR</option>
-        <option value="it">🇮🇹 IT</option>
-        <option value="pt">🇵🇹 PT</option>
-        <option value="zh">🇨🇳 ZH</option>
-        <option value="ja">🇯🇵 JA</option>
-        <option value="ko">🇰🇷 KO</option>
-        <option value="ar">🇸🇦 AR</option>
-        <option value="tr">🇹🇷 TR</option>
-        <option value="pl">🇵🇱 PL</option>
-        <option value="uk">🇺🇦 UK</option>
-        <option value="sv">🇸🇪 SV</option>
-        <option value="no">🇳🇴 NO</option>
-        <option value="da">🇩🇰 DA</option>
-        <option value="fi">🇫🇮 FI</option>
-        <option value="cs">🇨🇿 CS</option>
-        <option value="sk">🇸🇰 SK</option>
-        <option value="hu">🇭🇺 HU</option>
-        <option value="ro">🇷🇴 RO</option>
-        <option value="bg">🇧🇬 BG</option>
-        <option value="el">🇬🇷 EL</option>
-        <option value="he">🇮🇱 HE</option>
-        <option value="hi">🇮🇳 HI</option>
-        <option value="id">🇮🇩 ID</option>
-        <option value="ms">🇲🇾 MS</option>
-        <option value="th">🇹🇭 TH</option>
-        <option value="vi">🇻🇳 VI</option>
-        <option value="nl">🇳🇱 NL</option>
-        <option value="is">🇮🇸 IS</option>
-        <option value="ga">🇮🇪 GA</option>
-        <option value="cy">🏴󠁧󠁢󠁷󠁬󠁳󠁿 CY</option>
-        <option value="sr">🇷🇸 SR</option>
-        <option value="hr">🇭🇷 HR</option>
+        <option value="ru">RU Русский</option>
+        <option value="en">EN English</option>
+        <option value="es">ES Español</option>
+        <option value="de">DE Deutsch</option>
+        <option value="fr">FR Français</option>
+        <option value="it">IT Italiano</option>
+        <option value="pt">PT Português</option>
+        <option value="zh">ZH 中文</option>
+        <option value="ja">JA 日本語</option>
+        <option value="ko">KO 한국어</option>
+        <option value="ar">AR العربية</option>
+        <option value="tr">TR Türkçe</option>
+        <option value="pl">PL Polski</option>
+        <option value="uk">UK Українська</option>
+        <option value="sv">SV Svenska</option>
+        <option value="no">NO Norsk</option>
+        <option value="da">DA Dansk</option>
+        <option value="fi">FI Suomi</option>
+        <option value="cs">CS Čeština</option>
+        <option value="sk">SK Slovenčina</option>
+        <option value="hu">HU Magyar</option>
+        <option value="ro">RO Română</option>
+        <option value="bg">BG Български</option>
+        <option value="el">EL Ελληνικά</option>
+        <option value="he">HE עברית</option>
+        <option value="hi">HI हिन्दी</option>
+        <option value="id">ID Bahasa</option>
+        <option value="ms">MS Melayu</option>
+        <option value="th">TH ไทย</option>
+        <option value="vi">VI Tiếng Việt</option>
+        <option value="nl">NL Nederlands</option>
+        <option value="is">IS Íslenska</option>
+        <option value="ga">GA Gaeilge</option>
+        <option value="cy">CY Cymraeg</option>
+        <option value="sr">SR Српски</option>
+        <option value="hr">HR Hrvatski</option>
       </select>
       <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)"></select>
     </div>
   </div>
 
-  <button class="widget-toggle" onclick="toggleWidgets()">⚙️</button>
+  <button class="widget-toggle" onclick="toggleWidgets()">Настройки</button>
   
   <div class="draggable-widget" id="widgetSettings">
-    <h3>🎨 Настройки</h3>
+    <h3>Настройки</h3>
     <label style="font-size: 0.7em; color: var(--muted);">Тема:</label>
     <select id="themeSelectWidget" onchange="changeTheme(this.value)"></select>
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Шрифт:</label>
@@ -341,7 +340,6 @@
   </div>
 
 <script>
-  // === ГЕНЕРАЦИЯ 100 ШРИФТОВ ===
   const fontsList = [
     "'Segoe UI', sans-serif", "'Roboto', sans-serif", "'Comfortaa', cursive", 
     "'Marck Script', cursive", "'Pacifico', cursive", "'Press Start 2P', cursive",
@@ -377,7 +375,6 @@
     "Modern No. 20, serif", "Monotype Corsiva, cursive", "Niagara Engraved, sans-serif"
   ];
 
-  // === ГЕНЕРАЦИЯ 250 ТЕМ ===
   function generateThemes() {
     const themes = [];
     for (let i = 0; i < 250; i++) {
@@ -442,24 +439,20 @@
   function changeTheme(index) { applyTheme(parseInt(index)); }
   function changeFont(fontName) { document.documentElement.style.setProperty('--font-main', fontName); }
 
-  // === СМЕНА ЯЗЫКА ===
   let currentLang = 'ru';
   function changeLang(lang) {
     currentLang = lang;
     document.getElementById('langSelect').value = lang;
     
-    // Обновляем названия страниц (упрощенно: просто меняем кнопки и заголовки)
     const prevText = { ru: '← Назад', en: '← Back', es: '← Atrás', de: '← Zurück', fr: '← Retour', it: '← Indietro', pt: '← Voltar', zh: '← 后退', ja: '← 戻る', ko: '← 뒤로', ar: '← رجوع', tr: '← Geri', pl: '← Wstecz', uk: '← Назад', sv: '← Tillbaka', no: '← Tilbake', da: '← Tilbage', fi: '← Takaisin', cs: '← Zpět', sk: '← Späť', hu: '← Vissza', ro: '← Înapoi', bg: '← Назад', el: '← Πίσω', he: '← חזור', hi: '← पीछे', id: '← Kembali', ms: '← Kembali', th: '← ย้อนกลับ', vi: '← Quay lại', nl: '← Terug', is: '← Til baka', ga: '← Ar ais', cy: '← Yn ôl', sr: '← Назад', hr: '← Natrag' };
     const nextText = { ru: 'Вперед →', en: 'Next →', es: 'Siguiente →', de: 'Weiter →', fr: 'Suivant →', it: 'Avanti →', pt: 'Próximo →', zh: '下一步 →', ja: '次へ →', ko: '다음 →', ar: 'التالي →', tr: 'İleri →', pl: 'Dalej →', uk: 'Вперед →', sv: 'Nästa →', no: 'Neste →', da: 'Næste →', fi: 'Seuraava →', cs: 'Další →', sk: 'Ďalej →', hu: 'Következő →', ro: 'Următor →', bg: 'Напред →', el: 'Επόμενο →', he: 'הבא →', hi: 'अगला →', id: 'Berikutnya →', ms: 'Seterusnya →', th: 'ถัดไป →', vi: 'Tiếp theo →', nl: 'Volgende →', is: 'Næsta →', ga: 'Ar aghaidh →', cy: 'Nesaf →', sr: 'Напред →', hr: 'Dalje →' };
     
     if (prevText[lang]) document.getElementById('prevBtn').textContent = prevText[lang];
     if (nextText[lang]) document.getElementById('nextBtn').textContent = nextText[lang];
     
-    // Перерендер страниц (текст пока на русском, но кнопки переведутся)
     renderSlides();
   }
 
-  // === ПЕРЕТАСКИВАНИЕ ===
   let widgetVisible = false;
   function toggleWidgets() {
     widgetVisible = !widgetVisible;
@@ -481,12 +474,11 @@
   });
   document.addEventListener('mouseup', () => { isDragging = false; });
 
-  // === ГЕНЕРАЦИЯ 119 СТРАНИЦ ===
   const baseSlides = [];
   for (let i = 1; i <= 119; i++) {
     if (i === 1) baseSlides.push({ ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center;'>Добро пожаловать!</p>" } });
     else if (i === 119) baseSlides.push({ ru: { title: "Пасхалка!", body: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" } });
-    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>💰</div></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" } });
+    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" } });
     else if (i === 118) baseSlides.push({ ru: { title: "Создатель", body: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" } });
     else if (i === 119) baseSlides.push({ ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;'>Начать заново</button></div>" } });
     else if (i === 120) baseSlides.push({ ru: { title: "Бонусные картинки", body: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" } });
@@ -544,7 +536,6 @@
   }
   function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
 
-  // === КЛИКЕР ===
   let score = 0;
   let cPower = 1, cCost = 15, cLvl = 1;
   let aPower = 0, aCost = 50, aLvl = 0;
@@ -555,7 +546,7 @@
   function initClicker() {
     const wrapper = document.getElementById('coinWrapper');
     if (wrapper) {
-      wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">💰</div>';
+      wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>';
       isBall = false; ballClicks = 0; coinClickCounter = 0;
     }
     updateClickerUI();
@@ -568,7 +559,7 @@
         document.body.classList.add('screen-cracked');
         setTimeout(() => {
           document.body.classList.remove('screen-cracked');
-          document.getElementById('hogOverlay').innerHTML = '<h2 style="color:#ff0000; font-family:\'Marck Script\', cursive; font-size:3em;">Ты не должен был меня найтиии!</h2>';
+          document.getElementById('hogOverlay').innerHTML = '<h2 style="color:#ff0000; font-family:Marck Script, cursive; font-size:3em;">Ты не должен был меня найтиии!</h2>';
           document.getElementById('hogOverlay').classList.add('show');
           resetGame();
         }, 5000);
@@ -597,7 +588,7 @@
     if (coinClickCounter >= 567) {
       coinClickCounter = 0;
       const wrapper = document.getElementById('coinWrapper');
-      wrapper.innerHTML = '<div class="ball" id="ballBtn" onclick="clickCoin()">⚽</div>';
+      wrapper.innerHTML = '<div class="ball" id="ballBtn" onclick="clickCoin()">Шарик</div>';
       isBall = true; ballClicks = 0;
     }
   }
@@ -610,7 +601,7 @@
     updateClickerUI();
     document.getElementById('hogOverlay').innerHTML = '<img src="pig_face.jpg"><h2>ПОЗДРАВЛЯЮ ВЫ ВЫБИЛИ ХРЯКА!</h2>';
     const wrapper = document.getElementById('coinWrapper');
-    if (wrapper) wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">💰</div>';
+    if (wrapper) wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>';
   }
 
   function buyUpgrade(type) {
@@ -640,7 +631,6 @@
 
   setInterval(() => { if (aPower > 0) { score += aPower; updateClickerUI(); } }, 1000);
 
-  // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
   let snakeX = 10, snakeY = 10, targetX = 10, targetY = 10;
 

@@ -123,6 +123,17 @@
     max-width: 100%; max-height: 250px; border-radius: 10px;
     border: 3px solid var(--accent); box-shadow: 0 0 15px rgba(0,0,0,0.3);
   }
+  
+  /* Подпись на 34-й странице */
+  .creator-signature {
+    font-family: 'Marck Script', cursive;
+    font-size: 2em;
+    color: #1a1a1a; /* Тёмный цвет */
+    text-align: center;
+    margin-top: 15px;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
+    opacity: 0.9;
+  }
 
   .start-btn {
     background: #22c55e; color: var(--text); border: none;
@@ -405,23 +416,19 @@
   // === ГЕНЕРАЦИЯ 165 УНИКАЛЬНЫХ ЦВЕТОВ ===
   function generateUniqueThemes() {
     const themes = [];
-    // 165 шагов по цветовому кругу (Hue от 0 до 360)
     for (let i = 0; i < 165; i++) {
       const hue = Math.floor((i * 360) / 165);
-      // Делаем базовый тон (без вариаций типа "тёмно-синий")
-      // Берём фиксированную насыщенность и светлоту, чтобы не было "оттенков"
       const saturation = 60; 
-      const lightness = 25; // Достаточно тёмный, чтобы текст читался
+      const lightness = 25; 
       
       const bg = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       const card = `hsl(${hue}, ${saturation}%, ${lightness + 5}%)`;
-      const text = `hsl(${hue}, 10%, 95%)`; // Светлый текст для контраста
+      const text = `hsl(${hue}, 10%, 95%)`; 
       const muted = `hsl(${hue}, 20%, 70%)`;
       const border = `hsl(${hue}, 30%, 40%)`;
-      const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`; // Контрастный акцент
+      const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`; 
       const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
       
-      // Название цвета (просто порядковый номер, так как оттенки плавные)
       themes.push({ 
         name: `Цвет ${i + 1}`, 
         vars: { bg, card, text, muted, border, accent, accent2 } 
@@ -451,7 +458,7 @@
   }
 
   function rgbToHex(color) {
-    return '#f8fafc'; // Заглушка, так как HSL не переводим
+    return '#f8fafc';
   }
 
   function initSelects() {
@@ -467,9 +474,6 @@
       select2.appendChild(opt2);
     });
     
-    // По умолчанию — первая тема (Тёмная изначально, но так как мы сгенерировали 165,
-    // то первая — это красноватая. Чтобы была именно тёмная, можно сделать отдельную)
-    // Я оставлю первую как Тёмная для запуска.
     applyTheme(0);
     select1.selectedIndex = 0;
     select2.selectedIndex = 0;
@@ -515,7 +519,8 @@
     { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div></div></div>" },
     { t: "Создатель", b: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" },
     { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" },
-    { t: "Картинки", b: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" }
+    // 34 страница — тут будет картинка с кабаном на мотоцикле
+    { t: "Финал", b: "<div class='image-container'><img src='pig_bike.jpg' alt='Кабан на мотоцикле'></div>" }
   ];
 
   for (let i = 1; i <= 34; i++) {
@@ -541,6 +546,15 @@
       const titleAttr = isEasterEgg ? "onclick='handleEggClick()'" : "";
       
       div.innerHTML = `<h1 ${titleAttr}>${slide.ru.title}</h1><div>${slide.ru.body}</div>`;
+      
+      // Если это последняя страница (34), добавляем подпись снизу
+      if (index === 33) {
+        const sign = document.createElement('div');
+        sign.className = 'creator-signature';
+        sign.textContent = 'Термометр Магдеев';
+        div.appendChild(sign);
+      }
+      
       area.appendChild(div);
     });
   }
@@ -715,4 +729,4 @@
   };
 </script>
 </body>
-</html>
+  </html>

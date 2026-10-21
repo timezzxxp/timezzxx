@@ -124,6 +124,14 @@
     border: 3px solid var(--accent); box-shadow: 0 0 15px rgba(0,0,0,0.3);
   }
   
+  .dev-frame {
+    width: 200px; height: 200px; border-radius: 15px;
+    border: 6px solid #ffffff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
+    overflow: hidden; margin: 0 auto 15px auto; display: flex;
+    align-items: center; justify-content: center; background: #fff;
+  }
+  .dev-frame img { width: 100%; height: 100%; object-fit: cover; }
+
   .creator-signature {
     font-family: 'Marck Script', cursive;
     font-size: 1.8em;
@@ -133,15 +141,6 @@
     line-height: 1.4;
     opacity: 0.9;
   }
-
-  /* Белая рамка для разработчика */
-  .dev-frame {
-    width: 200px; height: 200px; border-radius: 15px;
-    border: 6px solid #ffffff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
-    overflow: hidden; margin: 0 auto 15px auto; display: flex;
-    align-items: center; justify-content: center; background: #fff;
-  }
-  .dev-frame img { width: 100%; height: 100%; object-fit: cover; }
 
   .start-btn {
     background: #22c55e; color: var(--text); border: none;
@@ -288,7 +287,7 @@
   }
   @keyframes lossPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-  /* 5 трещин на экране */
+  /* 5 трещин */
   .screen-cracked::before {
     content: '';
     position: fixed;
@@ -338,7 +337,7 @@
         <option value="ru">RU Русский</option>
         <option value="en">EN English</option>
       </select>
-      <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)"></select>
+      <select class="theme-select" id="themeSelect"></select>
     </div>
   </div>
 
@@ -347,11 +346,11 @@
   <div class="draggable-widget" id="widgetSettings">
     <h3>Настройки</h3>
     <label style="font-size: 0.7em; color: var(--muted);">Тема:</label>
-    <select id="themeSelectWidget" onchange="changeTheme(this.value)"></select>
+    <select id="themeSelectWidget"></select>
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Масштаб:</label>
-    <input type="range" id="zoomInput" min="0.8" max="1.5" step="0.1" value="1" onchange="changeZoom(this.value)">
+    <input type="range" id="zoomInput" min="0.8" max="1.5" step="0.1" value="1">
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет текста:</label>
-    <input type="color" id="textColorInput" value="#ffffff" onchange="changeTextColor(this.value)">
+    <input type="color" id="textColorInput" value="#ffffff">
     <button id="devTabBtn" class="nav-btn" style="margin-top: 10px; display: none; background: var(--accent2);" onclick="openDevPanel()">Разработчик</button>
   </div>
 
@@ -387,7 +386,7 @@
     } catch(e) {}
   }
 
-  // === 8 ТЕМ ===
+  // === ТЕМЫ ===
   const fixedThemes = [
     { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } },
     { name: "Белая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
@@ -398,6 +397,36 @@
     { name: "Голубая", vars: { bg: "#164e63", card: "#155e75", text: "#cffafe", muted: "#a5f3fc", border: "#0891b2", accent: "#22d3ee", accent2: "#06b6d4" } },
     { name: "Синяя", vars: { bg: "#172554", card: "#1e3a8a", text: "#dbeafe", muted: "#bfdbfe", border: "#1d4ed8", accent: "#60a5fa", accent2: "#3b82f6" } }
   ];
+
+  // Инициализация настроек
+  function initSettings() {
+    const sel1 = document.getElementById('themeSelect');
+    const sel2 = document.getElementById('themeSelectWidget');
+    
+    fixedThemes.forEach((theme, i) => {
+      const opt1 = document.createElement('option');
+      opt1.value = i; opt1.textContent = theme.name;
+      sel1.appendChild(opt1);
+      
+      const opt2 = document.createElement('option');
+      opt2.value = i; opt2.textContent = theme.name;
+      sel2.appendChild(opt2);
+    });
+    
+    // Обработчики
+    sel1.addEventListener('change', function() { applyTheme(parseInt(this.value)); });
+    sel2.addEventListener('change', function() { applyTheme(parseInt(this.value)); });
+    
+    document.getElementById('zoomInput').addEventListener('input', function() {
+      document.documentElement.style.setProperty('--zoom-level', this.value);
+    });
+    
+    document.getElementById('textColorInput').addEventListener('input', function() {
+      document.documentElement.style.setProperty('--text', this.value);
+    });
+    
+    applyTheme(0);
+  }
 
   function applyTheme(index) {
     const theme = fixedThemes[index];
@@ -412,46 +441,9 @@
     root.style.setProperty('--accent2', theme.vars.accent2);
     root.style.setProperty('--bubble-bg', theme.vars.card);
     
-    const sel1 = document.getElementById('themeSelect');
-    const sel2 = document.getElementById('themeSelectWidget');
-    if (sel1) sel1.selectedIndex = index;
-    if (sel2) sel2.selectedIndex = index;
-    
-    const tc = document.getElementById('textColorInput');
-    if (tc) tc.value = theme.vars.text;
-  }
-
-  function initSelects() {
-    const select1 = document.getElementById('themeSelect');
-    const select2 = document.getElementById('themeSelectWidget');
-
-    fixedThemes.forEach((theme, i) => {
-      if (select1) {
-        const opt1 = document.createElement('option');
-        opt1.value = i; opt1.textContent = theme.name;
-        select1.appendChild(opt1);
-      }
-      if (select2) {
-        const opt2 = document.createElement('option');
-        opt2.value = i; opt2.textContent = theme.name;
-        select2.appendChild(opt2);
-      }
-    });
-    
-    applyTheme(0);
-  }
-
-  function changeTheme(index) {
-    applyTheme(parseInt(index));
-    playSound(600, 0.1, 'sine');
-  }
-
-  function changeZoom(val) {
-    document.documentElement.style.setProperty('--zoom-level', val);
-  }
-
-  function changeTextColor(color) {
-    document.documentElement.style.setProperty('--text', color);
+    document.getElementById('themeSelect').selectedIndex = index;
+    document.getElementById('themeSelectWidget').selectedIndex = index;
+    document.getElementById('textColorInput').value = theme.vars.text;
   }
 
   let widgetVisible = false;
@@ -459,6 +451,10 @@
     widgetVisible = !widgetVisible;
     document.getElementById('widgetSettings').style.display = widgetVisible ? 'flex' : 'none';
     playSound(widgetVisible ? 800 : 400, 0.1, 'sine');
+  }
+
+  function changeLang(lang) {
+    // Заглушка
   }
 
   // === 34 СТРАНИЦЫ ===
@@ -509,6 +505,7 @@
   let record = localStorage.getItem('snakeRecord') || 0;
   let coinClickCounter = 0;
   let attemptCounter = 0;
+  let verityPhrase = "Hey it's me, it's verity";
 
   function renderSlides() {
     const area = document.getElementById('contentArea');
@@ -518,7 +515,7 @@
       div.className = 'slide' + (index === currentSlide ? ' active' : '');
       div.id = 'slide-' + index;
       
-      const isEasterEgg = (index === 33); // 34-я страница (пасхалка)
+      const isEasterEgg = (index === 33);
       const titleAttr = isEasterEgg ? "onclick='handleEggClick()'" : "";
       
       div.innerHTML = `<h1 ${titleAttr}>${slide.ru.title}</h1><div>${slide.ru.body}</div>`;
@@ -699,7 +696,7 @@
     if (coinClickCounter < 167) {
       progressEl.textContent = `До попытки: ${coinClickCounter} / 167`;
     } else {
-      progressEl.textContent = `Попытка: шанс 35%`;
+      progressEl.textContent = `Шанс 35%`;
     }
   }
 
@@ -764,8 +761,6 @@
       }
     }
   }
-
-  let verityPhrase = "Hey it's me, it's verity";
 
   function spawnVerity() {
     const wrapper = document.getElementById('coinWrapper');
@@ -840,10 +835,10 @@
 
   // === ЗАПУСК ===
   window.onload = function() {
-    initSelects();
+    initSettings();
     renderSlides();
     document.getElementById('pageCounter').textContent = '1 / ' + baseSlides.length;
   };
 </script>
 </body>
-</html>
+  </html>

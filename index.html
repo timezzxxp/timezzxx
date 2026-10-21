@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* По умолчанию — Чёрная тема */
+    /* Чёрная тема по умолчанию */
     --bg: #000000; --card: #111111; --text: #ffffff; --muted: #888888; 
     --accent: #ffcc00; --accent2: #ff0000; --border: #333333;
     --font-main: 'Segoe UI', system-ui, sans-serif;
@@ -382,20 +382,16 @@
     </div>
   </div>
 
-  <button class="widget-toggle" onclick="toggleWidgets()">Настройки</button>
+  <button class="widget-toggle" onclick="toggleWidgets()">⚙️</button>
   
   <div class="draggable-widget" id="widgetSettings">
     <h3>Настройки</h3>
     <label style="font-size: 0.7em; color: var(--muted);">Тема:</label>
     <select id="themeSelectWidget" onchange="changeTheme(this.value)"></select>
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Шрифт:</label>
-    <select id="fontSelect" onchange="changeFont(this.value)"></select>
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Масштаб:</label>
     <input type="range" id="zoomInput" min="0.8" max="1.5" step="0.1" value="1" onchange="changeZoom(this.value)">
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет текста:</label>
     <input type="color" id="textColorInput" value="#ffffff" onchange="changeTextColor(this.value)">
-    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Цвет Верити:</label>
-    <input type="color" id="verityColorInput" value="#991b1b" onchange="changeVerityColor(this.value)">
     <button id="devTabBtn" class="nav-btn" style="margin-top: 10px; display: none; background: var(--accent2);" onclick="openDevPanel()">Разработчик</button>
   </div>
 
@@ -413,7 +409,7 @@
   </div>
 
 <script>
-  // === ФИКСИРОВАННЫЕ 8 ТЕМ ===
+  // === 8 ТЕМ ===
   const fixedThemes = [
     { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } },
     { name: "Белая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
@@ -438,9 +434,13 @@
     root.style.setProperty('--accent2', theme.vars.accent2);
     root.style.setProperty('--bubble-bg', theme.vars.card);
     
-    document.getElementById('themeSelect').selectedIndex = index;
-    document.getElementById('themeSelectWidget').selectedIndex = index;
-    document.getElementById('textColorInput').value = theme.vars.text;
+    const sel1 = document.getElementById('themeSelect');
+    const sel2 = document.getElementById('themeSelectWidget');
+    if (sel1) sel1.selectedIndex = index;
+    if (sel2) sel2.selectedIndex = index;
+    
+    const tc = document.getElementById('textColorInput');
+    if (tc) tc.value = theme.vars.text;
   }
 
   function initSelects() {
@@ -448,22 +448,31 @@
     const select2 = document.getElementById('themeSelectWidget');
 
     fixedThemes.forEach((theme, i) => {
-      const opt1 = document.createElement('option');
-      opt1.value = i; opt1.textContent = theme.name;
-      select1.appendChild(opt1);
-      const opt2 = document.createElement('option');
-      opt2.value = i; opt2.textContent = theme.name;
-      select2.appendChild(opt2);
+      if (select1) {
+        const opt1 = document.createElement('option');
+        opt1.value = i; opt1.textContent = theme.name;
+        select1.appendChild(opt1);
+      }
+      if (select2) {
+        const opt2 = document.createElement('option');
+        opt2.value = i; opt2.textContent = theme.name;
+        select2.appendChild(opt2);
+      }
     });
     
-    // Чёрная тема по умолчанию (индекс 0)
     applyTheme(0);
-    select1.selectedIndex = 0;
-    select2.selectedIndex = 0;
   }
 
   function changeTheme(index) {
     applyTheme(parseInt(index));
+  }
+
+  function changeZoom(val) {
+    document.documentElement.style.setProperty('--zoom-level', val);
+  }
+
+  function changeTextColor(color) {
+    document.documentElement.style.setProperty('--text', color);
   }
 
   // === 34 СТРАНИЦЫ ===
@@ -710,4 +719,4 @@
   };
 </script>
 </body>
-</html>
+        </html>

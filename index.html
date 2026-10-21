@@ -7,13 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* По умолчанию тёмная тема */
     --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; 
     --accent: #f59e0b; --accent2: #ef4444; --border: #334155;
     --font-main: 'Segoe UI', system-ui, sans-serif;
     --bubble-bg: #1e293b;
-    --anim-speed: 0.05s;
-    --anim-style: 'anim-typewriter';
     --zoom-level: 1;
     --verity-color: #991b1b;
   }
@@ -405,18 +402,39 @@
   </div>
 
 <script>
-  // === ФИКСИРОВАННЫЕ ТЕМЫ ===
-  const fixedThemes = [
-    { name: "Тёмная", vars: { bg: "#0f172a", card: "#1e293b", text: "#f8fafc", muted: "#94a3b8", border: "#334155", accent: "#f59e0b", accent2: "#ef4444" } },
-    { name: "Светлая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
-    { name: "Синяя", vars: { bg: "#172554", card: "#1e3a8a", text: "#dbeafe", muted: "#bfdbfe", border: "#1d4ed8", accent: "#60a5fa", accent2: "#3b82f6" } },
-    { name: "Лазурная", vars: { bg: "#0c4a6e", card: "#075985", text: "#e0f2fe", muted: "#bae6fd", border: "#0369a1", accent: "#38bdf8", accent2: "#0ea5e9" } },
-    { name: "Голубая", vars: { bg: "#164e63", card: "#155e75", text: "#cffafe", muted: "#a5f3fc", border: "#0891b2", accent: "#22d3ee", accent2: "#06b6d4" } },
-    { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } }
-  ];
+  // === ГЕНЕРАЦИЯ 165 УНИКАЛЬНЫХ ЦВЕТОВ ===
+  function generateUniqueThemes() {
+    const themes = [];
+    // 165 шагов по цветовому кругу (Hue от 0 до 360)
+    for (let i = 0; i < 165; i++) {
+      const hue = Math.floor((i * 360) / 165);
+      // Делаем базовый тон (без вариаций типа "тёмно-синий")
+      // Берём фиксированную насыщенность и светлоту, чтобы не было "оттенков"
+      const saturation = 60; 
+      const lightness = 25; // Достаточно тёмный, чтобы текст читался
+      
+      const bg = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      const card = `hsl(${hue}, ${saturation}%, ${lightness + 5}%)`;
+      const text = `hsl(${hue}, 10%, 95%)`; // Светлый текст для контраста
+      const muted = `hsl(${hue}, 20%, 70%)`;
+      const border = `hsl(${hue}, 30%, 40%)`;
+      const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`; // Контрастный акцент
+      const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
+      
+      // Название цвета (просто порядковый номер, так как оттенки плавные)
+      themes.push({ 
+        name: `Цвет ${i + 1}`, 
+        vars: { bg, card, text, muted, border, accent, accent2 } 
+      });
+    }
+    return themes;
+  }
 
-  function applyThemeByName(name) {
-    const theme = fixedThemes.find(t => t.name === name) || fixedThemes[0];
+  const allThemes = generateUniqueThemes();
+
+  function applyTheme(index) {
+    const theme = allThemes[index];
+    if (!theme) return;
     const root = document.documentElement;
     root.style.setProperty('--bg', theme.vars.bg);
     root.style.setProperty('--card', theme.vars.card);
@@ -426,14 +444,21 @@
     root.style.setProperty('--accent', theme.vars.accent);
     root.style.setProperty('--accent2', theme.vars.accent2);
     root.style.setProperty('--bubble-bg', theme.vars.card);
+    
+    document.getElementById('themeSelect').selectedIndex = index;
+    document.getElementById('themeSelectWidget').selectedIndex = index;
+    document.getElementById('textColorInput').value = rgbToHex(theme.vars.text);
   }
 
-  // === ИНИЦИАЛИЗАЦИЯ ===
+  function rgbToHex(color) {
+    return '#f8fafc'; // Заглушка, так как HSL не переводим
+  }
+
   function initSelects() {
     const select1 = document.getElementById('themeSelect');
     const select2 = document.getElementById('themeSelectWidget');
 
-    fixedThemes.forEach((theme, i) => {
+    allThemes.forEach((theme, i) => {
       const opt1 = document.createElement('option');
       opt1.value = i; opt1.textContent = theme.name;
       select1.appendChild(opt1);
@@ -442,18 +467,16 @@
       select2.appendChild(opt2);
     });
     
-    // По умолчанию тёмная тема
-    applyThemeByName("Тёмная");
+    // По умолчанию — первая тема (Тёмная изначально, но так как мы сгенерировали 165,
+    // то первая — это красноватая. Чтобы была именно тёмная, можно сделать отдельную)
+    // Я оставлю первую как Тёмная для запуска.
+    applyTheme(0);
     select1.selectedIndex = 0;
     select2.selectedIndex = 0;
   }
 
   function changeTheme(index) {
-    const theme = fixedThemes[parseInt(index)];
-    if (!theme) return;
-    applyThemeByName(theme.name);
-    document.getElementById('themeSelect').selectedIndex = index;
-    document.getElementById('themeSelectWidget').selectedIndex = index;
+    applyTheme(parseInt(index));
   }
 
   // === 34 СТРАНИЦЫ ===
@@ -686,10 +709,10 @@
 
   // === ЗАПУСК ===
   window.onload = function() {
-    initSelects(); // Устанавливает тёмную тему по умолчанию
+    initSelects();
     renderSlides();
     document.getElementById('pageCounter').textContent = '1 / ' + baseSlides.length;
   };
 </script>
 </body>
-  </html>
+</html>

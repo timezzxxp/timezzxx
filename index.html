@@ -49,7 +49,6 @@
     font-size: 0.75em; max-width: 140px;
   }
 
-  /* Панель настроек (строго по центру, высокий z-index) */
   #widgetSettings {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     background: var(--card); border: 2px solid var(--accent);
@@ -130,6 +129,7 @@
     border: 6px solid #ffffff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
     overflow: hidden; margin: 0 auto 15px auto; display: flex;
     align-items: center; justify-content: center; background: #fff;
+    cursor: pointer;
   }
   .dev-frame img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -436,7 +436,6 @@
 
   const baseSlides = [];
   const topics = [
-    { t: "Введение", b: "<p>Добро пожаловать в конспект!</p>" },
     { t: "Что такое Present Simple?", b: "<p>Регулярные действия и факты.</p><div class='example'>I play tennis.</div>" },
     { t: "Образование Present Simple", b: "<ul><li>+s/es для he/she/it</li></ul>" },
     { t: "Маркеры Present Simple", b: "<ul><li>always, usually, every day</li></ul>" },
@@ -465,9 +464,9 @@
     { t: "Итог 3", b: "<p>Форма: V / V+ing.</p>" },
     { t: "Бонус 1", b: "<p>Повторите все правила.</p>" },
     { t: "Бонус 2", b: "<p>Переходите к играм!</p>" },
-    { t: "Змейка", b: "<div style='text-align:center;'><button class='start-btn' id='snakeStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='startSnake()'>Начнём?</button><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400' style='display:none;'></canvas></div>" },
-    { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;' id='progressDisplay'>До попытки: 0 / 167</div></div></div>" },
-    { t: "Разработчик", b: "<div style='text-align:center;'><div class='dev-frame'><img src='anime.jpg' alt='Anime'></div><div class='creator-signature'>Разработчик<br>Магдеев Тимур<br>(Термометр)</div></div>" },
+    { t: "Змейка", b: "<div style='text-align:center;'><button class='start-btn' id='snakeStartBtn' onclick='startSnake()'>Начнём?</button><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400' style='display:none;'></canvas></div>" },
+    { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;' id='progressDisplay'>До попытки: 0 / 167</div></div></div>" },
+    { t: "Разработчик", b: "<div style='text-align:center;'><div class='dev-frame' onclick='devClick()'><img src='anime.jpg' alt='Anime'></div><div class='creator-signature'>Разработчик<br>Магдеев Тимур<br>(Термометр)</div></div>" },
     { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" }
   ];
 
@@ -482,6 +481,7 @@
   let coinClickCounter = 0;
   let attemptCounter = 0;
   let verityPhrase = "Hey it's me, it's verity";
+  let devClicks = 0;
 
   function renderSlides() {
     const area = document.getElementById('contentArea');
@@ -515,8 +515,8 @@
 
     playSound(500, 0.05, 'square');
 
-    if (currentSlide === 29) initSnakePage();
-    if (currentSlide === 30) initClickerPage();
+    if (currentSlide === 28) initSnakePage();
+    if (currentSlide === 29) initClickerPage();
   }
 
   function handleEggClick() {
@@ -534,6 +534,19 @@
     }
   }
   function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
+
+  function devClick() {
+    devClicks++;
+    clearTimeout(window.devTimer);
+    if (devClicks === 3) {
+      document.getElementById('devTabBtn').style.display = 'block';
+      playSound(1000, 0.3, 'sine');
+      devClicks = 0;
+      alert('Вкладка «Разработчик» добавлена в настройки!');
+    } else {
+      window.devTimer = setTimeout(() => devClicks = 0, 600);
+    }
+  }
 
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
   let snakeMoving = false;
@@ -592,7 +605,7 @@
   }
 
   function snakeKeyHandler(e) {
-    if (currentSlide !== 29) return;
+    if (currentSlide !== 28) return;
     if (!snakeMoving) snakeMoving = true;
     if (e.key === 'ArrowUp' && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
     if (e.key === 'ArrowDown' && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
@@ -607,7 +620,7 @@
     e.preventDefault();
   }
   function snakeTouchEnd(e) {
-    if (currentSlide !== 29) return;
+    if (currentSlide !== 28) return;
     if (!snakeMoving) snakeMoving = true;
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
@@ -779,25 +792,6 @@
     document.getElementById('hogOverlay').classList.remove('show');
     document.getElementById('hogOverlay').innerHTML = '<img src="totya.jpg" alt="Тотя" id="hogImg" style="display:none;"><h2 id="hogText">67</h2>';
     updateProgress();
-  }
-
-  let devHoldTimer = null;
-  let devHoldStart = 0;
-
-  function startDevHold() {
-    devHoldStart = Date.now();
-    devHoldTimer = setInterval(() => {
-      if (Date.now() - devHoldStart >= 45000) {
-        clearInterval(devHoldTimer);
-        document.getElementById('devTabBtn').style.display = 'block';
-        playSound(1000, 0.3, 'sine');
-      }
-    }, 1000);
-  }
-
-  function endDevHold() {
-    if (devHoldTimer) clearInterval(devHoldTimer);
-    devHoldTimer = null;
   }
 
   function openDevPanel() {

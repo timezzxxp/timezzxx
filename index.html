@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Чёрная тема по умолчанию */
     --bg: #000000; --card: #111111; --text: #ffffff; --muted: #888888; 
     --accent: #ffcc00; --accent2: #ff0000; --border: #333333;
     --font-main: 'Segoe UI', system-ui, sans-serif;
@@ -127,13 +126,22 @@
   
   .creator-signature {
     font-family: 'Marck Script', cursive;
-    font-size: 2em;
-    color: #1a1a1a;
+    font-size: 1.8em;
+    color: var(--text);
     text-align: center;
     margin-top: 15px;
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
+    line-height: 1.4;
     opacity: 0.9;
   }
+
+  /* Белая рамка для разработчика */
+  .dev-frame {
+    width: 200px; height: 200px; border-radius: 15px;
+    border: 6px solid #ffffff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
+    overflow: hidden; margin: 0 auto 15px auto; display: flex;
+    align-items: center; justify-content: center; background: #fff;
+  }
+  .dev-frame img { width: 100%; height: 100%; object-fit: cover; }
 
   .start-btn {
     background: #22c55e; color: var(--text); border: none;
@@ -280,15 +288,17 @@
   }
   @keyframes lossPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
+  /* 5 трещин на экране */
   .screen-cracked::before {
     content: '';
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background: 
-      linear-gradient(30deg, transparent 48%, rgba(255,255,255,0.9) 49%, rgba(255,255,255,0.9) 51%, transparent 52%),
-      linear-gradient(-30deg, transparent 48%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 52%),
-      linear-gradient(60deg, transparent 49.5%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.85) 50.5%, transparent 51%),
-      linear-gradient(-60deg, transparent 49.5%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0.75) 50.5%, transparent 51%);
+      linear-gradient(20deg, transparent 48%, rgba(255,255,255,0.9) 49%, rgba(255,255,255,0.9) 51%, transparent 52%),
+      linear-gradient(-40deg, transparent 48%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 52%),
+      linear-gradient(70deg, transparent 49.5%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.85) 50.5%, transparent 51%),
+      linear-gradient(-70deg, transparent 49.5%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0.75) 50.5%, transparent 51%),
+      linear-gradient(45deg, transparent 49.5%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.8) 50.5%, transparent 51%);
     pointer-events: none;
     z-index: 9998;
     animation: crackShow 10s forwards;
@@ -298,20 +308,6 @@
     0% { opacity: 1; }
     90% { opacity: 1; }
     100% { opacity: 0; }
-  }
-
-  .creator-page { text-align: center; padding-top: 10px; }
-  .creator-circle {
-    width: 180px; height: 180px; border-radius: 50%;
-    border: 5px solid #ffffff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
-    overflow: hidden; margin: 0 auto 15px auto; display: flex;
-    align-items: center; justify-content: center; background: #fff;
-  }
-  .creator-circle img { width: 100%; height: 100%; object-fit: cover; }
-  .creator-text {
-    font-family: 'Marck Script', cursive; font-size: 1.5em;
-    color: var(--accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    line-height: 1.4; margin-top: 10px;
   }
 
   .widget-toggle {
@@ -341,42 +337,6 @@
       <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
         <option value="ru">RU Русский</option>
         <option value="en">EN English</option>
-        <option value="es">ES Español</option>
-        <option value="de">DE Deutsch</option>
-        <option value="fr">FR Français</option>
-        <option value="it">IT Italiano</option>
-        <option value="pt">PT Português</option>
-        <option value="zh">ZH 中文</option>
-        <option value="ja">JA 日本語</option>
-        <option value="ko">KO 한국어</option>
-        <option value="ar">AR العربية</option>
-        <option value="tr">TR Türkçe</option>
-        <option value="pl">PL Polski</option>
-        <option value="uk">UK Українська</option>
-        <option value="sv">SV Svenska</option>
-        <option value="no">NO Norsk</option>
-        <option value="da">DA Dansk</option>
-        <option value="fi">FI Suomi</option>
-        <option value="cs">CS Čeština</option>
-        <option value="sk">SK Slovenčina</option>
-        <option value="hu">HU Magyar</option>
-        <option value="ro">RO Română</option>
-        <option value="bg">BG Български</option>
-        <option value="el">EL Ελληνικά</option>
-        <option value="he">HE עברית</option>
-        <option value="hi">HI हिन्दी</option>
-        <option value="id">ID Bahasa</option>
-        <option value="ms">MS Melayu</option>
-        <option value="th">TH ไทย</option>
-        <option value="vi">VI Tiếng Việt</option>
-        <option value="nl">NL Nederlands</option>
-        <option value="is">IS Íslenska</option>
-        <option value="ga">GA Gaeilge</option>
-        <option value="cy">CY Cymraeg</option>
-        <option value="sr">SR Српски</option>
-        <option value="hr">HR Hrvatski</option>
-        <option value="tt">TT Татарча</option>
-        <option value="ba">BA Башҡортса</option>
       </select>
       <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)"></select>
     </div>
@@ -409,6 +369,24 @@
   </div>
 
 <script>
+  // === АУДИО ===
+  let audioCtx = null;
+  function playSound(freq, duration, type) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type || 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+  }
+
   // === 8 ТЕМ ===
   const fixedThemes = [
     { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } },
@@ -465,6 +443,7 @@
 
   function changeTheme(index) {
     applyTheme(parseInt(index));
+    playSound(600, 0.1, 'sine');
   }
 
   function changeZoom(val) {
@@ -473,6 +452,13 @@
 
   function changeTextColor(color) {
     document.documentElement.style.setProperty('--text', color);
+  }
+
+  let widgetVisible = false;
+  function toggleWidgets() {
+    widgetVisible = !widgetVisible;
+    document.getElementById('widgetSettings').style.display = widgetVisible ? 'flex' : 'none';
+    playSound(widgetVisible ? 800 : 400, 0.1, 'sine');
   }
 
   // === 34 СТРАНИЦЫ ===
@@ -508,10 +494,9 @@
     { t: "Бонус 1", b: "<p>Повторите все правила.</p>" },
     { t: "Бонус 2", b: "<p>Переходите к играм!</p>" },
     { t: "Змейка", b: "<div style='text-align:center;'><button class='start-btn' id='snakeStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='startSnake()'>Начнём?</button><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400' style='display:none;'></canvas></div>" },
-    { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div></div></div>" },
-    { t: "Создатель", b: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" },
-    { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" },
-    { t: "Финал", b: "<div class='image-container'><img src='pig_bike.jpg' alt='Кабан на мотоцикле'></div>" }
+    { t: "Кликер", b: "<div class='clicker-area'><button class='start-btn' id='clickerStartBtn' onmousedown='startDevHold()' onmouseup='endDevHold()' onmouseleave='endDevHold()' onclick='initClicker()'>Начнём?</button><div id='clickerUI' style='display:none;'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;' id='progressDisplay'>До попытки: 0 / 167</div></div></div>" },
+    { t: "Разработчик", b: "<div style='text-align:center;'><div class='dev-frame'><img src='anime.jpg' alt='Anime'></div><div class='creator-signature'>Разработчик<br>Магдеев Тимур<br>(Термометр)</div></div>" },
+    { t: "Пасхалка!", b: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" }
   ];
 
   for (let i = 1; i <= 34; i++) {
@@ -533,18 +518,10 @@
       div.className = 'slide' + (index === currentSlide ? ' active' : '');
       div.id = 'slide-' + index;
       
-      const isEasterEgg = (index === 33);
+      const isEasterEgg = (index === 33); // 34-я страница (пасхалка)
       const titleAttr = isEasterEgg ? "onclick='handleEggClick()'" : "";
       
       div.innerHTML = `<h1 ${titleAttr}>${slide.ru.title}</h1><div>${slide.ru.body}</div>`;
-      
-      if (index === 33) {
-        const sign = document.createElement('div');
-        sign.className = 'creator-signature';
-        sign.textContent = 'Термометр Магдеев';
-        div.appendChild(sign);
-      }
-      
       area.appendChild(div);
     });
   }
@@ -563,6 +540,8 @@
     document.getElementById('pageCounter').textContent = (currentSlide + 1) + ' / ' + baseSlides.length;
     document.getElementById('contentArea').scrollTop = 0;
 
+    playSound(500, 0.05, 'square');
+
     if (currentSlide === 29) initSnakePage();
     if (currentSlide === 30) initClickerPage();
   }
@@ -576,6 +555,7 @@
       document.getElementById('hogText').textContent = 'Тотя ❤️';
       document.getElementById('hogOverlay').classList.add('show');
       clickCount = 0;
+      playSound(1000, 0.2, 'sine');
     } else {
       window.eggTimer = setTimeout(() => clickCount = 0, 600);
     }
@@ -584,16 +564,17 @@
 
   // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
-  let snakeStarted = false;
+  let snakeMoving = false;
 
   function initSnakePage() {
     const btn = document.getElementById('snakeStartBtn');
     if (btn) { btn.style.display = 'block'; }
     if (snakeCanvas) { snakeCanvas.style.display = 'none'; }
-    snakeStarted = false;
+    snakeMoving = false;
   }
 
   function startSnake() {
+    playSound(800, 0.15, 'sine');
     const btn = document.getElementById('snakeStartBtn');
     if (btn) btn.style.display = 'none';
     
@@ -602,12 +583,16 @@
     snakeCtx = snakeCanvas.getContext('2d');
     snake = [{x: 10, y: 10}];
     snakeDir = {x: 0, y: 0};
+    snakeMoving = false;
     let targetX = 10, targetY = 10;
     document.getElementById('snakeScore').textContent = 0;
     document.getElementById('snakeRecord').textContent = record;
     placeFood();
+    drawSnake();
+    
     clearInterval(gameLoop);
     gameLoop = setInterval(() => {
+      if (!snakeMoving) return;
       targetX += snakeDir.x;
       targetY += snakeDir.y;
       if (targetX < 0 || targetX >= 20 || targetY < 0 || targetY >= 20) { gameOver(); return; }
@@ -621,11 +606,46 @@
           document.getElementById('hogImg').src = 'meme.jpg';
           document.getElementById('hogText').textContent = '67!';
           document.getElementById('hogOverlay').classList.add('show');
+          playSound(1200, 0.3, 'sawtooth');
         }
+        playSound(600, 0.1, 'sine');
         placeFood();
       } else { snake.pop(); }
       drawSnake();
     }, 120);
+    
+    document.addEventListener('keydown', snakeKeyHandler);
+    snakeCanvas.addEventListener('touchstart', snakeTouchStart);
+    document.addEventListener('touchend', snakeTouchEnd);
+  }
+
+  function snakeKeyHandler(e) {
+    if (currentSlide !== 29) return;
+    if (!snakeMoving) snakeMoving = true;
+    if (e.key === 'ArrowUp' && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
+    if (e.key === 'ArrowDown' && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
+    if (e.key === 'ArrowLeft' && snakeDir.x === 0) snakeDir = {x: -1, y: 0};
+    if (e.key === 'ArrowRight' && snakeDir.x === 0) snakeDir = {x: 1, y: 0};
+  }
+
+  let touchStartX = 0, touchStartY = 0;
+  function snakeTouchStart(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    e.preventDefault();
+  }
+  function snakeTouchEnd(e) {
+    if (currentSlide !== 29) return;
+    if (!snakeMoving) snakeMoving = true;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 30 && snakeDir.x === 0) snakeDir = {x: 1, y: 0};
+      if (dx < -30 && snakeDir.x === 0) snakeDir = {x: -1, y: 0};
+    } else {
+      if (dy > 30 && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
+      if (dy < -30 && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
+    }
   }
 
   function placeFood() { food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) }; }
@@ -645,6 +665,7 @@
 
   function gameOver() {
     clearInterval(gameLoop);
+    playSound(200, 0.5, 'sawtooth');
     document.getElementById('hogOverlay').innerHTML = '<h2 class="calligraphy-loss">ВЫ ПРОИГРАЛИ</h2>';
     document.getElementById('hogOverlay').classList.add('show');
   }
@@ -654,6 +675,8 @@
   let cPower = 1;
   let isVerity = false;
   let verityClicks = 0;
+  let verityTalking = false;
+  let verityTimeout;
 
   function initClickerPage() {
     document.getElementById('clickerStartBtn').style.display = 'block';
@@ -661,17 +684,62 @@
   }
 
   function initClicker() {
+    playSound(800, 0.15, 'sine');
     document.getElementById('clickerStartBtn').style.display = 'none';
     document.getElementById('clickerUI').style.display = 'flex';
     document.getElementById('scoreDisplay').textContent = 0;
+    coinClickCounter = 0;
+    attemptCounter = 0;
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const progressEl = document.getElementById('progressDisplay');
+    if (!progressEl) return;
+    if (coinClickCounter < 167) {
+      progressEl.textContent = `До попытки: ${coinClickCounter} / 167`;
+    } else {
+      progressEl.textContent = `Попытка: шанс 35%`;
+    }
   }
 
   function clickCoin() {
     if (isVerity) {
       verityClicks++;
+      if (verityTalking) {
+        verityTalking = false;
+        clearTimeout(verityTimeout);
+        const bubble = document.querySelector('.speech-bubble');
+        if (bubble) bubble.remove();
+        playSound(400, 0.2, 'sawtooth');
+        
+        const wrapper = document.getElementById('coinWrapper');
+        const ball = wrapper.querySelector('.ball');
+        if (ball) {
+          const stopBubble = document.createElement('div');
+          stopBubble.className = 'speech-bubble';
+          stopBubble.textContent = 'Стоп';
+          stopBubble.style.fontFamily = 'var(--font-main)';
+          stopBubble.style.fontSize = '1em';
+          ball.appendChild(stopBubble);
+          setTimeout(() => { if (stopBubble.parentNode) stopBubble.remove(); }, 1000);
+        }
+      }
+      
       if (verityClicks >= 3) {
+        verityClicks = 0;
+        const wrapper = document.getElementById('coinWrapper');
+        wrapper.innerHTML = `
+          <div class="monster" onclick="resetClicker()">
+            <div class="speech-bubble" style="font-family: var(--font-main);">${verityPhrase}</div>
+          </div>
+        `;
         document.body.classList.add('screen-cracked');
-        setTimeout(() => document.body.classList.remove('screen-cracked'), 10000);
+        playSound(150, 0.8, 'sawtooth');
+        setTimeout(() => {
+          document.body.classList.remove('screen-cracked');
+          resetClicker();
+        }, 10000);
       }
       return;
     }
@@ -679,13 +747,70 @@
     coinClickCounter++;
     score++;
     document.getElementById('scoreDisplay').textContent = score;
+    playSound(700 + Math.random() * 300, 0.05, 'square');
+    updateProgress();
     
     if (coinClickCounter === 67) {
       document.getElementById('hogImg').style.display = 'block';
       document.getElementById('hogImg').src = 'meme.jpg';
       document.getElementById('hogText').textContent = '67!';
       document.getElementById('hogOverlay').classList.add('show');
+      playSound(1200, 0.3, 'sawtooth');
     }
+
+    if (coinClickCounter >= 167) {
+      if (Math.random() < 0.35) {
+        spawnVerity();
+      }
+    }
+  }
+
+  let verityPhrase = "Hey it's me, it's verity";
+
+  function spawnVerity() {
+    const wrapper = document.getElementById('coinWrapper');
+    wrapper.innerHTML = `
+      <div class="verity-title">Верити</div>
+      <div class="ball" onclick="clickCoin()">
+        <div class="speech-bubble" style="font-family: var(--font-main);">
+          <span class="anim-fade" style="--anim-speed: 0.5s;">${verityPhrase}</span>
+        </div>
+        <div class="ball-eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        <div class="mouth"></div>
+      </div>
+      <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;" id="progressDisplay">До попытки: 0 / 167</div>
+    `;
+    isVerity = true;
+    verityTalking = true;
+    verityClicks = 0;
+    playSound(900, 0.3, 'sine');
+    
+    verityTimeout = setTimeout(() => {
+      if (verityTalking) {
+        verityTalking = false;
+        const bubble = document.querySelector('.speech-bubble');
+        if (bubble) bubble.remove();
+      }
+    }, 3000);
+  }
+
+  function resetClicker() {
+    score = 0;
+    coinClickCounter = 0;
+    attemptCounter = 0;
+    isVerity = false;
+    verityTalking = false;
+    const wrapper = document.getElementById('coinWrapper');
+    if (wrapper) {
+      wrapper.innerHTML = `
+        <div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>
+        <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;" id="progressDisplay">До попытки: 0 / 167</div>
+      `;
+    }
+    document.getElementById('scoreDisplay').textContent = 0;
+    document.getElementById('hogOverlay').classList.remove('show');
+    document.getElementById('hogOverlay').innerHTML = '<img src="totya.jpg" alt="Тотя" id="hogImg" style="display:none;"><h2 id="hogText">67</h2>';
+    updateProgress();
   }
 
   // === НАСТРОЙКИ РАЗРАБОТЧИКА ===
@@ -698,6 +823,7 @@
       if (Date.now() - devHoldStart >= 45000) {
         clearInterval(devHoldTimer);
         document.getElementById('devTabBtn').style.display = 'block';
+        playSound(1000, 0.3, 'sine');
       }
     }, 1000);
   }
@@ -708,6 +834,7 @@
   }
 
   function openDevPanel() {
+    playSound(900, 0.2, 'sine');
     alert('Панель разработчика открыта!');
   }
 
@@ -719,4 +846,4 @@
   };
 </script>
 </body>
-        </html>
+</html>

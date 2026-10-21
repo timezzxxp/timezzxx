@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
+    /* По умолчанию — Чёрная тема */
     --bg: #000000; --card: #111111; --text: #ffffff; --muted: #888888; 
     --accent: #ffcc00; --accent2: #ff0000; --border: #333333;
     --font-main: 'Segoe UI', system-ui, sans-serif;
@@ -412,47 +413,20 @@
   </div>
 
 <script>
-  // === БАЗОВЫЕ ТЕМЫ (включая все запрошенные) ===
-  const baseThemes = [
+  // === ФИКСИРОВАННЫЕ 8 ТЕМ ===
+  const fixedThemes = [
     { name: "Чёрная", vars: { bg: "#000000", card: "#111111", text: "#ffffff", muted: "#888888", border: "#333333", accent: "#ffcc00", accent2: "#ff0000" } },
-    { name: "Светлая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
-    { name: "Голубая", vars: { bg: "#e0f2fe", card: "#bae6fd", text: "#0c4a6e", muted: "#0369a1", border: "#7dd3fc", accent: "#0ea5e9", accent2: "#0284c7" } },
-    { name: "Лазурная", vars: { bg: "#0c4a6e", card: "#075985", text: "#e0f2fe", muted: "#bae6fd", border: "#0369a1", accent: "#38bdf8", accent2: "#0ea5e9" } },
-    { name: "Розовая", vars: { bg: "#fdf2f8", card: "#fce7f3", text: "#831843", muted: "#9d174d", border: "#f9a8d4", accent: "#ec4899", accent2: "#db2777" } },
-    { name: "Красная", vars: { bg: "#450a0a", card: "#7f1d1d", text: "#fee2e2", muted: "#fca5a5", border: "#991b1b", accent: "#ef4444", accent2: "#dc2626" } },
+    { name: "Белая", vars: { bg: "#f1f5f9", card: "#ffffff", text: "#0f172a", muted: "#64748b", border: "#cbd5e1", accent: "#f59e0b", accent2: "#ef4444" } },
     { name: "Бирюзовая", vars: { bg: "#042f2e", card: "#134e4a", text: "#ccfbf1", muted: "#5eead4", border: "#115e59", accent: "#2dd4bf", accent2: "#14b8a6" } },
+    { name: "Красная", vars: { bg: "#450a0a", card: "#7f1d1d", text: "#fee2e2", muted: "#fca5a5", border: "#991b1b", accent: "#ef4444", accent2: "#dc2626" } },
     { name: "Оранжевая", vars: { bg: "#431407", card: "#7c2d12", text: "#ffedd5", muted: "#fdba74", border: "#9a3412", accent: "#f97316", accent2: "#ea580c" } },
-    { name: "Фиолетовая", vars: { bg: "#2e1065", card: "#4c1d95", text: "#ede9fe", muted: "#c4b5fd", border: "#5b21b6", accent: "#8b5cf6", accent2: "#7c3aed" } },
-    { name: "Тёмная", vars: { bg: "#0f172a", card: "#1e293b", text: "#f8fafc", muted: "#94a3b8", border: "#334155", accent: "#f59e0b", accent2: "#ef4444" } }
+    { name: "Лазурная", vars: { bg: "#0c4a6e", card: "#075985", text: "#e0f2fe", muted: "#bae6fd", border: "#0369a1", accent: "#38bdf8", accent2: "#0ea5e9" } },
+    { name: "Голубая", vars: { bg: "#164e63", card: "#155e75", text: "#cffafe", muted: "#a5f3fc", border: "#0891b2", accent: "#22d3ee", accent2: "#06b6d4" } },
+    { name: "Синяя", vars: { bg: "#172554", card: "#1e3a8a", text: "#dbeafe", muted: "#bfdbfe", border: "#1d4ed8", accent: "#60a5fa", accent2: "#3b82f6" } }
   ];
 
-  function generateUniqueThemes() {
-    const themes = [];
-    for (let i = 0; i < 165; i++) {
-      const hue = Math.floor((i * 360) / 165);
-      const saturation = 60; 
-      const lightness = 25; 
-      
-      const bg = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-      const card = `hsl(${hue}, ${saturation}%, ${lightness + 5}%)`;
-      const text = `hsl(${hue}, 10%, 95%)`; 
-      const muted = `hsl(${hue}, 20%, 70%)`;
-      const border = `hsl(${hue}, 30%, 40%)`;
-      const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`; 
-      const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
-      
-      themes.push({ 
-        name: `Цвет ${i + 1}`, 
-        vars: { bg, card, text, muted, border, accent, accent2 } 
-      });
-    }
-    return themes;
-  }
-
-  const allThemes = [...baseThemes, ...generateUniqueThemes()];
-
   function applyTheme(index) {
-    const theme = allThemes[index];
+    const theme = fixedThemes[index];
     if (!theme) return;
     const root = document.documentElement;
     root.style.setProperty('--bg', theme.vars.bg);
@@ -473,7 +447,7 @@
     const select1 = document.getElementById('themeSelect');
     const select2 = document.getElementById('themeSelectWidget');
 
-    allThemes.forEach((theme, i) => {
+    fixedThemes.forEach((theme, i) => {
       const opt1 = document.createElement('option');
       opt1.value = i; opt1.textContent = theme.name;
       select1.appendChild(opt1);
@@ -736,4 +710,4 @@
   };
 </script>
 </body>
-          </html>
+</html>

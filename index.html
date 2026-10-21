@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Мега-Конспект: Present Simple & Continuous</title>
+<title>Версия 5.6 | Мега-Конспект</title>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Marck+Script&family=Pacifico&family=Press+Start+2P&family=Roboto:wght@300;400;700&family=Russo+One&family=Yeseva+One&family=Lobster&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; 
     --accent: #f59e0b; --accent2: #ef4444; --border: #334155;
     --font-main: 'Segoe UI', system-ui, sans-serif;
+    --bubble-bg: #1e293b;
+    --anim-speed: 0.05s;
+    --anim-style: 'anim-typewriter';
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -35,7 +38,8 @@
     padding: 0 10px; border-bottom: 1px solid var(--border);
     flex-shrink: 0; z-index: 100;
   }
-  .topbar h2 { font-size: 0.9em; color: var(--accent); }
+  .topbar h2 { font-size: 0.85em; color: var(--accent); }
+  .topbar .version { font-size: 0.7em; color: var(--muted); margin-left: 5px; font-weight: normal; }
   .controls { display: flex; gap: 8px; align-items: center; }
   
   .theme-select, .lang-select {
@@ -49,7 +53,7 @@
     background: var(--card); border: 1px solid var(--border);
     padding: 10px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     cursor: grab; z-index: 200; display: none; flex-direction: column; gap: 8px;
-    width: 250px; max-width: 90vw; max-height: 80vh; overflow-y: auto;
+    width: 280px; max-width: 90vw; max-height: 80vh; overflow-y: auto;
   }
   .draggable-widget:active { cursor: grabbing; }
   .draggable-widget h3 { font-size: 0.8em; color: var(--accent); margin-bottom: 3px; }
@@ -126,10 +130,16 @@
   }
   
   .coin-wrapper {
-    position: relative; width: 120px; height: 120px;
+    position: relative; width: 150px; height: 200px;
     display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
   }
   
+  .verity-title {
+    font-size: 1.2em; color: var(--accent); font-weight: bold;
+    margin-bottom: 5px; text-align: center;
+  }
+
   .coin {
     width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #fcd34d, #b45309);
     border-radius: 50%; border: 6px solid #78350f; cursor: pointer;
@@ -146,17 +156,52 @@
   }
 
   .ball {
-    width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
-    border-radius: 50%; border: 5px solid #450a0a; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5em; box-shadow: 0 0 25px #ef4444;
+    width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
+    border-radius: 50%; border: 6px solid #450a0a; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 0 25px #ef4444;
     animation: ballPulse 1s infinite alternate;
-    user-select: none; position: absolute;
+    user-select: none; position: relative; transition: all 0.3s;
   }
   
-  @keyframes ballPulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
+  .ball-eyes { display: flex; gap: 15px; margin-bottom: 5px; }
+  .eye { width: 20px; height: 20px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .pupil { width: 8px; height: 8px; background: black; border-radius: 50%; }
+  .mouth { width: 30px; height: 15px; border-bottom: 4px solid #450a0a; border-radius: 0 0 15px 15px; }
+
+  @keyframes ballPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+
+  .monster {
+    width: 150px; height: 300px;
+    background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
+    border-radius: 50% 50% 10% 10%;
+    border: 6px solid #450a0a;
+    box-shadow: 0 0 40px #ef4444;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; animation: monsterGrow 0.5s ease-out;
+  }
+  @keyframes monsterGrow {
+    from { transform: scaleY(0.5); opacity: 0; }
+    to { transform: scaleY(1); opacity: 1; }
+  }
+
+  .speech-bubble {
+    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    background: var(--bubble-bg); color: var(--text);
+    padding: 10px 15px; border-radius: 15px;
+    font-size: 0.85em; text-align: center; width: 250px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 10;
+    border: 2px solid var(--accent);
+    transition: background 0.5s, border-color 0.5s;
+    font-family: var(--font-main);
+    min-height: 50px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .speech-bubble::after {
+    content: ''; position: absolute; bottom: -10px; left: 50%;
+    transform: translateX(-50%); border-width: 10px 10px 0;
+    border-style: solid; border-color: var(--bubble-bg) transparent transparent transparent;
   }
 
   .score-big { font-size: 1.5em; color: var(--accent); font-weight: bold; }
@@ -223,17 +268,18 @@
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background: 
-      linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 52%),
-      linear-gradient(-45deg, transparent 48%, rgba(255,255,255,0.6) 49%, rgba(255,255,255,0.6) 51%, transparent 52%),
-      linear-gradient(15deg, transparent 49.5%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.7) 50.5%, transparent 51%);
+      linear-gradient(30deg, transparent 48%, rgba(255,255,255,0.9) 49%, rgba(255,255,255,0.9) 51%, transparent 52%),
+      linear-gradient(-30deg, transparent 48%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 52%),
+      linear-gradient(60deg, transparent 49.5%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.85) 50.5%, transparent 51%),
+      linear-gradient(-60deg, transparent 49.5%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0.75) 50.5%, transparent 51%);
     pointer-events: none;
     z-index: 9998;
-    animation: crackShow 5s forwards;
+    animation: crackShow 10s forwards;
     opacity: 0.9;
   }
   @keyframes crackShow {
     0% { opacity: 1; }
-    80% { opacity: 1; }
+    90% { opacity: 1; }
     100% { opacity: 0; }
   }
 
@@ -262,8 +308,71 @@
   }
   .widget-toggle:hover { transform: rotate(90deg) scale(1.1); }
 
+  /* Анимации для текста */
+  .anim-typewriter { overflow: hidden; white-space: nowrap; border-right: 2px solid; animation: typing var(--anim-speed) steps(30, end), blink-caret .75s step-end infinite; }
+  @keyframes typing { from { width: 0; } to { width: 100%; } }
+  @keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: var(--accent); } }
+
+  .anim-fade { animation: fadeIn var(--anim-speed) ease-in forwards; opacity: 0; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .anim-slide-up { animation: slideUp var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(20px); }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .anim-slide-down { animation: slideDown var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(-20px); }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .anim-slide-left { animation: slideLeft var(--anim-speed) ease-out forwards; opacity: 0; transform: translateX(20px); }
+  @keyframes slideLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+  .anim-slide-right { animation: slideRight var(--anim-speed) ease-out forwards; opacity: 0; transform: translateX(-20px); }
+  @keyframes slideRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+  .anim-scale-up { animation: scaleUp var(--anim-speed) ease-out forwards; opacity: 0; transform: scale(0.5); }
+  @keyframes scaleUp { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+  .anim-scale-down { animation: scaleDown var(--anim-speed) ease-out forwards; opacity: 0; transform: scale(1.5); }
+  @keyframes scaleDown { from { opacity: 0; transform: scale(1.5); } to { opacity: 1; transform: scale(1); } }
+
+  .anim-rotate { animation: rotateIn var(--anim-speed) ease-out forwards; opacity: 0; transform: rotate(-180deg); }
+  @keyframes rotateIn { from { opacity: 0; transform: rotate(-180deg); } to { opacity: 1; transform: rotate(0); } }
+
+  .anim-bounce { animation: bounceIn var(--anim-speed) ease-out forwards; opacity: 0; }
+  @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+
+  .anim-flip { animation: flipIn var(--anim-speed) ease-out forwards; opacity: 0; transform: perspective(400px) rotateY(90deg); }
+  @keyframes flipIn { from { opacity: 0; transform: perspective(400px) rotateY(90deg); } to { opacity: 1; transform: perspective(400px) rotateY(0); } }
+
+  .anim-zoom { animation: zoomIn var(--anim-speed) ease-out forwards; opacity: 0; transform: scale(2); }
+  @keyframes zoomIn { from { opacity: 0; transform: scale(2); } to { opacity: 1; transform: scale(1); } }
+
+  .anim-blur { animation: blurIn var(--anim-speed) ease-out forwards; opacity: 0; filter: blur(10px); }
+  @keyframes blurIn { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
+
+  .anim-flip-x { animation: flipXIn var(--anim-speed) ease-out forwards; opacity: 0; transform: rotateX(90deg); }
+  @keyframes flipXIn { from { opacity: 0; transform: rotateX(90deg); } to { opacity: 1; transform: rotateX(0); } }
+
+  .anim-roll { animation: rollIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateX(-50px) rotate(-90deg); }
+  @keyframes rollIn { from { opacity: 0; transform: translateX(-50px) rotate(-90deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
+
+  .anim-drop { animation: dropIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(-50px); }
+  @keyframes dropIn { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+
+  .anim-swing { animation: swingIn var(--anim-speed) ease-out forwards; opacity: 0; transform-origin: top center; }
+  @keyframes swingIn { 0% { opacity: 0; transform: rotate(15deg); } 100% { opacity: 1; transform: rotate(0); } }
+
+  .anim-fade-up { animation: fadeUpIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(10px); }
+  @keyframes fadeUpIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .anim-fade-down { animation: fadeDownIn var(--anim-speed) ease-out forwards; opacity: 0; transform: translateY(-10px); }
+  @keyframes fadeDownIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .anim-pulse { animation: pulseIn var(--anim-speed) ease-out forwards; opacity: 0; }
+  @keyframes pulseIn { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } 100% { transform: scale(1); } }
+
   @media (max-width: 400px) {
-    .topbar h2 { font-size: 0.8em; }
+    .topbar h2 { font-size: 0.75em; }
+    .topbar .version { display: none; }
     .theme-select, .lang-select { font-size: 0.7em; }
     .nav-btn { padding: 6px 10px; font-size: 0.8em; }
   }
@@ -272,7 +381,7 @@
 <body class="theme-dark">
 
   <div class="topbar">
-    <h2>Мега-Конспект</h2>
+    <h2>Мега-Конспект <span class="version">Версия 5.6</span></h2>
     <div class="controls">
       <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
         <option value="ru">RU Русский</option>
@@ -326,6 +435,14 @@
     <select id="themeSelectWidget" onchange="changeTheme(this.value)"></select>
     <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Шрифт:</label>
     <select id="fontSelect" onchange="changeFont(this.value)"></select>
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Появление слов:</label>
+    <select id="animSelect" onchange="changeAnim(this.value)"></select>
+    <label style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Скорость анимации:</label>
+    <select id="speedSelect" onchange="changeSpeed(this.value)"></select>
+    <div style="font-size: 0.7em; color: var(--muted); margin-top: 5px;">Предпросмотр:</div>
+    <div id="animPreview" style="background: var(--bg); padding: 5px; border-radius: 5px; text-align: center; font-size: 0.8em;">
+      <span id="previewText" class="anim-typewriter" style="--anim-speed: 0.05s;">Пример текста</span>
+    </div>
   </div>
 
   <div class="main-content" id="contentArea"></div>
@@ -337,11 +454,12 @@
   </div>
 
   <div id="hogOverlay" class="overlay" onclick="hideHog()">
-    <img src="pig_face.jpg" alt="Хряк">
-    <h2>ПОЗДРАВЛЯЮ ВЫ ВЫБИЛИ ХРЯКА!</h2>
+    <img src="meme.jpg" alt="Хряк" id="hogImg" style="display:none;">
+    <h2 id="hogText">67</h2>
   </div>
 
 <script>
+  // === ДАННЫЕ ===
   const fontsList = [
     "'Segoe UI', sans-serif", "'Roboto', sans-serif", "'Comfortaa', cursive", 
     "'Marck Script', cursive", "'Pacifico', cursive", "'Press Start 2P', cursive",
@@ -377,6 +495,22 @@
     "Modern No. 20, serif", "Monotype Corsiva, cursive", "Niagara Engraved, sans-serif"
   ];
 
+  const animList = [
+    'anim-typewriter', 'anim-fade', 'anim-slide-up', 'anim-slide-down', 
+    'anim-slide-left', 'anim-slide-right', 'anim-scale-up', 'anim-scale-down',
+    'anim-rotate', 'anim-bounce', 'anim-flip', 'anim-zoom', 'anim-blur',
+    'anim-flip-x', 'anim-roll', 'anim-drop', 'anim-swing', 'anim-fade-up',
+    'anim-fade-down', 'anim-pulse'
+  ];
+
+  const speedList = [
+    { name: 'Очень медленно (1.5s)', val: '1.5s' },
+    { name: 'Медленно (1.0s)', val: '1.0s' },
+    { name: 'Средне (0.5s)', val: '0.5s' },
+    { name: 'Быстро (0.2s)', val: '0.2s' },
+    { name: 'Очень быстро (0.05s)', val: '0.05s' }
+  ];
+
   function generateThemes() {
     const themes = [];
     for (let i = 0; i < 250; i++) {
@@ -393,7 +527,7 @@
       const accent = `hsl(${(hue + 180) % 360}, 80%, 60%)`;
       const accent2 = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
       
-      themes.push({ name: `Тема ${i + 1}`, vars: { bg, card, text, muted, border, accent, accent2 } });
+      themes.push({ name: `Цвет ${i + 1} (hue: ${hue})`, vars: { bg, card, text, muted, border, accent, accent2 } });
     }
     return themes;
   }
@@ -411,6 +545,8 @@
     root.style.setProperty('--border', theme.vars.border);
     root.style.setProperty('--accent', theme.vars.accent);
     root.style.setProperty('--accent2', theme.vars.accent2);
+    root.style.setProperty('--bubble-bg', theme.vars.card);
+    
     document.getElementById('themeSelect').selectedIndex = index;
     document.getElementById('themeSelectWidget').selectedIndex = index;
   }
@@ -419,6 +555,8 @@
     const select1 = document.getElementById('themeSelect');
     const select2 = document.getElementById('themeSelectWidget');
     const fontSelect = document.getElementById('fontSelect');
+    const animSelect = document.getElementById('animSelect');
+    const speedSelect = document.getElementById('speedSelect');
 
     allThemes.forEach((theme, i) => {
       const opt1 = document.createElement('option');
@@ -435,13 +573,104 @@
       opt.textContent = font.split(',')[0].replace(/'/g, '') + ' (' + i + ')';
       fontSelect.appendChild(opt);
     });
+
+    animList.forEach((anim, i) => {
+      const opt = document.createElement('option');
+      opt.value = anim;
+      opt.textContent = anim.replace('anim-', '');
+      animSelect.appendChild(opt);
+    });
+
+    speedList.forEach((speed, i) => {
+      const opt = document.createElement('option');
+      opt.value = speed.val;
+      opt.textContent = speed.name;
+      speedSelect.appendChild(opt);
+    });
+    
     applyTheme(0);
+    updatePreview();
   }
 
   function changeTheme(index) { applyTheme(parseInt(index)); }
-  function changeFont(fontName) { document.documentElement.style.setProperty('--font-main', fontName); }
+  
+  function changeFont(fontName) { 
+    document.documentElement.style.setProperty('--font-main', fontName); 
+    updatePreview();
+  }
+
+  function changeAnim(animName) {
+    document.documentElement.style.setProperty('--anim-style', animName);
+    const preview = document.getElementById('previewText');
+    preview.className = animName;
+    preview.style.animation = 'none';
+    void preview.offsetWidth;
+    preview.style.animation = '';
+    updatePreview();
+  }
+
+  function changeSpeed(speedVal) {
+    document.documentElement.style.setProperty('--anim-speed', speedVal);
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const previewText = document.getElementById('previewText');
+    const anim = document.getElementById('animSelect').value;
+    const speed = document.getElementById('speedSelect').value;
+    
+    previewText.className = anim;
+    previewText.style.setProperty('--anim-speed', speed);
+    
+    previewText.style.animation = 'none';
+    void previewText.offsetWidth;
+    previewText.style.animation = '';
+  }
 
   let currentLang = 'ru';
+  let verityPhrase = "Hey it's me, it's verity. Ask me anything";
+
+  const verityTranslations = {
+    ru: "Привет, это я, Верити. Спроси меня о чем угодно",
+    en: "Hey it's me, it's verity. Ask me anything",
+    es: "Hola, soy yo, Verity. Pregúntame lo que quieras",
+    de: "Hey, ich bin's, Verity. Frag mich alles",
+    fr: "Salut, c'est moi, Verity. Demande-moi n'importe quoi",
+    it: "Ehi, sono io, Verity. Chiedimi qualsiasi cosa",
+    pt: "Ei, sou eu, Verity. Pergunte-me qualquer coisa",
+    zh: "嘿，是我，Verity。问我任何事",
+    ja: "ねえ、私だよ、Verity。何でも聞いて",
+    ko: "헤이, 나야, Verity. 뭐든지 물어봐",
+    ar: "مرحبًا، إنه أنا، فيريتي. اسألني أي شيء",
+    tr: "Hey, benim, Verity. Bana her şeyi sor",
+    pl: "Hej, to ja, Verity. Zapytaj mnie o wszystko",
+    uk: "Гей, це я, Вериті. Запитай мене про що завгодно",
+    sv: "Hej, det är jag, Verity. Fråga mig vad som helst",
+    no: "Hei, det er meg, Verity. Spør meg om hva som helst",
+    da: "Hej, det er mig, Verity. Spørg mig om hvad som helst",
+    fi: "Hei, se olen minä, Verity. Kysy minulta mitä tahansa",
+    cs: "Ahoj, to jsem já, Verity. Zeptej se mě na cokoli",
+    sk: "Ahoj, to som ja, Verity. Opýtaj sa ma na čokoľvek",
+    hu: "Hé, én vagyok, Verity. Kérdezz bármit",
+    ro: "Hei, sunt eu, Verity. Întreabă-mă orice",
+    bg: "Хей, това съм аз, Верити. Питай ме за каквото и да е",
+    el: "Γεια, είμαι εγώ, Verity. Ρώτησέ με οτιδήποτε",
+    he: "היי, זה אני, וריטי. שאל אותי כל דבר",
+    hi: "अरे, यह मैं हूँ, वेरिटी। मुझसे कुछ भी पूछो",
+    id: "Hei, ini aku, Verity. Tanya aku apa saja",
+    ms: "Hei, ini saya, Verity. Tanya saya apa sahaja",
+    th: "เฮ้ ฉันเอง Verity ถามอะไรก็ได้",
+    vi: "Này, là tôi đây, Verity. Hỏi tôi bất cứ điều gì",
+    nl: "Hé, ik ben het, Verity. Vraag me alles",
+    is: "Hey, það er ég, Verity. Spurðu mig hvað sem er",
+    ga: "Hey, is mise, Verity. Fiafraigh díom rud ar bith",
+    cy: "Hei, fi yw Verity. Gofynna i mi unrhyw beth",
+    sr: "Хеј, то сам ја, Верити. Питај ме било шта",
+    hr: "Hej, to sam ja, Verity. Pitaj me bilo što",
+    tt: "Әй, бу мин, Верити. Миннән нәрсә теләсәң дә сора",
+    ba: "Эй, был мин, Верити. Минән нимәлер һора"
+  };
+
   function changeLang(lang) {
     currentLang = lang;
     document.getElementById('langSelect').value = lang;
@@ -470,6 +699,7 @@
     if (prevText[lang]) document.getElementById('prevBtn').textContent = prevText[lang];
     if (nextText[lang]) document.getElementById('nextBtn').textContent = nextText[lang];
     
+    verityPhrase = verityTranslations[lang] || verityTranslations['en'];
     renderSlides();
   }
 
@@ -498,7 +728,7 @@
   for (let i = 1; i <= 119; i++) {
     if (i === 1) baseSlides.push({ ru: { title: "Present Simple и Present Continuous", body: "<p style='text-align:center;'>Добро пожаловать!</p>" } });
     else if (i === 119) baseSlides.push({ ru: { title: "Пасхалка!", body: "<p style='text-align:center;'>Нажми на заголовок 3 раза!</p>" } });
-    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" } });
+    else if (i === 117) baseSlides.push({ ru: { title: "Кликер: Монетка", body: "<div class='clicker-area'><div class='score-big' id='scoreDisplay'>0</div><div class='coin-wrapper' id='coinWrapper'><div class='coin' id='coinBtn' onclick='clickCoin()'>Монета</div></div><div style='font-size:0.8em; color:var(--muted); text-align:center;'>До попытки: <span id='progressDisplay'>0 / 167</span></div><div class='upgrades-grid'><div class='upgrade-card'><h4>Сила клика</h4><p>+1 клик</p><p>Цена: <span id='costClick'>15</span></p><button class='upgrade-btn' id='btnClick' onclick='buyUpgrade(1)'>Купить (ур. 1/10)</button></div><div class='upgrade-card'><h4>Автокликер</h4><p>+1 в сек</p><p>Цена: <span id='costAuto'>50</span></p><button class='upgrade-btn' id='btnAuto' onclick='buyUpgrade(2)'>Купить (ур. 0)</button></div><div class='upgrade-card'><h4>Множитель</h4><p>x2 к клику</p><p>Цена: <span id='costMult'>100</span></p><button class='upgrade-btn' id='btnMult' onclick='buyUpgrade(3)'>Купить (ур. 1/10)</button></div></div></div>" } });
     else if (i === 118) baseSlides.push({ ru: { title: "Создатель", body: "<div class='creator-page'><div class='creator-circle'><img src='anime.jpg' alt='Anime'></div><div class='creator-text'>Создатель этого проекта<br>Магдеев Тимур (Термометр)</div></div>" } });
     else if (i === 119) baseSlides.push({ ru: { title: "Змейка", body: "<div style='text-align:center;'><div class='snake-header'><span>Счет: <span id='snakeScore'>0</span></span><span>Рекорд: <span id='snakeRecord'>0</span></span></div><canvas id='gameCanvas' width='400' height='400'></canvas><button class='nav-btn' onclick='startSnake()' style='margin-top:10px;'>Начать заново</button></div>" } });
     else if (i === 120) baseSlides.push({ ru: { title: "Бонусные картинки", body: "<div class='image-container'><img src='meme.jpg'><img src='pig_bike.jpg'><img src='totya.jpg'></div>" } });
@@ -509,6 +739,7 @@
   let clickCount = 0;
   let record = localStorage.getItem('snakeRecord') || 0;
   let coinClickCounter = 0;
+  let attemptCounter = 0;
 
   function renderSlides() {
     const area = document.getElementById('contentArea');
@@ -556,33 +787,70 @@
   }
   function hideHog() { document.getElementById('hogOverlay').classList.remove('show'); }
 
+  // === КЛИКЕР ===
   let score = 0;
   let cPower = 1, cCost = 15, cLvl = 1;
   let aPower = 0, aCost = 50, aLvl = 0;
   let mPower = 1, mCost = 100, mLvl = 1;
-  let isBall = false;
-  let ballClicks = 0;
+  let isVerity = false;
+  let verityClicks = 0;
+  let verityTalking = false;
+  let verityTimeout;
 
   function initClicker() {
     const wrapper = document.getElementById('coinWrapper');
     if (wrapper) {
-      wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>';
-      isBall = false; ballClicks = 0; coinClickCounter = 0;
+      wrapper.innerHTML = `
+        <div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>
+        <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;">
+          До попытки: <span id="progressDisplay">0 / 167</span>
+        </div>
+      `;
+      isVerity = false; verityClicks = 0; verityTalking = false;
+      coinClickCounter = 0;
+      attemptCounter = 0;
+      if (verityTimeout) clearTimeout(verityTimeout);
     }
     updateClickerUI();
   }
 
   function clickCoin() {
-    if (isBall) {
-      ballClicks++;
-      if (ballClicks === 3) {
+    if (isVerity) {
+      verityClicks++;
+      
+      if (verityTalking) {
+        verityTalking = false;
+        clearTimeout(verityTimeout);
+        const bubble = document.querySelector('.speech-bubble');
+        if (bubble) bubble.remove();
+        
+        const wrapper = document.getElementById('coinWrapper');
+        const ball = wrapper.querySelector('.ball');
+        if (ball) {
+          const stopBubble = document.createElement('div');
+          stopBubble.className = 'speech-bubble';
+          stopBubble.textContent = 'Стоп';
+          stopBubble.style.fontFamily = 'var(--font-main)';
+          stopBubble.style.fontSize = '1em';
+          ball.appendChild(stopBubble);
+          
+          setTimeout(() => { if (stopBubble.parentNode) stopBubble.remove(); }, 1000);
+        }
+      }
+      
+      if (verityClicks >= 3) {
+        verityClicks = 0;
+        const wrapper = document.getElementById('coinWrapper');
+        wrapper.innerHTML = `
+          <div class="monster" onclick="closeMonster()">
+            <div class="speech-bubble" style="font-family: var(--font-main);">${verityPhrase}</div>
+          </div>
+        `;
+        
         document.body.classList.add('screen-cracked');
         setTimeout(() => {
           document.body.classList.remove('screen-cracked');
-          document.getElementById('hogOverlay').innerHTML = '<h2 style="color:#ff0000; font-family:Marck Script, cursive; font-size:3em;">Ты не должен был меня найтиии!</h2>';
-          document.getElementById('hogOverlay').classList.add('show');
-          resetGame();
-        }, 5000);
+        }, 10000);
       }
       return;
     }
@@ -591,37 +859,85 @@
     score += cPower * mPower;
     updateClickerUI();
     
-    const coin = document.getElementById('coinBtn');
-    if (coin) {
-      coin.style.animation = 'none';
-      coin.offsetHeight;
-      coin.style.animation = 'fallDown 0.4s ease-in forwards';
-      setTimeout(() => {
-        coin.style.animation = 'none';
-        coin.style.transform = 'translateY(0) scale(1)';
-        coin.style.opacity = '1';
-      }, 400);
+    // Пасхалка на 67 кликов
+    if (coinClickCounter === 67) {
+      document.getElementById('hogImg').style.display = 'block';
+      document.getElementById('hogImg').src = 'meme.jpg';
+      document.getElementById('hogText').textContent = '67';
+      document.getElementById('hogOverlay').classList.add('show');
     }
 
-    if (Math.random() < 0.34) document.getElementById('hogOverlay').classList.add('show');
-
-    if (coinClickCounter >= 567) {
-      coinClickCounter = 0;
-      const wrapper = document.getElementById('coinWrapper');
-      wrapper.innerHTML = '<div class="ball" id="ballBtn" onclick="clickCoin()">Шарик</div>';
-      isBall = true; ballClicks = 0;
+    // Логика падения с шансом
+    if (coinClickCounter >= 167) {
+      if (Math.random() < 0.1) {
+        coinClickCounter = 0;
+        attemptCounter = 0;
+        spawnVerity();
+      } else {
+        attemptCounter++;
+        if (attemptCounter >= 167) {
+          coinClickCounter = 0;
+          attemptCounter = 0;
+        }
+      }
+    }
+    
+    const progressEl = document.getElementById('progressDisplay');
+    if (progressEl) {
+      if (coinClickCounter < 167) {
+        progressEl.textContent = `${coinClickCounter} / 167`;
+      } else {
+        progressEl.textContent = `Попытка ${attemptCounter} / 167 (10% шанс)`;
+      }
     }
   }
 
-  function resetGame() {
+  function spawnVerity() {
+    const wrapper = document.getElementById('coinWrapper');
+    wrapper.innerHTML = `
+      <div class="verity-title">Верити</div>
+      <div class="ball" onclick="clickCoin()">
+        <div class="speech-bubble" style="font-family: var(--font-main);">
+          <span class="anim-fade" style="--anim-speed: 0.5s;">${verityPhrase}</span>
+        </div>
+        <div class="ball-eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        <div class="mouth"></div>
+      </div>
+      <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;">
+        До попытки: <span id="progressDisplay">0 / 167</span>
+      </div>
+    `;
+    isVerity = true;
+    verityTalking = true;
+    verityClicks = 0;
+    
+    verityTimeout = setTimeout(() => {
+      if (verityTalking) {
+        verityTalking = false;
+        const bubble = document.querySelector('.speech-bubble');
+        if (bubble) bubble.remove();
+      }
+    }, 3000);
+  }
+
+  function closeMonster() {
+    const wrapper = document.getElementById('coinWrapper');
+    if (wrapper) {
+      wrapper.innerHTML = `
+        <div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>
+        <div style="font-size:0.8em; color:var(--muted); text-align:center; margin-top:10px;">
+          До попытки: <span id="progressDisplay">0 / 167</span>
+        </div>
+      `;
+      isVerity = false;
+      verityTalking = false;
+    }
     score = 0; cPower = 1; cCost = 15; cLvl = 1;
     aPower = 0; aCost = 50; aLvl = 0;
     mPower = 1; mCost = 100; mLvl = 1;
-    isBall = false; ballClicks = 0; coinClickCounter = 0;
+    coinClickCounter = 0;
+    attemptCounter = 0;
     updateClickerUI();
-    document.getElementById('hogOverlay').innerHTML = '<img src="pig_face.jpg"><h2>ПОЗДРАВЛЯЮ ВЫ ВЫБИЛИ ХРЯКА!</h2>';
-    const wrapper = document.getElementById('coinWrapper');
-    if (wrapper) wrapper.innerHTML = '<div class="coin" id="coinBtn" onclick="clickCoin()">Монета</div>';
   }
 
   function buyUpgrade(type) {
@@ -651,6 +967,7 @@
 
   setInterval(() => { if (aPower > 0) { score += aPower; updateClickerUI(); } }, 1000);
 
+  // === ЗМЕЙКА ===
   let snakeCanvas, snakeCtx, snake, snakeDir, food, gameLoop;
   let snakeX = 10, snakeY = 10, targetX = 10, targetY = 10;
 
@@ -738,4 +1055,4 @@
   };
 </script>
 </body>
-</html>
+  </html>
